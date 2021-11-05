@@ -5,24 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EfaturaPortal.Application.Firmalars.Commands;
 using EfaturaPortal.Application.Firmalars.Queries;
-using EfaturaPortal.Application.Firmalars.ViewModels;
-
-
+using EfaturaPortal.Application.Interfaces.Firmalar;
 
 namespace EfaturaPortal.Controllers
 {
-    public class Firmalar : Controller
+    public class FirmalarController : Controller
     {
 
-        FirmalarCreateCommand create;
-        FirmalarUpdateCommand update;
-        public  FirmalarGetQuery GetFirma;
+        //FirmalarCreateCommand create;
+        //FirmalarUpdateCommand update;
+        public IFirmalarGetQuery GetFirma;
         public Guid FirmaId;
 
-        public Firmalar(FirmalarCreateCommand _create, FirmalarUpdateCommand _update,FirmalarGetQuery _GetFirma)
+        public FirmalarController(IFirmalarGetQuery _GetFirma)
         {
-            create = _create;
-            update = _update;
+            //create = _create;
+            //update = _update;
             GetFirma = _GetFirma;
         }
 

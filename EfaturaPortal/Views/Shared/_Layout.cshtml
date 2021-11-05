@@ -30,7 +30,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <div class="content">
-                <div class="container-fluid">              
+   
+                <div class="container-fluid mt-4">
                     @RenderBody()
                 </div>
             </div>
@@ -46,7 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </aside>
         <!-- /.control-sidebar -->
         <!-- Main Footer -->
-            <partial name="_Footer" />
+        <partial name="_Footer" />
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
@@ -57,6 +58,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="~/plugins/adminLte/dist/js/adminlte.min.js"></script>
     <!--DataTable Js-->
-    <script src="~/plugins/datatables/datatables.bundle.js"></script>
+    <script src="~/plugins/datatables/datatables.bundle.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", false)
 </body>
 </html>

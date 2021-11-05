@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using System.Reflection;
 using EfaturaPortal.Application.Infrastructure.AutoMapper;
+using EfaturaPortal.Application.Firmalars.Queries;
+using EfaturaPortal.Application.Interfaces.Firmalar;
 
 namespace EfaturaPortal
 {
@@ -40,6 +42,14 @@ namespace EfaturaPortal
             #region DbContext
             services.AddDbContext<EfaturaPortalContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EfaturaPortalCon")));
             #endregion
+
+            #region Application
+            services.AddScoped<IFirmalarGetQuery, FirmalarGetQuery>();
+            #endregion
+
+            //AutoMapper
+
+            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {
@@ -80,9 +90,6 @@ namespace EfaturaPortal
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //AutoMapper
-
-            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

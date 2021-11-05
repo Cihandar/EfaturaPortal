@@ -37,45 +37,47 @@
 
 </div>
 
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            GetDataTable();
+        });
 
-<script>
-    $(document).ready(function () {
-        GetDataTable();
-    });
+
+        var GetDataTable = function () {
+
+            var clmns = [
+                { "data": null, visible: false },
+                { "data": "unvani" },
+                { "data": "vergiDairesi" },
+                { "data": "vergiNumarasi" },
+                { "data": "sehir" },
+                { "data": "email" },
+                {
+                    data: null,
+                    width: "210px",
+                    className: "dt-center",
+                    targets: -1,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+
+                        return
+                        '<button    class="btn btn-secondary fas fa-pen font-weight-bold btn-pill mt-1 mr-2    min-w-90px" title = "Düzenle" style="background:#FF4301 !important"  data-endpoint="Firmalar/Update" data-id="' + full.id + '"></button> ';
 
 
-    var GetDataTable = function () {
 
-        var clmns = [
-            { "data": null, visible: false },
-            { "data": "unvani" },
-            { "data": "vergiDairesi" },
-            { "data": "vergiNumarasi" },
-            { "data": "sehir" },
-            { "data": "email" },
-            {
-                data: null,
-                width: "210px",
-                className: "dt-center",
-                targets: -1,
-                orderable: false,
-                render: function (data, type, full, meta) {
-      
-                        return  
-                            '<button    class="btn btn-secondary fas fa-pen font-weight-bold btn-pill mt-1 mr-2    min-w-90px" title = "Düzenle" style="background:#FF4301 !important"  data-endpoint="Firmalar/Update" data-id="' + full.id + '"></button> ';
-               
-          
-                
 
+                    }
                 }
-            }
-        ];
+            ];
 
-        GetData("Firmalar/GetAll", "Firmalar/Create", "Firmalar/Update", clmns);
+            GetData("Firmalar/GetAll", "Firmalar/Create", "Firmalar/Update", clmns);
 
-    };
-         
+        };
 
-</script>
 
-<script src="~/js/Datatable/DataTable_GetData.js"></script>
+    </script>
+
+    <script src="~/js/Datatable/DataTable_GetData.js"></script>
+    }
