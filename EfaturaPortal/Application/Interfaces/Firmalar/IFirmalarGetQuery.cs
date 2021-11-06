@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace EfaturaPortal.Application.Interfaces.Firmalar
 {
+//TODO:Interfaceleri sadece Query Olarak ayirmaya gerek kalmayabilir , TUM CRUD islemlerinin kurallarini burdan yazabilirsin
+
     public interface IFirmalarGetQuery
     {
            List<FirmalarGetAllQueryViewModel> GetAll(Guid FirmaId);

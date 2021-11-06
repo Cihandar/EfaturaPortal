@@ -13,6 +13,8 @@ using EfaturaPortal.Application.Interfaces.Firmalar;
 
 namespace EfaturaPortal.Application.Firmalars.Queries
 {
+    //TODO:Data CRUD islemlerinde Controller gerek yok 
+    //TODO:async methodlar eklenebilir
     public class FirmalarGetQuery : Controller,IFirmalarGetQuery
     {
         public EfaturaPortalContext context;
@@ -32,6 +34,7 @@ namespace EfaturaPortal.Application.Firmalars.Queries
             var firma = context.Firmalars.Where(x => x.Id == FirmaId).ToList();
 
             return mapper.Map<List<FirmalarGetAllQueryViewModel>>(firma);
+            //TODO:Return bolumleri bir degisken icerisine atilip gonderilecek Exp : return result; map işlemi return içerisinde yapilmicak
 
         }
 

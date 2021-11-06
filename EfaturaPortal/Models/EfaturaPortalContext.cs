@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace EfaturaPortal.Models
 {
+    //TODO:Context Klasorunu ayri tutalim , diger modellerden farkli bir klasorde olsun
+    //TODO:datalari eklerken basemodel içerisindeki firmaId contextsavechange aninda kayit edilebilir KONUSULACAK
     public class EfaturaPortalContext : IdentityDbContext<AppUser>
     {
 
