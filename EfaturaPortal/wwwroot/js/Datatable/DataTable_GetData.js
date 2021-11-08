@@ -24,7 +24,7 @@
                     "zeroRecords": "Kayıt bulunamadı",
                     "lengthMenu": "Gösterilen _MENU_  Kayıt",
                 },
-                order: [[6, 'desc']],
+                /*order: [[6, 'desc']],*/
                 buttons: [
                     {
                         text: 'Yeni Ekle',

@@ -41,6 +41,7 @@
 
 @section Scripts
 {
+    <script src="~/js/Datatable/DataTable_GetData.js"></script>
     <script>
         $(document).ready(function () {
             GetDataTable();
@@ -57,21 +58,13 @@
                 { "data": "sehir" },
                 { "data": "email" },
                 {
-                    data: null,
+                    data: "ilce",
                     width: "210px",
                     className: "dt-center",
                     targets: -1,
                     orderable: false,
                     render: function (data, type, full, meta) {
-
-                        return
-                        '<button class="btn btn-info font-weight-bold btn-pill mr-2 seridenApp-datatables-update  min-w-90px" title="Düzenle" data-endpoint="Firmalar/Update" data-id="' +
-                            full.id +
-                            '">Güncelle</button>';
-
-
-
-
+                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px" title="Düzenle" data-endpoint="Firmalar/Update" data-id="' + full.id +'">Güncelle</button>';
                     }
                 }
             ];
@@ -87,5 +80,5 @@
 
     </script>
 
-    <script src="~/js/Datatable/DataTable_GetData.js"></script>
-    }
+
+}

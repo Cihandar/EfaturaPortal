@@ -30,9 +30,9 @@ namespace EfaturaPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAll()
+        public  async Task<JsonResult> GetAll()
         {
-            var result = GetFirma.GetAll(FirmaId);
+            var result = await GetFirma.GetAll(FirmaId);
             return Json(result);
         }
 

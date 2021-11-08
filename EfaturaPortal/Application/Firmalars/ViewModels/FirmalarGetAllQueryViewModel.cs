@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EfaturaPortal.Application.Interfaces.Mapping;
+using EfaturaPortal.Models;
 using EfaturaPortal.Models.Enum;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,8 @@ namespace EfaturaPortal.Application.Firmalars.ViewModels
 
         public  void CreateMappings(Profile configuration)
         {
-
+            configuration.CreateMap<FirmalarGetAllQueryViewModel, Firmalar>();
+            configuration.CreateMap<Firmalar, FirmalarGetAllQueryViewModel>();
         }
     }
 }
