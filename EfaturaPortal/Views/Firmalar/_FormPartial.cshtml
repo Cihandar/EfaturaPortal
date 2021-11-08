@@ -1,0 +1,160 @@
+﻿@model EfaturaPortal.Application.Firmalars.ViewModels.FirmalarGetAllQueryViewModel
+@{
+
+    var action = Model == null || Model.Id == Guid.Empty ? "create" : "update";
+    //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
+}
+<div class="modal fade EfaturaPortalApp-forms-modal" id="crud-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Firmalar/@action">
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kullanıcı Tanımları</h5>
+                    <button type="button" class="close OtelApp-forms-modal-close" data-dismiss="modal" aria-label="Vazgeç"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="hidden">
+                        <input type="hidden" class="form-control" asp-for="Id">
+                    </div>
+
+                    <!--Ünvanı-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Unvani" class="form-control-label">Ünvanı</label>
+                                <input asp-for="Unvani" class="form-control" placeholder="" />
+                                <span asp-validation-for="Unvani" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Vergi Dairesi Ve Numarası-->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="VergiDairesi" class="form-control-label">Vergi Dairesi</label>
+                                <input asp-for="VergiDairesi" class="form-control" placeholder="" />
+                                <span asp-validation-for="VergiDairesi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="VergiNumarasi" class="form-control-label">Vergi Numarası</label>
+                                <input asp-for="VergiNumarasi" class="form-control" placeholder="" />
+                                <span asp-validation-for="VergiNumarasi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Adres Bilgileri-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Adres" class="form-control-label">Adres</label>
+                                <input asp-for="Adres" class="form-control" placeholder="" />
+                                <span asp-validation-for="Adres" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="Sehir" class="form-control-label">Şehir</label>
+                                <input asp-for="Sehir" class="form-control" placeholder="" />
+                                <span asp-validation-for="Sehir" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="Ilce" class="form-control-label">İlçe</label>
+                                <input asp-for="Ilce" class="form-control" placeholder="" />
+                                <span asp-validation-for="Ilce" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="PostaKodu" class="form-control-label">Posta Kodu</label>
+                                <input asp-for="PostaKodu" class="form-control" placeholder="" />
+                                <span asp-validation-for="PostaKodu" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--İletişim Bilgileri-->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-control-label">Email</label>
+                                <input asp-for="Email" class="form-control" placeholder="" />
+                                <span asp-validation-for="Email" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Telefon" class="form-control-label">Telefon</label>
+                                <input asp-for="Telefon" class="form-control" placeholder="" />
+                                <span asp-validation-for="Telefon" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--Web Servis Bilgileri-->
+
+                    <div class="card card-info">
+                        <div class="card-header"><h3 class="card-title">Web Servis Bilgileri</h3></div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label asp-for="WsPkKodu" class="form-control-label">Efatura Posta Kutusu</label>
+                                        <input asp-for="WsPkKodu" class="form-control" placeholder="" />
+                                        <span asp-validation-for="WsPkKodu" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label asp-for="WsGbKodu" class="form-control-label">Efatura Gönderim Birimi</label>
+                                        <input asp-for="WsGbKodu" class="form-control" placeholder="" />
+                                        <span asp-validation-for="WsGbKodu" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label asp-for="WsKullaniciAdi" class="form-control-label">Kullanıcı Adı</label>
+                                        <input asp-for="WsKullaniciAdi" class="form-control" placeholder="" />
+                                        <span asp-validation-for="WsKullaniciAdi" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label asp-for="WsSifre" class="form-control-label">Şifre</label>
+                                        <input asp-for="WsSifre" class="form-control" placeholder="" />
+                                        <span asp-validation-for="WsSifre" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+ 
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary OtelApp-forms-modal-close" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="kaydet" class="btn btn-success">Kaydet</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

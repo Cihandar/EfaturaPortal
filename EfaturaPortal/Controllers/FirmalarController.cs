@@ -14,10 +14,10 @@ namespace EfaturaPortal.Controllers
 
         //FirmalarCreateCommand create;
         //FirmalarUpdateCommand update;
-        public IFirmalarGetQuery GetFirma;
+        public IFirmalarCrud GetFirma;
         public Guid FirmaId;
 
-        public FirmalarController(IFirmalarGetQuery _GetFirma)
+        public FirmalarController(IFirmalarCrud _GetFirma)
         {
             //create = _create;
             //update = _update;
@@ -41,6 +41,15 @@ namespace EfaturaPortal.Controllers
         {
             var result = GetFirma.GetById(Id);
             return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid Id)
+        {
+            var result = GetFirma.GetById(Id);
+
+            return PartialView("_FormPartial", result);
+     
         }
 
     }

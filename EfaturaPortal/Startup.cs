@@ -44,7 +44,7 @@ namespace EfaturaPortal
             #endregion
 
             #region Application
-            services.AddScoped<IFirmalarGetQuery, FirmalarGetQuery>();
+            services.AddScoped<IFirmalarCrud, FirmalarGetQuery>();
             #endregion
 
             //AutoMapper

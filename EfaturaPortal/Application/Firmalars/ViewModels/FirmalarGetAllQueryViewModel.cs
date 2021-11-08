@@ -23,6 +23,10 @@ namespace EfaturaPortal.Application.Firmalars.ViewModels
         public string Email { get; set; }
         public string Telefon { get; set; }
         public FirmaTuru FirmaTuru { get; set; }
+        public string WsKullaniciAdi { get; set; }
+        public string WsSifre { get; set; }
+        public string WsPkKodu { get; set; }
+        public string WsGbKodu { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {

@@ -15492,23 +15492,23 @@ var defaults = {
 	}
 };
 
-if (KTUtil.isRTL()) {
-	defaults = {
-		"language": {
-			"paginate": {
-				"first": '<i class="fa fa-step-forward"></i>',
-				"last": '<i class="fa fa-step-backward"></i>',
-				"next": '<i class="fa fa-arrow-left"></i>',
-				"previous": '<i class="fa fa-arrow-right"></i>'
-			}
-		}
-	}
-}
+//if (KTUtil.isRTL()) {
+//	defaults = {
+//		"language": {
+//			"paginate": {
+//				"first": '<i class="fa fa-step-forward"></i>',
+//				"last": '<i class="fa fa-step-backward"></i>',
+//				"next": '<i class="fa fa-arrow-left"></i>',
+//				"previous": '<i class="fa fa-arrow-right"></i>'
+//			}
+//		}
+//	}
+//}
 
 $.extend(true, $.fn.dataTable.defaults, defaults);
 
 // fix dropdown overflow inside datatable
-KTApp.initAbsoluteDropdown('.dataTables_wrapper');
+//KTApp.initAbsoluteDropdown('.dataTables_wrapper');
 
 /*!
  AutoFill 2.3.5

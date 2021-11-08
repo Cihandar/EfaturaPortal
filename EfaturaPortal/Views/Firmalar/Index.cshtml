@@ -65,7 +65,9 @@
                     render: function (data, type, full, meta) {
 
                         return
-                        '<button    class="btn btn-secondary fas fa-pen font-weight-bold btn-pill mt-1 mr-2    min-w-90px" title = "Düzenle" style="background:#FF4301 !important"  data-endpoint="Firmalar/Update" data-id="' + full.id + '"></button> ';
+                        '<button class="btn btn-info font-weight-bold btn-pill mr-2 seridenApp-datatables-update  min-w-90px" title="Düzenle" data-endpoint="Firmalar/Update" data-id="' +
+                            full.id +
+                            '">Güncelle</button>';
 
 
 
@@ -77,6 +79,10 @@
             GetData("Firmalar/GetAll", "Firmalar/Create", "Firmalar/Update", clmns);
 
         };
+
+        function datatableUpdate() {
+            GetDataTable();
+        }
 
 
     </script>
