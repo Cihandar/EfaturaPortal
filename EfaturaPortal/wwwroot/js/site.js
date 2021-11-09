@@ -2,7 +2,38 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+function ModalCallWithUrl(url, id, formId) {
+    $.get(url, { id: id }, function (data, status) {
+        $("body").append(data);
+        $("#" + formId).modal("show");
+        //$.validator.unobtrusive.parse('form');
+    });
+}
 
+
+$(document).on("click", ".EfaturaPortalApp-datatables-create", function () {
+    var element = $(this);
+    ModalCallWithUrl(element.data("endpoint"), null, "crud-modal");
+
+});
+
+$(document).on("click", ".EfaturaPortalApp-datatables-update", function () {
+    var element = $(this);
+    ModalCallWithUrl(element.data("endpoint"), $(this).data("id"), "crud-modal");
+
+});
+
+// Ajax Form OnBegin on
+var EfaturaPortalAppOnBegin = function (message) {
+
+    //Block işlemi modala uygulanacaksa prevent işlemi için 
+    var selector = '#' + $(this).attr('id');
+    if ($(selector + ' .modal-content').length > 0) {
+        Notiflix.Block.Standard(selector + ' .modal-content');
+    } else {
+        Notiflix.Block.Standard('#' + $(this).attr('id'));
+    }
+};
 
 
 // Ajax Form OnFailure on

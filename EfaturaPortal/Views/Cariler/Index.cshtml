@@ -21,7 +21,7 @@
                             <th>Unvanı</th>
                             <th>Vergi Dairesi</th>
                             <th>Vergi Numarası</th>
-                            <th>Şehir</th>
+                            <th>Telefon</th>
                             <th>Email</th>
                             <th width="50">İşlemler</th>
                         </tr>
@@ -55,7 +55,7 @@
                 { "data": "unvani" },
                 { "data": "vergiDairesi" },
                 { "data": "vergiNumarasi" },
-                { "data": "sehir" },
+                { "data": "telefon" },
                 { "data": "email" },
                 {
                     data: null, 
@@ -68,7 +68,7 @@
                 }
             ];
 
-            GetData("Firmalar/GetAll", "", "Firmalar/Update", clmns);
+            GetData("Cariler/GetAll", "Cariler/Create", "Firmalar/Update", clmns);
 
         };
 

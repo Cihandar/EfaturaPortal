@@ -15,8 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using System.Reflection;
 using EfaturaPortal.Application.Infrastructure.AutoMapper;
-using EfaturaPortal.Application.Firmalars.Queries;
 using EfaturaPortal.Application.Interfaces.Firmalar;
+using EfaturaPortal.Application.Firmalars.Commands;
+using EfaturaPortal.Application.Interfaces.Cariler;
+using EfaturaPortal.Application.Carilers.Commands;
 
 namespace EfaturaPortal
 {
@@ -44,7 +46,8 @@ namespace EfaturaPortal
             #endregion
 
             #region Application
-            services.AddScoped<IFirmalarCrud, FirmalarGetQuery>();
+            services.AddScoped<IFirmalarCrud, FirmalarCrud>();
+            services.AddScoped<ICarilerCrud, CarilerCrud>();
             #endregion
 
             //AutoMapper

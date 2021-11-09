@@ -32,7 +32,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <div class="content">
-   
+
                 <div class="container-fluid mt-4">
                     @RenderBody()
                 </div>
@@ -55,6 +55,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="~/plugins/adminLte/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.ajax.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/plugins/adminLte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -63,6 +66,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="~/plugins/datatables/datatables.bundle.js" asp-append-version="true"></script>
     <!--Notiflix-->
     <script src="~/plugins/notiflix/js/notiflix.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
 
     @RenderSection("Scripts", false)
 </body>

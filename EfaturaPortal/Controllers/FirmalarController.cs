@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EfaturaPortal.Application.Firmalars.Commands;
-using EfaturaPortal.Application.Firmalars.Queries;
 using EfaturaPortal.Application.Interfaces.Firmalar;
+using EfaturaPortal.Application.Firmalars.ViewModels;
 
 namespace EfaturaPortal.Controllers
 {
@@ -14,14 +14,14 @@ namespace EfaturaPortal.Controllers
 
         //FirmalarCreateCommand create;
         //FirmalarUpdateCommand update;
-        public IFirmalarCrud GetFirma;
+        public IFirmalarCrud FirmaCommand;
         public Guid FirmaId;
 
-        public FirmalarController(IFirmalarCrud _GetFirma)
+        public FirmalarController(IFirmalarCrud _FirmaCommand)
         {
             //create = _create;
             //update = _update;
-            GetFirma = _GetFirma;
+            FirmaCommand = _FirmaCommand;
         }
 
         public IActionResult Index()
@@ -30,26 +30,34 @@ namespace EfaturaPortal.Controllers
         }
 
         [HttpGet]
-        public  async Task<JsonResult> GetAll()
+        public async Task<JsonResult> GetAll()
         {
-            var result = await GetFirma.GetAll(FirmaId);
+            var result = await FirmaCommand.GetAll(FirmaId);
             return Json(result);
         }
 
         [HttpGet]
-        public JsonResult GetById(Guid Id)
+        public async Task<JsonResult> GetById(Guid Id)
         {
-            var result = GetFirma.GetById(Id);
+            var result = await FirmaCommand.GetById(Id);
             return Json(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> Update(Guid Id)
         {
-            var result = GetFirma.GetById(Id);
+            var result = await FirmaCommand.GetById(Id);
 
             return PartialView("_FormPartial", result);
-     
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(FirmalarGetAllQueryViewModel model)
+        {
+            var result = await FirmaCommand.Update(model);
+
+            return Json(result);
         }
 
     }
