@@ -9,18 +9,17 @@ using EfaturaPortal.Application.Firmalars.ViewModels;
 
 namespace EfaturaPortal.Controllers
 {
-    public class FirmalarController : Controller
+    public class FirmalarController : BaseController
     {
 
-        //FirmalarCreateCommand create;
-        //FirmalarUpdateCommand update;
+    
+ 
         public IFirmalarCrud FirmaCommand;
         public Guid FirmaId;
 
         public FirmalarController(IFirmalarCrud _FirmaCommand)
         {
-            //create = _create;
-            //update = _update;
+     
             FirmaCommand = _FirmaCommand;
         }
 

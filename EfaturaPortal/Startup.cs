@@ -19,6 +19,10 @@ using EfaturaPortal.Application.Interfaces.Firmalar;
 using EfaturaPortal.Application.Firmalars.Commands;
 using EfaturaPortal.Application.Interfaces.Cariler;
 using EfaturaPortal.Application.Carilers.Commands;
+using EfaturaPortal.Application.Interfaces.Auth;
+using EfaturaPortal.Application.Auths.Command;
+using EfaturaPortal.Application.Interfaces.Email;
+using EfaturaPortal.Extentions;
 
 namespace EfaturaPortal
 {
@@ -46,8 +50,12 @@ namespace EfaturaPortal
             #endregion
 
             #region Application
+
+            services.AddScoped<IAuthCrud, AuthCrud>();
             services.AddScoped<IFirmalarCrud, FirmalarCrud>();
             services.AddScoped<ICarilerCrud, CarilerCrud>();
+            services.AddScoped<ISendEmail, SendEmail>();
+
             #endregion
 
             //AutoMapper

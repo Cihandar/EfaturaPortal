@@ -1,0 +1,158 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model EfaturaPortal.Application.Auths.ViewModels.AuthRegisterViewModel;
+@{
+
+    Layout = null;
+}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Alze E Portal Kayıt Formu</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link href="~/plugins/adminLte/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="~/plugins/adminLte/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/plugins/adminLte/dist/css/adminlte.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link href="~/plugins/notiflix/css/notiflix.css" rel="stylesheet" />
+</head>
+ 
+<body class="hold-transition register-page">
+    <div class="register-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="javascript:;" class="h1">Alze <span> <b>E</b> </span>Portal </a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Aşağıdaki Formu Doldurarak Kaydınızı Tamamlayın.</p>
+
+                <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectRegisterUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Register">
+                    <label asp-for="Firma.Unvani" class="form-control-label">Firma Ünvanı</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Firma Ünvanı" asp-for="Firma.Unvani">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-building"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label asp-for="Firma.VergiNumarasi">Vergi Numarası</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Vergi Numarası" asp-for="Firma.VergiNumarasi">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-address-card"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label asp-for="Firma.VergiDairesi">Vergi Dairesi</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Vergi Dairesi" asp-for="Firma.VergiDairesi">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-address-card"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label asp-for="Firma.YetkiliAdSoyad">Yetkili Kişi Ad Soyad</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Yetkili Kişi Ad Soyad" asp-for="Firma.YetkiliAdSoyad">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label asp-for="Firma.Telefon">Telefon</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Telefon" asp-for="Firma.Telefon">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-mobile-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label asp-for="Email">Email</label>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email" asp-for="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-at"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="icheck-primary">
+                                <input type="checkbox" value="agree" asp-for="HizmetSozlesmesi">
+                                <label asp-for="HizmetSozlesmesi">
+                                    <a href="javascript:;">Hizmet Sözleşmesini</a> Onaylıyorum.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="icheck-primary">
+                                <input type="checkbox" value="agree" asp-for="IletiGonderimi">
+                                <label asp-for="IletiGonderimi">
+                                    İletişim Bilgilerimi e-iletim gönderimi onaylıyorum.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="icheck-primary">
+                                <input type="checkbox" asp-for="Kvkk" value="agree">
+                                <label asp-for="Kvkk">
+                                    Verilerimin <a href="javascript:void(0)">Açık Rıza Metni'nde</a> belirtilen şekilde işlenmesine onay veriyorum.
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Kayıt Ol</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                @*<div class="social-auth-links text-center">
+            <a href="#" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook mr-2"></i>
+                Sign up using Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google-plus mr-2"></i>
+                Sign up using Google+
+            </a>
+        </div>*@
+
+                <a href="Login" class="text-center">Giriş Yap</a>
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
+    </div>
+ 
+</body>
+
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/plugins/adminLte/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.ajax.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/adminLte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/plugins/adminLte/dist/js/adminlte.min.js"></script>
+
+    <script src="~/plugins/notiflix/js/notiflix.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/Pages/Auth/index.js"></script>

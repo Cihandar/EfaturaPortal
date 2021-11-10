@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model EfaturaPortal.Application.Auths.ViewModels.AuthViewModel;
+@{
+
+    Layout = null;
+}
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link href="~/plugins/adminLte/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+<link href="~/plugins/adminLte/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+<link href="~/plugins/adminLte/dist/css/adminlte.min.css" rel="stylesheet" />
+<link href="~/css/login.css" rel="stylesheet" />
+<link href="~/plugins/notiflix/css/notiflix.css" rel="stylesheet" />
+
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="javascript:;" class="h1">Alze <span> <b>E</b> </span>Portal </a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Lütfen Giriş Yapın</p>
+
+                <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Login">
+                    <div class="input-group mb-3">
+                        <input type="email" asp-for="Email" class="form-control" placeholder="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" asp-for="Sifre" class="form-control" placeholder="Şifre">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" asp-for="BeniHatirla" id="remember">
+                                <label for="remember">
+                                    Beni Hatırla
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Giriş</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                @*<div class="social-auth-links text-center mt-2 mb-3">
+                        <a href="#" class="btn btn-block btn-primary">
+                            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                        </a>
+                        <a href="#" class="btn btn-block btn-danger">
+                            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                        </a>
+                    </div>*@
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1">
+                    <a href="forgot-password.html">Şifremi Unuttum</a>
+                </p>
+                <p class="mb-0">
+                    <a href="register.html" class="text-center">Kayıt Ol</a>
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+
+
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/plugins/adminLte/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.ajax.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/adminLte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/plugins/adminLte/dist/js/adminlte.min.js"></script>
+
+    <script src="~/plugins/notiflix/js/notiflix.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/Pages/Auth/index.js"></script>
+</body>

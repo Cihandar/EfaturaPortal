@@ -60,7 +60,7 @@ var EfaturaPortalAppOnComplete = function (id, delay, callback) {
 };
 
 var EfaturaPortalAppOnSuccess = function (data, callback) {
-
+    
     if (data.success) { // api success
         Notiflix.Notify.Success(data.message);
 

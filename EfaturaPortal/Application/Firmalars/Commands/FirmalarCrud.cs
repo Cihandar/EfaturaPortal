@@ -21,7 +21,7 @@ namespace EfaturaPortal.Application.Firmalars.Commands
             mapper = _mapper;
         }
 
-        public bool Add(FirmalarGetAllQueryViewModel firmavw)
+        public async Task<ResultJson> Add(FirmalarGetAllQueryViewModel firmavw)
         {
             try
             {
@@ -29,13 +29,16 @@ namespace EfaturaPortal.Application.Firmalars.Commands
 
                 context.Firmalars.Add(firma);
                 context.SaveChanges();
+
+                return new ResultJson { Success = true, Message = "Kayıt Başarılı", Id = firma.Id };
+
             }
             catch (Exception ex)
             {
-                
+                return new ResultJson { Success = false, Message = "Hata : " + ex.Message };
             }
 
-            return true;
+
         }
 
         public async Task<ResultJson> Update(FirmalarGetAllQueryViewModel firmavw)
