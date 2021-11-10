@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+ 
 
 namespace EfaturaPortal.Application.Interfaces.Firmalar
 {
@@ -14,6 +15,6 @@ namespace EfaturaPortal.Application.Interfaces.Firmalar
         Task<List<FirmalarGetAllQueryViewModel>> GetAll(Guid FirmaId);
         Task<FirmalarGetAllQueryViewModel> GetById(Guid FirmaId);
         Task<ResultJson> Update(FirmalarGetAllQueryViewModel firmavw);
-        Task<ResultJson> Add(FirmalarGetAllQueryViewModel firmavw);
+        Task<ResultJsonWithData<EfaturaPortal.Models.Firmalar>> Add(FirmalarGetAllQueryViewModel firmavw);
     }
 }

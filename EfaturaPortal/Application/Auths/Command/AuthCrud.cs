@@ -67,7 +67,7 @@ namespace EfaturaPortal.Application.Auths.Command
                     Email = model.Email,
                     UserName = model.Email,
                     PhoneNumber = model.Firma.Telefon,
-                    FirmaId = resultfirma.Id
+                    FirmaId = resultfirma.Data.Id
                 };
 
                 var sifre =  new Random().Next(100000, 999999);

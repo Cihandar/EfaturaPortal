@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using EfaturaPortal.Application.Firmalars.Commands;
 using EfaturaPortal.Application.Interfaces.Firmalar;
 using EfaturaPortal.Application.Firmalars.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EfaturaPortal.Controllers
 {
+    [Authorize]
     public class FirmalarController : BaseController
     {
 
@@ -46,9 +48,7 @@ namespace EfaturaPortal.Controllers
         public async Task<IActionResult> Update(Guid Id)
         {
             var result = await FirmaCommand.GetById(Id);
-
             return PartialView("_FormPartial", result);
-
         }
 
         [HttpPost]
