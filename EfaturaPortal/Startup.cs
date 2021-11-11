@@ -127,12 +127,13 @@ namespace EfaturaPortal
                 app.UseHsts();
             }
 
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseRouting();
+ 
             
 
 
