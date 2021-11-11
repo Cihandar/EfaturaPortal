@@ -30,9 +30,12 @@
                 <p class="login-box-msg">Aşağıdaki Formu Doldurarak Kaydınızı Tamamlayın.</p>
 
                 <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectRegisterUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Register">
+
                     <label asp-for="Firma.Unvani" class="form-control-label">Firma Ünvanı</label>
+                    <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Firma Ünvanı" asp-for="Firma.Unvani">
+
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-building"></span>
@@ -40,7 +43,9 @@
                         </div>
                     </div>
 
+
                     <label asp-for="Firma.VergiNumarasi">Vergi Numarası</label>
+                    <span asp-validation-for="Firma.VergiNumarasi" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Vergi Numarası" asp-for="Firma.VergiNumarasi">
                         <div class="input-group-append">
@@ -50,7 +55,9 @@
                         </div>
                     </div>
 
+
                     <label asp-for="Firma.VergiDairesi">Vergi Dairesi</label>
+                    <span asp-validation-for="Firma.VergiDairesi" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Vergi Dairesi" asp-for="Firma.VergiDairesi">
                         <div class="input-group-append">
@@ -60,7 +67,9 @@
                         </div>
                     </div>
 
+
                     <label asp-for="Firma.YetkiliAdSoyad">Yetkili Kişi Ad Soyad</label>
+                    <span asp-validation-for="Firma.YetkiliAdSoyad" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Yetkili Kişi Ad Soyad" asp-for="Firma.YetkiliAdSoyad">
                         <div class="input-group-append">
@@ -70,7 +79,9 @@
                         </div>
                     </div>
 
+
                     <label asp-for="Firma.Telefon">Telefon</label>
+                    <span asp-validation-for="Firma.Telefon" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Telefon" asp-for="Firma.Telefon">
                         <div class="input-group-append">
@@ -80,7 +91,9 @@
                         </div>
                     </div>
 
+
                     <label asp-for="Email">Email</label>
+                    <span asp-validation-for="Email" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" placeholder="Email" asp-for="Email">
                         <div class="input-group-append">
@@ -90,6 +103,7 @@
                         </div>
                     </div>
 
+
                     <div class="row">
                         <div class="col-12">
                             <div class="icheck-primary">
@@ -97,6 +111,7 @@
                                 <label asp-for="HizmetSozlesmesi">
                                     <a href="javascript:;">Hizmet Sözleşmesini</a> Onaylıyorum.
                                 </label>
+                                <span asp-validation-for="HizmetSozlesmesi" class="text-danger"> </span>
                             </div>
                         </div>
                         <div class="col-12">
@@ -105,6 +120,7 @@
                                 <label asp-for="IletiGonderimi">
                                     İletişim Bilgilerimi e-iletim gönderimi onaylıyorum.
                                 </label>
+                                <span asp-validation-for="IletiGonderimi" class="text-danger"> </span>
                             </div>
                         </div>
                         <div class="col-12">
@@ -113,6 +129,7 @@
                                 <label asp-for="Kvkk">
                                     Verilerimin <a href="javascript:void(0)">Açık Rıza Metni'nde</a> belirtilen şekilde işlenmesine onay veriyorum.
                                 </label>
+                                <span asp-validation-for="Kvkk" class="text-danger"> </span>
                             </div>
                         </div>
                         <!-- /.col -->

@@ -23,6 +23,7 @@ using EfaturaPortal.Application.Interfaces.Auth;
 using EfaturaPortal.Application.Auths.Command;
 using EfaturaPortal.Application.Interfaces.Email;
 using EfaturaPortal.Extentions;
+using FluentValidation.AspNetCore;
 
 namespace EfaturaPortal
 {
@@ -84,26 +85,36 @@ namespace EfaturaPortal
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(365);
+                options.ExpireTimeSpan = TimeSpan.FromHours(24);
                 options.LoginPath = "/Auth/Login";
                 options.LogoutPath = "/Auth/Logout";
                 options.AccessDeniedPath = "/Auth/AccessDenied";
                 options.Cookie = new CookieBuilder
                 {
                     IsEssential = true, // required for auth to work without explicit user consent; adjust to suit your privacy policy,
-                    Name = ".MadHotSpot.Session",
+                    Name = ".EfaturaPortal.Session",
                     HttpOnly = false,
-                    Expiration = TimeSpan.FromDays(365),
                     SecurePolicy = CookieSecurePolicy.Always
                 };
 
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.Name = ".EfaturaPortal.Session";
+            });
+
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -119,13 +130,40 @@ namespace EfaturaPortal
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+            
+
+
+            #region Routing
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
+                    name: "usernotfound",
+                    pattern: "/usernotfound",
+                    defaults: new { controller = "Error", action = "UserNotFound" });
+
+                endpoints.MapControllerRoute(
+                    name: "notfound",
+                    pattern: "/notfound",
+                    defaults: new { controller = "Error", action = "NotFound" });
+
+                endpoints.MapControllerRoute(
+                    name: "unauthorized",
+                    pattern: "/unauthorized",
+                    defaults: new { controller = "Auth", action = "Unauthorized" });
+
+                endpoints.MapControllerRoute(
+                    name: "authentication",
+                    pattern: "/authentication",
+                    defaults: new { controller = "Auth", action = "Login" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            #endregion
         }
     }
 }

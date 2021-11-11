@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EfaturaPortal.Controllers
 {
-    [Authorize]
+    
     public class FirmalarController : BaseController
     {
 
