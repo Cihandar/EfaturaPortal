@@ -13,7 +13,7 @@ namespace EfaturaPortal.Models
         public int SonFaturaNo { get; set; }
         public DateTime SonFaturaTarihi { get; set; }
         public int Oncelik { get; set; }
-
+        public string SablonAdi { get; set; }
         public byte[] Sablon { get; set; }
 
     }

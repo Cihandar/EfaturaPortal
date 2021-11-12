@@ -1,4 +1,4 @@
-﻿@model EfaturaPortal.Application.Firmalars.ViewModels.FirmalarGetAllQueryViewModel
+﻿@model EfaturaPortal.Application.Carilers.ViewModels.CarilerGetAllQueryViewModel;
 @{
 
     var action = Model == null || Model.Id == Guid.Empty ? "create" : "update";
@@ -6,11 +6,11 @@
 }
 <div class="modal fade EfaturaPortalApp-forms-modal" id="crud-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Firmalar/@action">
+        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Cariler" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Cariler/@action">
             @Html.AntiForgeryToken()
             <div class="modal-content">
                 <div class="modal-header bg-success">
-                    <h5 class="modal-title">Firma Bilgileri</h5>
+                    <h5 class="modal-title">Cari Bilgileri</h5>
                     <button type="button" class="close OtelApp-forms-modal-close" data-dismiss="modal" aria-label="Vazgeç"></button>
                 </div>
                 <div class="modal-body">
@@ -47,6 +47,16 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="EfaturaPostaKutusu" class="form-control-label">Posta Kodu</label>
+                                <input asp-for="EfaturaPostaKutusu" class="form-control" placeholder="" />
+                                <span asp-validation-for="EfaturaPostaKutusu" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!--Adres Bilgileri-->
                     <div class="row">
                         <div class="col-sm-12">
@@ -58,25 +68,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label asp-for="Sehir" class="form-control-label">Şehir</label>
                                 <input asp-for="Sehir" class="form-control" placeholder="" />
                                 <span asp-validation-for="Sehir" class="text-danger"> </span>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label asp-for="Ilce" class="form-control-label">İlçe</label>
                                 <input asp-for="Ilce" class="form-control" placeholder="" />
                                 <span asp-validation-for="Ilce" class="text-danger"> </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label asp-for="PostaKodu" class="form-control-label">Posta Kodu</label>
-                                <input asp-for="PostaKodu" class="form-control" placeholder="" />
-                                <span asp-validation-for="PostaKodu" class="text-danger"> </span>
                             </div>
                         </div>
                     </div>
@@ -99,49 +102,7 @@
                         </div>
                     </div>
 
-
-                    <!--Web Servis Bilgileri-->
-
-                    <div class="card card-info">
-                        <div class="card-header"><h3 class="card-title">Web Servis Bilgileri</h3></div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label asp-for="WsPkKodu" class="form-control-label">Efatura Posta Kutusu</label>
-                                        <input asp-for="WsPkKodu" class="form-control" placeholder="" />
-                                        <span asp-validation-for="WsPkKodu" class="text-danger"> </span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label asp-for="WsGbKodu" class="form-control-label">Efatura Gönderim Birimi</label>
-                                        <input asp-for="WsGbKodu" class="form-control" placeholder="" />
-                                        <span asp-validation-for="WsGbKodu" class="text-danger"> </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label asp-for="WsKullaniciAdi" class="form-control-label">Kullanıcı Adı</label>
-                                        <input asp-for="WsKullaniciAdi" class="form-control" placeholder="" />
-                                        <span asp-validation-for="WsKullaniciAdi" class="text-danger"> </span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label asp-for="WsSifre" class="form-control-label">Şifre</label>
-                                        <input asp-for="WsSifre" class="form-control" placeholder="" />
-                                        <span asp-validation-for="WsSifre" class="text-danger"> </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    
 
 
 

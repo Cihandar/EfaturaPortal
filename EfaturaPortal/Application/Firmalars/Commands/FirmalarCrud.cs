@@ -81,7 +81,7 @@ namespace EfaturaPortal.Application.Firmalars.Commands
         {
 
 
-            var firma =   context.Firmalars.ToList();
+            var firma = context.Firmalars.Where(x => x.Id == FirmaId).ToList();
 
             var result = mapper.Map<List<FirmalarGetAllQueryViewModel>>(firma);
 

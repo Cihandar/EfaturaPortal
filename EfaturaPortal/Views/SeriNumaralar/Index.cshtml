@@ -9,7 +9,7 @@
         <div class="card card-primary">
 
             <div class="card-header">
-                Cariler
+               Fatura Seri Numara Tanımları
             </div>
 
             <div class="card-body">
@@ -17,11 +17,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Unvanı</th>
-                            <th>Vergi Dairesi</th>
-                            <th>Vergi Numarası</th>
-                            <th>Telefon</th>
-                            <th>Email</th>
+                            <th>Fatura Türü</th>
+                            <th>Seri No</th>
+                            <th>Son Fatura Numarası</th>
+                            <th>Son Fatura Tarihi</th>
                             <th width="50">İşlemler</th>
                         </tr>
                     </thead>
@@ -51,23 +50,22 @@
 
             var clmns = [
                 { "data": null, visible: false },
-                { "data": "unvani" },
-                { "data": "vergiDairesi" },
-                { "data": "vergiNumarasi" },
-                { "data": "telefon" },
-                { "data": "email" },
+                { "data": "faturaTuru" },
+                { "data": "seriNo" },
+                { "data": "sonFaturaNo" },
+                { "data": "sonFaturaTarihi" },
                 {
                     data: null, 
                     className: "dt-center",
                     targets: -1,
                     orderable: false,
                     render: function (data, type, full, meta) {
-                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Düzenle" data-endpoint="Cariler/Update" data-id="' + full.id +'">Güncelle</button>';
+                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Düzenle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id +'">Güncelle</button>';
                     }
                 }
             ];
 
-            GetData("Cariler/GetAll", "Cariler/Create", "Cariler/Update", clmns);
+            GetData("SeriNumaralar/GetAll", "SeriNumaralar/Create", "SeriNumaralar/Update", clmns);
 
         };
 

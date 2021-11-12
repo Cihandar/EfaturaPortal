@@ -76,7 +76,7 @@ namespace EfaturaPortal.Application.Carilers.Commands
         {
 
 
-            var data =   context.Carilers.ToList();
+            var data = context.Carilers.Where(x => x.FirmaId == FirmaId).ToList();
 
             var result = mapper.Map<List<CarilerGetAllQueryViewModel>>(data);
 

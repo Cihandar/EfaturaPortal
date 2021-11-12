@@ -24,6 +24,8 @@ using EfaturaPortal.Application.Auths.Command;
 using EfaturaPortal.Application.Interfaces.Email;
 using EfaturaPortal.Extentions;
 using FluentValidation.AspNetCore;
+using EfaturaPortal.Application.Interfaces.SeriNumaralars;
+using EfaturaPortal.Application.SeriNumaralars.Commands;
 
 namespace EfaturaPortal
 {
@@ -55,6 +57,7 @@ namespace EfaturaPortal
             services.AddScoped<IAuthCrud, AuthCrud>();
             services.AddScoped<IFirmalarCrud, FirmalarCrud>();
             services.AddScoped<ICarilerCrud, CarilerCrud>();
+            services.AddScoped<ISeriNumaralarCrud, SeriNumaralarCrud>();
             services.AddScoped<ISendEmail, SendEmail>();
 
             #endregion

@@ -17,7 +17,7 @@
         buton = [
             {
                 text: 'Yeni Ekle',
-                className: 'btn-warning seridenApp-datatables-create',
+                className: 'btn-warning EfaturaPortalApp-datatables-create',
                 attr: {
                     "data-endpoint": create,
                     title: "Yeni Ekle"

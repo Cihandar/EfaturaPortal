@@ -17,7 +17,7 @@ namespace EfaturaPortal.Controllers
     
  
         public IFirmalarCrud FirmaCommand;
-        public Guid FirmaId;
+  
 
         public FirmalarController(IFirmalarCrud _FirmaCommand)
         {
