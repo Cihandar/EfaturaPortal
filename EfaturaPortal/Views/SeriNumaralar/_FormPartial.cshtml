@@ -29,7 +29,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -63,15 +63,16 @@
                             </div>
                         </div>
                     </div>
- 
- 
 
-
-
-
-
-
-
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Sablon" class="form-control-label">Öncelik</label>
+                                <input asp-for="Sablon" class="form-control" placeholder="" type="file" id="files" />
+                                <span asp-validation-for="Sablon" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -82,4 +83,25 @@
         </form>
     </div>
 </div>
+ 
+    <script>
 
+        $("#files").change(function () {
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                var arrayBuffer = this.result;
+                console.log(arrayBuffer);
+                document.querySelector('#result').innerHTML = arrayBuffer + '  ' + arrayBuffer.byteLength;
+            }
+            reader.readAsArrayBuffer(this.files[0]);
+
+        });
+   
+ 
+        
+ 
+    </script>
+        
+    <script src="~/js/FileUpload.js" asp-append-version="true"></script>
+ 
