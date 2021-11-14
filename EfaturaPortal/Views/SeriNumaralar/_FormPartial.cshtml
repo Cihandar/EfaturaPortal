@@ -67,13 +67,22 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label asp-for="Sablon" class="form-control-label">Öncelik</label>
-                                <input asp-for="Sablon" class="form-control" placeholder="" type="file" id="files" />
-                                <span asp-validation-for="Sablon" class="text-danger"> </span>
+                                <label   class="form-control-label">Tasarım Dosyası Yükle</label>
+                                <input  class="form-control" placeholder="" id="input-file" type="file" /> 
                             </div>
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="SablonAdi" class="form-control-label">Öncelik</label>
+                                <input asp-for="SablonAdi" class="form-control" placeholder="" readonly />
+                                <span asp-validation-for="SablonAdi" class="text-danger"> </span>
+                                <input asp-for="SablonDosyaAdi" class="form-control" placeholder="" type="hidden" readonly />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary OtelApp-forms-modal-close" data-dismiss="modal">Vazgeç</button>
@@ -83,25 +92,43 @@
         </form>
     </div>
 </div>
- 
-    <script>
 
-        $("#files").change(function () {
+<script>
 
-            var reader = new FileReader();
-            reader.onload = function () {
-                var arrayBuffer = this.result;
-                console.log(arrayBuffer);
-                document.querySelector('#result').innerHTML = arrayBuffer + '  ' + arrayBuffer.byteLength;
-            }
-            reader.readAsArrayBuffer(this.files[0]);
+    $(document).ready(function () {
 
-        });
-   
- 
-        
- 
-    </script>
-        
-    <script src="~/js/FileUpload.js" asp-append-version="true"></script>
- 
+        $("#input-file").change(
+            function () {
+     
+                //Dosya Xslt Kontrol
+                var name = this.files[0].name;
+                console.log(name.length);
+                console.log(name.length-4);
+
+                console.log(name.substr(name.length - 4, 4));
+                if (name.substr(name.length-4,4) != "xslt") {
+                    Notiflix.Notify.Failure("Lütfen Geçerli Bir Xslt Dosyası Seçin");
+                    return;
+                } else {
+
+                    var result = useFileLoad(this,'SeriNumaralar/UploadXslt');
+
+                    if (result != null) {
+                        console.log(result);
+                    }
+
+                }
+
+
+
+            });
+
+    });
+
+
+
+
+</script>
+
+<script src="~/js/FileUpload.js" asp-append-version="true"></script>
+

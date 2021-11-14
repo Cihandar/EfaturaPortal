@@ -50,7 +50,7 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
 
                 data.FaturaTuru = modelvw.FaturaTuru;
                 data.Oncelik = modelvw.Oncelik;
-                data.Sablon = modelvw.Sablon;
+                data.SablonDosyaAdi = modelvw.SablonDosyaAdi;
                 data.SablonAdi = modelvw.SablonAdi;
                 data.SeriNo = modelvw.SeriNo;
 
