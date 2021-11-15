@@ -17,9 +17,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="~/plugins/adminLte/dist/css/adminlte.min.css">
     <!--Datatable Css-->
-    <link href="~/plugins/datatables/datatables.bundle.css" rel="stylesheet" />
+    <link href="~/plugins/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/plugins/adminLte/plugins/datatables-responsive/css/responsive.bootstrap4.css" rel="stylesheet" />
+    <link href="~/plugins/adminLte/plugins/datatables-buttons/css/buttons.bootstrap4.css" rel="stylesheet" />
+
+    @*<link href="~/plugins/datatables/datatables.bundle.css" rel="stylesheet" />*@
     <!--Notiflix Css-->
     <link href="~/plugins/notiflix/css/notiflix.css" rel="stylesheet" />
+
+    <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -63,7 +69,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="~/plugins/adminLte/dist/js/adminlte.min.js"></script>
     <!--DataTable Js-->
-    <script src="~/plugins/datatables/datatables.bundle.js" asp-append-version="true"></script>
+    <script src="~/plugins/adminLte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatable-moment/moment.min.js"></script>
+    @*<script src="~/plugins/datatables/datatables.bundle.js" asp-append-version="true"></script>*@
     <!--Notiflix-->
     <script src="~/plugins/notiflix/js/notiflix.js"></script>
 

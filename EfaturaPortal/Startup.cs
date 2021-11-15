@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,7 @@ using EfaturaPortal.Extentions;
 using FluentValidation.AspNetCore;
 using EfaturaPortal.Application.Interfaces.SeriNumaralars;
 using EfaturaPortal.Application.SeriNumaralars.Commands;
+using EfaturaPortal.Application.Interfaces.FileUploads;
 
 namespace EfaturaPortal
 {
@@ -59,6 +61,7 @@ namespace EfaturaPortal
             services.AddScoped<ICarilerCrud, CarilerCrud>();
             services.AddScoped<ISeriNumaralarCrud, SeriNumaralarCrud>();
             services.AddScoped<ISendEmail, SendEmail>();
+            services.AddScoped<IFileUpload, FileUpload>();
 
             #endregion
 
@@ -111,6 +114,8 @@ namespace EfaturaPortal
             });
 
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+       //    services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

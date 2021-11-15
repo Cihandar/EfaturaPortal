@@ -6,7 +6,7 @@
 }
 <div class="modal fade EfaturaPortalApp-forms-modal" id="crud-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Cariler" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Cariler/@action">
+        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Cariler" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/SeriNumaralar/@action">
             @Html.AntiForgeryToken()
             <div class="modal-content">
                 <div class="modal-header bg-success">
@@ -64,24 +64,26 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label   class="form-control-label">Tasarım Dosyası Yükle</label>
-                                <input  class="form-control" placeholder="" id="input-file" type="file" /> 
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="row">
+
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label asp-for="SablonAdi" class="form-control-label">Öncelik</label>
+                                <label asp-for="SablonAdi" class="form-control-label">Xslt Şablon Adı</label>
                                 <input asp-for="SablonAdi" class="form-control" placeholder="" readonly />
                                 <span asp-validation-for="SablonAdi" class="text-danger"> </span>
                                 <input asp-for="SablonDosyaAdi" class="form-control" placeholder="" type="hidden" readonly />
                             </div>
                         </div>
+
+                   
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Tasarım Dosyası Yükle</label>
+                                    <input class="form-control" placeholder="" id="input-file" type="file" />
+                                </div>
+                            </div>
+              
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -99,7 +101,8 @@
 
         $("#input-file").change(
             function () {
-     
+
+                Notiflix.Block.Standard('.modal-content');
                 //Dosya Xslt Kontrol
                 var name = this.files[0].name;
                 console.log(name.length);
@@ -111,11 +114,7 @@
                     return;
                 } else {
 
-                    var result = useFileLoad(this,'SeriNumaralar/UploadXslt');
-
-                    if (result != null) {
-                        console.log(result);
-                    }
+                  useFileLoad(this, name);
 
                 }
 
@@ -126,9 +125,59 @@
     });
 
 
+    function useFileLoad(inputfile, name) {
+
+
+ 
+        var filename = name;
+
+        var reader = new FileReader();
+        reader.onload = fileLoaded;
+        reader.readAsDataURL(inputfile.files[0]);
+
+
+        function fileLoaded(file) {
+
+
+            var formData = new FormData();
+
+            formData.append("base64file", file.target.result);
+            formData.append("fname", filename);
+
+            $.ajax(
+                {
+                    url: 'SeriNumaralar/UploadXslt',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        Notiflix.Block.Remove("*", 0);
+                        if (data.success) {
+                            $("#SablonAdi").val(name);
+                            $("#SablonDosyaAdi").val(data.message);
+                         
+                        } else {
+                            Notiflix.Notify.Failure("Hata : "+data.message);
+                        }
+                     
+                    }
+                }
+            );
+
+
+
+
+            // $('div.withBckImage').css({ 'background-image': "url(" + e.target.result + ")" });
+
+        }
+    }
+
+
+
 
 
 </script>
 
-<script src="~/js/FileUpload.js" asp-append-version="true"></script>
+ 
 

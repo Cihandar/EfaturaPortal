@@ -7,6 +7,7 @@ using EfaturaPortal.Application.SeriNumaralars.Commands;
 using EfaturaPortal.Application.Interfaces.SeriNumaralars;
 using EfaturaPortal.Application.SeriNumaralars.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using EfaturaPortal.Application.Interfaces.FileUploads;
 
 namespace EfaturaPortal.Controllers
 {
@@ -17,11 +18,13 @@ namespace EfaturaPortal.Controllers
     
  
         public ISeriNumaralarCrud SeriNCommand;
+        public IFileUpload fileUpload;
       
-        public SeriNumaralarController(ISeriNumaralarCrud _SeriNCommand)
+        public SeriNumaralarController(ISeriNumaralarCrud _SeriNCommand,IFileUpload _fileUpload)
         {
      
             SeriNCommand = _SeriNCommand;
+            fileUpload = _fileUpload;
         }
 
         public IActionResult Index()
@@ -74,6 +77,15 @@ namespace EfaturaPortal.Controllers
             return Json(result);
         }
         #endregion
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadXslt(string base64file, string fname)
+        {
+            var result = await fileUpload.UploadFileXslt(base64file, fname);
+
+            return Json(result);
+        }
 
     }
 }

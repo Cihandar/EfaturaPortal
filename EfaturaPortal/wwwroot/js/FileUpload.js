@@ -1,20 +1,21 @@
-﻿function useFileLoad(inputfile, posturl) {
+﻿function useFileLoad(inputfile, posturl,name) {
 
- 
-    filename = inputfile.files[0].name;
+
+    debugger;
+    var filename = name;
 
     var reader = new FileReader();
     reader.onload = fileLoaded;
-    reader.readAsDataURL(inputfile.files[0], filename, posturl);
+    reader.readAsDataURL(inputfile.files[0]);
 
 
-    function fileLoaded(file, filename, posturl) {
-
+    function fileLoaded(file) {
+    
 
         var formData = new FormData();
 
         formData.append("base64file", file.target.result);
-        formData.append("Iname", filename);
+        formData.append("fname", filename);
 
         $.ajax(
             {
@@ -29,7 +30,7 @@
             }
         );
 
-        return null;
+ 
 
 
         // $('div.withBckImage').css({ 'background-image': "url(" + e.target.result + ")" });

@@ -59,6 +59,10 @@ var EfaturaPortalAppOnComplete = function (id, delay, callback) {
 
 };
 
+$(document).on('hide.bs.modal', '.EfaturaPortalApp-forms-modal', function () {
+    $(this).remove();
+});
+
 var EfaturaPortalAppOnSuccess = function (data, callback) {
     
     if (data.success) { // api success

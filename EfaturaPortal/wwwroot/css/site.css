@@ -23,6 +23,10 @@ body {
     width: 100%;
 }
 
+#table{
+    width:100% !important;
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;
@@ -35,3 +39,5 @@ body {
         display: none;
     }
 }
+
+
