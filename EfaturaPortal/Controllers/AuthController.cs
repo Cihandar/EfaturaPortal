@@ -58,6 +58,24 @@ namespace EfaturaPortal.Controllers
 
         }
 
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword()
+        {
+            return View("ResetPassword");
+        }
+
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(AuthViewModel model)
+        {
+            var result = authCrud.ResetPassword(model);
+
+            return Json(result);
+        }
+
+
+
+
         [Route("Logout")]
         public async Task<IActionResult> Logout()
         {

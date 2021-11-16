@@ -1,0 +1,79 @@
+﻿@*
+
+*@
+@{
+}
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card card-primary">
+
+            <div class="card-header">
+                Kullanıcılar
+            </div>
+
+            <div class="card-body">
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Adı Soyadı</th>
+                            <th>Telefon</th>
+                            <th width="50">İşlemler</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="card-footer">
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            GetDataTable();
+        });
+
+
+        var GetDataTable = function () {
+
+            var clmns = [
+                { "data": null, visible: false },
+                { "data": "email" },
+                { "data": "adSoyad" },
+                { "data": "phoneNumber" },
+                {
+                    data: null,
+                    className: "dt-center",
+                    targets: -1,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Düzenle" data-endpoint="Kullanicilar/Update" data-id="' + full.id + '">Güncelle</button>' +
+                            '<button class="btn btn-primary font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Şifreyi Güncelle" data-endpoint="Kullanicilar/UpdatePassword" data-id="' + full.id + '">Şifre Değiştir</button>';
+                    }
+                }
+            ];
+
+            GetData("Kullanicilar/GetAll", "Kullanicilar/Create", "Kullanicilar/Update", clmns);
+
+        };
+
+        function datatableUpdate() {
+            GetDataTable();
+        }
+
+
+    </script>
+
+
+}

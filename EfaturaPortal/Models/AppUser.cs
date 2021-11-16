@@ -12,5 +12,7 @@ namespace EfaturaPortal.Models
         public byte status { get; set; }
         public Guid FirmaId { get; set; }
 
+        public string AdSoyad { get; set; }
+
     }
 }

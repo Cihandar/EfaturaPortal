@@ -1,0 +1,72 @@
+﻿@model EfaturaPortal.Application.Auths.ViewModels.AuthGetAllViewModel;
+@{
+
+    var action = Model == null || Model.Id == Guid.Empty ? "create" : "update";
+    //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
+}
+<div class="modal fade EfaturaPortalApp-forms-modal" id="crud-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Kullanicilar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Kullanicilar/@action">
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title">Seri Numaralar</h5>
+                    <button type="button" class="close OtelApp-forms-modal-close" data-dismiss="modal" aria-label="Vazgeç"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="hidden">
+                        <input type="hidden" class="form-control" asp-for="Id">
+                    </div>
+
+                    <!--Ünvanı-->
+
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-control-label">Email</label>
+                                @if (action == "update")
+                                {
+                                    <input asp-for="Email" class="form-control" placeholder="" readonly />
+                                }
+                                else
+                                {
+                                    <input asp-for="Email" class="form-control" placeholder="" />
+                                }
+
+                                <span asp-validation-for="Email" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="AdSoyad" class="form-control-label">Ad Soyad</label>
+                                <input asp-for="AdSoyad" class="form-control" placeholder=""   />
+                                <span asp-validation-for="AdSoyad" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="form-control-label">Telefon Numarası</label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder=""   />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+ 
+
+ 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary OtelApp-forms-modal-close" data-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="kaydet" class="btn btn-success">Kaydet</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+ 
