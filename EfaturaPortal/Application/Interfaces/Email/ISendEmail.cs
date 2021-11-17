@@ -7,6 +7,6 @@ namespace EfaturaPortal.Application.Interfaces.Email
 {
     public interface ISendEmail
     {
-        Boolean Send(string to, string subject, string message, string name, string Password, string template);
+        Task<Boolean> Send(string to, string subject, string message, string name, string Password, string template);
     }
 }

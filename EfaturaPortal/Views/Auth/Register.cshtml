@@ -29,7 +29,7 @@
             <div class="card-body">
                 <p class="login-box-msg">Aşağıdaki Formu Doldurarak Kaydınızı Tamamlayın.</p>
 
-                <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectRegisterUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Register">
+                <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccessWithReport(data, redirectRegisterUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Register">
 
                     <label asp-for="Firma.Unvani" class="form-control-label">Firma Ünvanı</label>
                     <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
@@ -171,5 +171,5 @@
     <script src="~/plugins/adminLte/dist/js/adminlte.min.js"></script>
 
     <script src="~/plugins/notiflix/js/notiflix.js"></script>
-    <script src="~/js/site.js"></script>
-    <script src="~/js/Pages/Auth/index.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Pages/Auth/index.js" asp-append-version="true"></script>

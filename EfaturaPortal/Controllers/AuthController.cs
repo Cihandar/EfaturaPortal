@@ -68,7 +68,7 @@ namespace EfaturaPortal.Controllers
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(AuthViewModel model)
         {
-            var result = authCrud.ResetPassword(model);
+            var result = await authCrud.ResetPassword(model);
 
             return Json(result);
         }

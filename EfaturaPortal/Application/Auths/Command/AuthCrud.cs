@@ -80,7 +80,7 @@ namespace EfaturaPortal.Application.Auths.Command
 
                 if (resultuser.Succeeded)
                 {
-                    var resultemail = _email.Send(model.Email, "Alze E Portal Giriş Bilgileri", "", model.Email, sifre.ToString(), "IlkKayit");
+                    var resultemail = await _email.Send(model.Email, "Alze E Portal Giriş Bilgileri", "", model.Email, sifre.ToString(), "IlkKayit");
 
                     return new ResultJson { Success = true, Message = "Kaydınız yapıldı.Email adresinize gelen şifre ile giriş yapabilirsiniz" };
                 }
@@ -215,32 +215,32 @@ namespace EfaturaPortal.Application.Auths.Command
             try
             {
 
-            var user = _userManager.Users.Where(x => x.Email == model.Email).FirstOrDefault();
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user != null)
-            {
-                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var sifre = await CreateNewPassword();
-
-                var resultResetPassword = await _userManager.ResetPasswordAsync(user, resetToken, sifre);
-
-                if (resultResetPassword.Succeeded)
+                if (user != null)
                 {
-                    var resultemail = _email.Send(model.Email, "Alze E Portal Giriş Bilgileri", "", model.Email, sifre.ToString(), "IlkKayit");
-                    if (resultemail)
+                    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var sifre = await CreateNewPassword();
+
+                    var resultResetPassword = await _userManager.ResetPasswordAsync(user, resetToken, sifre.ToString());
+
+                    if (resultResetPassword.Succeeded)
                     {
-                        new ResultJson { Success = true, Message = "Yeni şifreniz Email adresinize gönderildi." };
+                        var resultemail = await _email.Send(model.Email, "Alze E Portal Şifre Yenileme", "", model.Email, sifre.ToString(), "ResetPassword");
+                        if (resultemail)
+                        {
+                           return  new ResultJson { Success = true, Message = "Yeni şifreniz Email adresinize gönderildi." };
+
+                        }
+                        else new ResultJson { Success = false, Message = "Mail gönderirken bir sorun oluştu. Lütfen daha sonra tekrar deneyiniz." };
 
                     }
-                    else new ResultJson { Success = false, Message = "Mail gönderirken bir sorun oluştu. Lütfen daha sonra tekrar deneyiniz." };
 
                 }
-
-            }
-            else return new ResultJson { Success = false, Message = "Girmiş olduğunuz Email adresi sistemimizde kayıtlı değil." };
+                else return new ResultJson { Success = false, Message = "Girmiş olduğunuz Email adresi sistemimizde kayıtlı değil." };
 
 
-            return new ResultJson { Success = false, Message = "Sistemde bir sorun oluştu. Lütfen daha sonra tekrar deneyiniz." };
+              return new ResultJson { Success = false, Message = "Sistemde bir sorun oluştu. Lütfen daha sonra tekrar deneyiniz." };
 
             }
             catch (Exception ex)

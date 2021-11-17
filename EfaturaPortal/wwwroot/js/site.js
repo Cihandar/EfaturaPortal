@@ -97,3 +97,41 @@ var EfaturaPortalAppOnSuccess = function (data, callback) {
         Notiflix.Notify.Failure(data.message);
     }
 };
+
+var EfaturaPortalAppOnSuccessWithReport = function (data,callback) {
+
+    if (data.success) { // api success
+        Notiflix.Report.Success('Başarılı', data.message, 'Tamam', () => {
+
+            if (callback && typeof callback === 'function') {
+
+                callback("", data); //first gridId, second data
+            }
+        });
+
+ 
+
+        // modal close on
+        if ($('.EfaturaPortalApp-forms-modal').length > 0) {
+            $('.EfaturaPortalApp-forms-modal').modal('hide');
+        }
+        // modal close off
+
+        // success sonrasi redirectUrl varsa oraya git on
+        //if (data.redirectUrl) {
+        //    setTimeout(function () {
+        //        window.location.href = data.redirectUrl;
+        //    }, 1000);
+        //}
+        // success sonrasi redirectUrl varsa oraya git off
+    }
+    // api error
+    else if (data.success !== undefined && !data.success) {
+
+
+        Notiflix.Report.Failure('Hata',data.message,'Tamam');
+
+    } else { // api else
+        Notiflix.Report.Failure('Hata',data.message,'Tamam');
+    }
+};
