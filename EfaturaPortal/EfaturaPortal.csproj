@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\EfaturaApi\" />
     <Folder Include="Application\EsmmApi\" />
+    <Folder Include="Application\Faturas\Validators\" />
     <Folder Include="wwwroot\plugins\adminLte\" />
   </ItemGroup>
 
@@ -39,6 +39,8 @@
     <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.4.*" />
+
   </ItemGroup>
 
   <ItemGroup>
