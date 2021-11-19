@@ -37,6 +37,8 @@ namespace EfaturaPortal.Models
         public Guid ETTN { get; set; }
         public EfaturaDurum EfaturaDurum { get; set; }
 
+        public virtual Cariler Cariler { get; set; }
+        public virtual SeriNumaralar SeriNumaralar { get; set; }
 
     }
 }

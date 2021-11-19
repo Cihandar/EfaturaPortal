@@ -41,6 +41,12 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public Guid ETTN { get; set; }
         public EfaturaDurum EfaturaDurum { get; set; }
 
+
+        public string Cari_Unvan { get; set; }
+        public string Cari_VergiNumarasi { get; set; }
+
+
+
         public  void CreateMappings(Profile configuration)
         {
             configuration.CreateMap<FaturaGetAllQueryViewModel, Fatura>();

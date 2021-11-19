@@ -22,5 +22,9 @@ namespace EfaturaPortal.Models
         public double KdvTutar { get; set; }
 
         public double KdvliTutar { get; set; }
+
+
+        public virtual Fatura Fatura { get; set; }
+      
     }
 }

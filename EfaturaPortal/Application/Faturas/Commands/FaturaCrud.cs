@@ -88,6 +88,7 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
 
             var fatura = context.Faturas.Where(x => x.Id == faturaId).ToList();
+            
 
             var result = mapper.Map<List<FaturaGetAllQueryViewModel>>(fatura);
 
