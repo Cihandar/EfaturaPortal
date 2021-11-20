@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfaturaPortal.Application.Faturas.Commands
 {
@@ -87,8 +88,7 @@ namespace EfaturaPortal.Application.Faturas.Commands
         {
 
 
-            var fatura = context.Faturas.Where(x => x.Id == faturaId).ToList();
-            
+            var fatura = context.Faturas.Include(x=>x.Cariler).Where(x => x.Id == faturaId).ToList();
 
             var result = mapper.Map<List<FaturaGetAllQueryViewModel>>(fatura);
 
