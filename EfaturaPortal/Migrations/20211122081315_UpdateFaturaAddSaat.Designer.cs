@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20211122081315_UpdateFaturaAddSaat")]
+    partial class UpdateFaturaAddSaat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,9 +169,6 @@ namespace EfaturaPortal.Migrations
                     b.Property<int>("EfaturaDurum")
                         .HasColumnType("int");
 
-                    b.Property<string>("FaturaNumarasi")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FaturaSenaryo")
                         .HasColumnType("nvarchar(max)");
 
@@ -207,9 +206,6 @@ namespace EfaturaPortal.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ParaBirimi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Saat")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SeriNumaralarId")

@@ -28,7 +28,12 @@ using FluentValidation.AspNetCore;
 using EfaturaPortal.Application.Interfaces.SeriNumaralars;
 using EfaturaPortal.Application.SeriNumaralars.Commands;
 using EfaturaPortal.Application.Interfaces.FileUploads;
-
+using EfaturaPortal.Application.Faturas.Commands;
+using EfaturaPortal.Application.Interfaces.Faturas;
+using EfaturaPortal.Application.Interfaces.EfaturaApis;
+using EfaturaPortal.Application.EfaturaApi.Command;
+using EfaturaPortal.Application.EfaturaApi.Authorization;
+using EdmEfatura;
 namespace EfaturaPortal
 {
     public class Startup
@@ -62,7 +67,10 @@ namespace EfaturaPortal
             services.AddScoped<ISeriNumaralarCrud, SeriNumaralarCrud>();
             services.AddScoped<ISendEmail, SendEmail>();
             services.AddScoped<IFileUpload, FileUpload>();
-
+            services.AddScoped<IFaturaCrud, FaturaCrud>();
+            services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();
+            services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();
+            services.AddScoped<EFaturaEDMPortClient, EFaturaEDMPortClient>();
             #endregion
 
             //AutoMapper

@@ -10,6 +10,8 @@ namespace EfaturaPortal.Models
     {
         public FaturaTuru FaturaTuru{ get; set; }
         public DateTime Tarih { get; set; }
+        public string Saat { get; set; }
+        public string FaturaNumarasi { get; set; }
         public Guid SeriNumaralarId { get; set; }
         public string FaturaTipi { get; set; }
         public string FaturaSenaryo { get; set; }

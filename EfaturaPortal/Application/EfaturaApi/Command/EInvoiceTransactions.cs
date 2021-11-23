@@ -6,26 +6,42 @@ using EfaturaPortal.Application.EfaturaApi.Authorization;
 using EfaturaPortal.Models;
 using EfaturaPortal.Models.EfaturaModel;
 using EdmEfatura;
+using EfaturaPortal.Application.Interfaces.EfaturaApis;
+using EfaturaPortal.Extentions;
 
 namespace EfaturaPortal.Application.EfaturaApi.Command
 {
-    public class EInvoiceTransactions
+    public class EInvoiceTransactions : IEInvoiceTransactions
     {
-        EdmEInvoiceLogin _login;
-        EFaturaEDMPortClient _client;
 
-        public EInvoiceTransactions(EdmEInvoiceLogin login, EFaturaEDMPortClient client)
+        IEdmEInvoiceLogin _login;
+        EFaturaEDMPortClient _client;
+   
+
+        public EInvoiceTransactions(IEdmEInvoiceLogin login, EFaturaEDMPortClient client)
         {
             _login = login;
             _client = client;
         }
 
 
-        public async Task<CheckUserResult> Ef_GetEInvoiceMailBox(LoginInfo loginInfo, string taxNumber)
+        public async Task<ResultLoginInfo> GetLoginInfo(Guid FirmaId)
         {
+            var result = await _login.Ef_LoginEdm(FirmaId);
+            return result;
+        }
+
+        public async Task<CheckUserResult> Ef_GetEInvoiceMailBox(Guid FirmaId, string taxNumber)
+        {
+
+            var logininfo = await GetLoginInfo(FirmaId);
+
+            if (!logininfo.Success) return new CheckUserResult { Success = false, ErrorMessage = logininfo.ErrorMessagge };
+
+
             var ChekUser = new CheckUserRequest
             {
-                REQUEST_HEADER = await _login.Ef_CreateHeaderType(loginInfo),
+                REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo),
                 USER = new GIBUSER { IDENTIFIER = taxNumber, UNIT = "PK" }
             };
 

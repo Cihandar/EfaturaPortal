@@ -14,6 +14,7 @@ namespace EfaturaPortal.Application.Firmalars.ViewModels
 
         public Guid Id { get; set; }
         public string Unvani { get; set; }
+
         public string VergiDairesi { get; set; }
         public string VergiNumarasi { get; set; }
         public string YetkiliAdSoyad { get; set; }

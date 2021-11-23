@@ -6,14 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EfaturaPortal.Application.SeriNumaralars.ViewModels;
+using EfaturaPortal.Application.Carilers.ViewModels;
 
 namespace EfaturaPortal.Application.Faturas.ViewModels
 {
     public class FaturaGetAllQueryViewModel : IHaveCustomMapping
     {
 
+        public Guid Id { get; set; }
+        public Guid FirmaId { get; set; }
         public FaturaTuru FaturaTuru { get; set; }
         public DateTime Tarih { get; set; }
+        public string Saat { get; set; }
+        public string FaturaNumarasi { get; set; }
         public Guid SeriNumaralarId { get; set; }
         public string FaturaTipi { get; set; }
         public string FaturaSenaryo { get; set; }
@@ -42,10 +48,13 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public EfaturaDurum EfaturaDurum { get; set; }
 
 
-        public string Cari_Unvan { get; set; }
-        public string Cari_VergiNumarasi { get; set; }
+        public Cariler Cariler { get; set; }
 
+        public SeriNumaralar SeriNumaralar { get; set; }
 
+        public List<SeriNumaralarGetAllQueryViewModel> SeriNumaralarMwList { get; set; }
+
+        public List<CarilerGetAllQueryViewModel> CarilerMwList { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {

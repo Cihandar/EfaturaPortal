@@ -1,0 +1,219 @@
+﻿
+@model EfaturaPortal.Application.Faturas.ViewModels.FaturaGetAllQueryViewModel;
+@{
+
+    var action = Model == null || Model.Id == Guid.Empty ? "create" : "update";
+    //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
+}
+
+
+<div class="row">
+    <!--1 Row-->
+
+    <div class="col-lg-6 col-md-12">
+        <div class="row">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Tarih Ve Seri No Bilgileri</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+
+                <div class="card-body" id="loadingCheckTaxNumber">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="Cariler.VergiNumarasi" class="form-control-label">Müşteri Vergi No</label>
+                            <div class="input-group mb-3">
+                                <input asp-for="Cariler.VergiNumarasi" class="form-control" id="Tx_Vdno" placeholder="" />
+                                <div class="input-group-append" style="cursor:pointer;" onclick="GetEInvoiceInfo()">
+                                    <div class="input-group-text" >
+                                        <span class="fas fa fa-search"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FaturaTuru" class="form-control-label">Fatura Türü</label>
+                            <select disabled asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" id="Sb_FaturaTuru" onchange="GetSeriNumara()" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>()"></select>
+                            <span asp-validation-for="FaturaTuru" class="text-danger"> </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
+                                <input asp-for="Tarih" class="form-control seridenapp-forms-select2" />
+                                <span asp-validation-for="Tarih" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
+                                <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
+                                <span asp-validation-for="Saat" class="text-danger"> </span>
+                            </div>
+                        </div>*@
+                    </div> <!-- /.row - Tarih & Saat -->
+
+                    <div class="row">
+                        <div class="col-md-6" id="dv_SeriNumara">
+                            <div class="form-group">
+                                <label asp-for="SeriNumaralarId" class="form-control-label">Seri No</label>
+                                <select asp-for="SeriNumaralarId" class="form-control seridenapp-forms-select2" id="Sb_SeriNumara"></select>
+                                <span asp-validation-for="SeriNumaralarId" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FaturaNumarasi" class="form-control-label">Fatura Numarası</label>
+                                <input asp-for="FaturaNumarasi" class="form-control seridenapp-forms-select2" />
+                                <span asp-validation-for="FaturaNumarasi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div> <!-- /.row SeriNo & FatNo -->
+
+                </div> <!-- /.card-body -->
+
+
+            </div><!--Card-->
+        </div>
+    </div><!--1.col-md-6-->
+
+    <div class="col-lg-5 col-md-12 ml-md-5">
+        <div class="row">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Müşteri Cari Bilgileri</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+
+                <div class="card-body">
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CarilerId" class="form-control-label">Müşteri Seç</label>
+                                <select asp-for="CarilerId" onchange="TarifeSec()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.CarilerMwList,"Id","Unvani"))" id="cmbtarife">
+                                    <option value="0">Müşteri Seç</option>
+                                </select>
+                                <span asp-validation-for="CarilerId" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Cariler.EfaturaPostaKutusu" class="form-control-label">Posta Kutusu Seç</label>
+                                <select asp-for="Cariler.EfaturaPostaKutusu"  class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
+                                </select>
+                                <span asp-validation-for="CarilerId" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div> <!-- /.row - Tarih & Saat -->
+
+
+
+                </div> <!-- /.card-body -->
+
+
+            </div><!--Card-->
+        </div>
+    </div><!--Col-Md-6-->
+</div><!--1-Row-->
+
+@section css
+{
+    <style>
+        .notiflix-block-position {
+            min-height: 0px !important;
+        }
+    </style>
+}
+
+@section Scripts
+{
+    <script>
+
+
+
+        $("#Tx_Vdno").focusout(function () {
+            GetEInvoiceInfo();
+        });
+
+
+        function GetEInvoiceInfo() {
+            $("#Cm_CariPostaKutusu").empty();
+            Notiflix.Block.Standard("#loadingCheckTaxNumber");
+            $.ajax({
+                type: 'get',
+                url: 'CheckTaxNumber?TaxNumber=' + $("#Tx_Vdno").val(),
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {
+                    console.log(data);
+                    debugger;
+                    if (!data.success) {
+                        if (data.errorMessage != null) {
+                            Notiflix.Report.Failure('Hata <br> Kodu :' + data.errorCode, data.errorMessage, 'Tamam');
+                        } else {
+                            $("#Sb_FaturaTuru").val("1");
+                            GetSeriNumara();
+                            Notiflix.Notify.Warning('E-Arşiv Fatura Kesiyorsunuz !');
+
+                        }
+                    } else {
+                        $("#Sb_FaturaTuru").val("0");
+                        $.each(data.gibUser, function (i, state) {
+                            $("#Cm_CariPostaKutusu").append('<option value="' + state.alias + '">' + state.alias + '</option>');
+                        });
+                        GetSeriNumara();
+                        Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
+
+                    } 
+
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+        });
+
+        function GetSeriNumara() {
+            $("#Sb_SeriNumara").empty();
+            Notiflix.Block.Standard("#dv_SeriNumara");
+
+
+
+            $.ajax({
+                type: 'get',
+                url: 'GetSeriNumaralar?faturaTuru=' + $("#Sb_FaturaTuru").val(),
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {
+
+          
+
+                    $.each(data, function (i, state) {
+                        $("#Sb_SeriNumara").append('<option value="' + state.id + '">' + state.seriNo + '</option>');
+                    });
+
+                }
+            });
+        }
+    </script>
+
+}

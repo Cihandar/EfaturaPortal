@@ -12,5 +12,6 @@ namespace EfaturaPortal.Models.EfaturaModel
         public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
         public List<GIBUSER> GibUser { get; set; }
+
     }
 }

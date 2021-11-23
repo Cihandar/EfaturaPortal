@@ -9,18 +9,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using EfaturaPortal.Application.Carilers.Commands;
+using EfaturaPortal.Application.Interfaces.Faturas;
+using EfaturaPortal.Application.Interfaces.Cariler;
 
 namespace EfaturaPortal.Application.Faturas.Commands
 {
-    public class FaturaCrud  
+    public class FaturaCrud  : IFaturaCrud
     {
         public EfaturaPortalContext context;
         public IMapper mapper;
+        public ICarilerCrud carilerCrud;
+ 
+        
 
-        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper)
+        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud)
         {
             context = _context;
             mapper = _mapper;
+            carilerCrud = _carilerCrud;
+ 
         }
 
         public async Task<ResultJsonWithData<Fatura>> Add(FaturaGetAllQueryViewModel faturavw)
@@ -98,11 +106,18 @@ namespace EfaturaPortal.Application.Faturas.Commands
         }
 
 
-        public async Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId)
+        public async Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId,Guid FirmaId)
         {
             var fatura = context.Faturas.Where(x => x.Id == faturaId).FirstOrDefault();
 
             var result = mapper.Map<FaturaGetAllQueryViewModel>(fatura);
+
+            if (result == null) result = new FaturaGetAllQueryViewModel();
+
+            result.CarilerMwList = await carilerCrud.GetAll(FirmaId);  //Firmaya Ait Cariler Alınıyor..
+ 
+
+   
 
             return result;
 

@@ -10,5 +10,8 @@ namespace EfaturaPortal.Extentions
         public bool Success { get; set; }
         public string SessionId { get; set; }
         public string ErrorMessagge { get; set; }
+
+        public string FirmaAdi { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EfaturaPortal.Models.Enum;
 
 namespace EfaturaPortal.Application.SeriNumaralars.Commands
 {
@@ -109,6 +110,16 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
             var data = context.SeriNumaralars.Where(x => x.Id == Id).FirstOrDefault();
 
             var result = mapper.Map<SeriNumaralarGetAllQueryViewModel>(data);
+
+            return result;
+
+        }
+
+        public async Task<List<SeriNumaralarGetAllQueryViewModel>> GetSeriNumaraByFaturaTuru(FaturaTuru faturaTuru,Guid FirmaId)
+        {
+            var data = context.SeriNumaralars.Where(x => x.FirmaId == FirmaId && x.FaturaTuru==faturaTuru).ToList().OrderBy(x=>x.Oncelik);
+
+            var result = mapper.Map<List<SeriNumaralarGetAllQueryViewModel>>(data);
 
             return result;
 
