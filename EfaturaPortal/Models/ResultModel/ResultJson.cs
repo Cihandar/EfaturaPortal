@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EfaturaPortal.Extentions
+namespace EfaturaPortal.Models.ResultModel
 {
-    public class ResultJsonWithData<T>  
+    public class ResultJson
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public T  Data { get; set; }
+        public string Value { get; set; }
+        public Guid Id { get; set; }
     }
 }

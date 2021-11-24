@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using EfaturaPortal.Application.Carilers.Commands;
 using EfaturaPortal.Application.Interfaces.Faturas;
 using EfaturaPortal.Application.Interfaces.Cariler;
+using EfaturaPortal.Application.Interfaces.DovizKodlaris;
+using EfaturaPortal.Models.ResultModel;
 
 namespace EfaturaPortal.Application.Faturas.Commands
 {
@@ -20,14 +22,16 @@ namespace EfaturaPortal.Application.Faturas.Commands
         public EfaturaPortalContext context;
         public IMapper mapper;
         public ICarilerCrud carilerCrud;
+        public IDovizKodlariCrud dovizKodlariCrud;
  
         
 
-        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud)
+        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud)
         {
             context = _context;
             mapper = _mapper;
             carilerCrud = _carilerCrud;
+            dovizKodlariCrud = _dovizKodlariCrud;
  
         }
 
@@ -112,11 +116,11 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
             var result = mapper.Map<FaturaGetAllQueryViewModel>(fatura);
 
-            if (result == null) result = new FaturaGetAllQueryViewModel();
+            if (result == null) { result = new FaturaGetAllQueryViewModel(); result.Tarih = DateTime.Now; }
 
             result.CarilerMwList = await carilerCrud.GetAll(FirmaId);  //Firmaya Ait Cariler Alınıyor..
- 
 
+            result.DovizKodlari = await dovizKodlariCrud.GetAll();
    
 
             return result;

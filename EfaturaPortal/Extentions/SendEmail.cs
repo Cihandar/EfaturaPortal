@@ -6,13 +6,25 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using EfaturaPortal.Application.Interfaces.Email;
+using Microsoft.Extensions.Configuration;
+using EfaturaPortal.Models.ExtentionsModel;
 
 namespace EfaturaPortal.Extentions
 {
     public class SendEmail : ISendEmail
     {
+
+        IConfiguration _config;
+
+        public SendEmail(IConfiguration config)
+        {
+            _config = config;
+        }
         public async  Task<Boolean> Send(string to, string subject, string message, string name,string Password, string template)
         {
+
+
+            var emailSettings = _config.GetSection("Email").Get<EmailSettings>();
 
             var content = Encoding.UTF8.GetString(Convert.FromBase64String(emailtemplate(template)));
 
@@ -24,8 +36,8 @@ namespace EfaturaPortal.Extentions
             //if (template != "newcontact") content = content.Replace("[sifre]", message); else content = content.Replace("[mesaj]", message);
             //content = content.Replace("[tarih]", DateTime.Now.ToString("dd.MM.yyyy"));
 
-            var LoginInfo = new NetworkCredential("ali@goktas.net", "68+68+Ysmn");
-            var client = new SmtpClient { Port = 587, Host = "smtp.gmail.com", EnableSsl = true, Credentials = LoginInfo };
+            var LoginInfo = new NetworkCredential(emailSettings.UserName, emailSettings.Password);
+            var client = new SmtpClient { Port = emailSettings.Port, Host = emailSettings.Smtp, EnableSsl = emailSettings.Ssl, Credentials = LoginInfo };
 
             var mail = new MailMessage
             {

@@ -9,6 +9,6 @@ namespace EfaturaPortal.Models.Enum
     {
         EFatura=0,
         EArsiv=1,
-        ESmm=2
+     //   ESmm=2
     }
 }

@@ -49,7 +49,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
-                                <input asp-for="Tarih" class="form-control seridenapp-forms-select2" />
+                                <input asp-for="Tarih" type="text" class="form-control seridenapp-forms-select2" id="FaturaTarihi" />
                                 <span asp-validation-for="Tarih" class="text-danger"> </span>
                             </div>
                         </div>
@@ -105,6 +105,64 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label asp-for="faturaTipi" class="form-control-label">Fatura Tipi</label>
+                                <select  asp-for="faturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>()"></select>
+                                <span asp-validation-for="faturaTipi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="faturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
+                                <select asp-for="faturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
+                                <span asp-validation-for="faturaSenaryo" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div> <!-- /.row - Tipi & Senaryo-->
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Doviz" class="form-control-label">Para Birimi</label>
+                                <select asp-for="Doviz" onchange="DovizKuruGetir()" class="form-control"  data-placeholder="" asp-items="@(new SelectList(Model.DovizKodlari,"DovizKodu","DovizAdi"))" id="Cm_Doviz">
+                                    <option value="0">Müşteri Seç</option>
+                                </select>
+                                <span asp-validation-for="Doviz" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DovizKuru" class="form-control-label">Doviz Kuru</label>
+                            <input  asp-for="DovizKuru" class="form-control" id="Tx_DovizKuru"  />
+                            <span asp-validation-for="DovizKuru" class="text-danger"> </span>
+                        </div>
+                    </div> <!-- /.row - Tipi & Senaryo-->
+
+                </div> <!-- /.card-body --> 
+
+            </div><!--Card-->
+        </div>
+    </div><!--Col-Md-6-->
+</div><!--1-Row-->
+
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="row">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Müşteri Cari Bilgileri</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+
+                <div class="card-body">
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label asp-for="CarilerId" class="form-control-label">Müşteri Seç</label>
                                 <select asp-for="CarilerId" onchange="TarifeSec()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.CarilerMwList,"Id","Unvani"))" id="cmbtarife">
                                     <option value="0">Müşteri Seç</option>
@@ -115,25 +173,24 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Cariler.EfaturaPostaKutusu" class="form-control-label">Posta Kutusu Seç</label>
-                                <select asp-for="Cariler.EfaturaPostaKutusu"  class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
+                                <select asp-for="Cariler.EfaturaPostaKutusu" class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
                                 </select>
                                 <span asp-validation-for="CarilerId" class="text-danger"> </span>
                             </div>
                         </div>
                     </div> <!-- /.row - Tarih & Saat -->
 
-
-
                 </div> <!-- /.card-body -->
-
 
             </div><!--Card-->
         </div>
-    </div><!--Col-Md-6-->
-</div><!--1-Row-->
+    </div>
+</div><!--2-Row-->
 
 @section css
 {
+    <link href="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+
     <style>
         .notiflix-block-position {
             min-height: 0px !important;
@@ -143,9 +200,51 @@
 
 @section Scripts
 {
+    <script src="~/plugins/adminLte/plugins/inputmask/jquery.inputmask.min.js"></script>
+    <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
+
     <script>
 
+        $(function () {
+          
+            //Date range picker with time picker
+            $('#FaturaTarihi').daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'DD.MM.YYYY H:mm',
+                    applyLabel: "Uygula",
+                    cancelLabel: "İptal",
+                    daysOfWeek: [
+                        "Pz",
+                        "Pts",
+                        "Sa",
+                        "Çar",
+                        "Per",
+                        "Cu",
+                        "Cts"
+                    ],
+                    monthNames: [
+                        "Ocak",
+                        "Şubat",
+                        "Mart",
+                        "Nisan",
+                        "Mayıs",
+                        "Haziran",
+                        "Temmuz",
+                        "Ağustos",
+                        "Eylül",
+                        "Ekim",
+                        "Kasım",
+                        "Aralık"
+                    ],
+                    firstDay: 1
+                }
+            })
 
+        });
 
         $("#Tx_Vdno").focusout(function () {
             GetEInvoiceInfo();
@@ -213,6 +312,26 @@
 
                 }
             });
+        }
+
+        function DovizKuruGetir() {
+ 
+
+            $.ajax({
+                type: 'get',
+                url: 'GetDovizKuru?DovizKodu=' + $("#Cm_Doviz").val() + '&' + 'Tarih='+$("#FaturaTarihi").val(),
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $("#Tx_DovizKuru").val(data.value);
+                    } else {
+                        Notiflix.Notify.Failure("Döviz Kuru Alırken Hata -> " + data.message);
+                    }
+                }
+            });
+
         }
     </script>
 

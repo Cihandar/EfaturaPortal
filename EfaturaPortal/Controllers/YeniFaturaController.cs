@@ -11,6 +11,8 @@ using EfaturaPortal.Models.Enum;
 using EfaturaPortal.Application.Interfaces.SeriNumaralars;
 using EfaturaPortal.Application.Interfaces.Faturas;
 using EfaturaPortal.Application.Interfaces.EfaturaApis;
+using EfaturaPortal.Application.Interfaces.Extentions;
+
 namespace EfaturaPortal.Controllers
 {
     public class YeniFaturaController : BaseController
@@ -20,18 +22,19 @@ namespace EfaturaPortal.Controllers
         ISeriNumaralarCrud SNumaralarCrud;
         IEdmEInvoiceLogin _edmLogin;
         IEInvoiceTransactions _eInvoiceCommand;
-
+        ITcmbDovizKurlari _TcmbDovizKurlari;
         public IActionResult Index()
         {
             return View();
         }
 
-        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand)
+        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari)
         {
             faturaCrud = _faturaCrud;
             SNumaralarCrud = _SNumaralarCrud;
             _edmLogin = edmLogin;
             _eInvoiceCommand = eInvoiceCommand;
+            _TcmbDovizKurlari = TcmbDovizKurlari;
         }
 
 
@@ -50,6 +53,13 @@ namespace EfaturaPortal.Controllers
 
             return Json(result);
 
+        }
+
+        public async Task<IActionResult> GetDovizKuru(string DovizKodu,string Tarih)
+        {
+            var result = await _TcmbDovizKurlari.DovizKuruAl(DovizKodu, Tarih);
+
+            return Json(result);
         }
 
         #region Create

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using EfaturaPortal.Application.Interfaces.Firmalar;
 using EfaturaPortal.Application.Interfaces.Email;
 using AutoMapper;
+using EfaturaPortal.Models.ResultModel;
 
 namespace EfaturaPortal.Application.Auths.Command
 {

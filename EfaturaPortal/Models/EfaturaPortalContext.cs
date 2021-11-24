@@ -27,7 +27,7 @@ namespace EfaturaPortal.Models
         public DbSet<OlcuBirimleri> OlcuBirimleris { get; set; }
         public DbSet<ParaBirimleri> ParaBirimleris { get; set; }
         public DbSet<SeriNumaralar> SeriNumaralars { get; set; }
-
+        public DbSet<DovizKodlari> DovizKodlaris { get; set; }
 
 
     }

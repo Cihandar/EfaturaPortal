@@ -1,5 +1,6 @@
 ﻿using EfaturaPortal.Application.Firmalars.ViewModels;
 using EfaturaPortal.Extentions;
+using EfaturaPortal.Models.ResultModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

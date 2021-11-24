@@ -3,6 +3,7 @@ using EfaturaPortal.Application.Firmalars.ViewModels;
 using EfaturaPortal.Application.Interfaces.Firmalar;
 using EfaturaPortal.Extentions;
 using EfaturaPortal.Models;
+using EfaturaPortal.Models.ResultModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

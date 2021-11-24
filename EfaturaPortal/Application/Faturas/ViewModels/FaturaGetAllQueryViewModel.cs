@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EfaturaPortal.Application.SeriNumaralars.ViewModels;
 using EfaturaPortal.Application.Carilers.ViewModels;
+using EfaturaPortal.Application.DovizKodlaris.ViewModels;
 
 namespace EfaturaPortal.Application.Faturas.ViewModels
 {
@@ -26,6 +27,8 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public string ParaBirimi { get; set; }
         public double DovizKuru { get; set; }
 
+        public string Doviz { get; set; }
+
         public Guid CarilerId { get; set; }
 
         public DateTime OdemeTarihi { get; set; }
@@ -43,6 +46,10 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public double Kdv { get; set; }
         public double OdenecekTutar { get; set; }
 
+        public FaturaTipi faturaTipi { get; set; }
+
+        public FaturaSenaryo faturaSenaryo { get; set; }
+
 
         public Guid ETTN { get; set; }
         public EfaturaDurum EfaturaDurum { get; set; }
@@ -50,6 +57,7 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
 
         public Cariler Cariler { get; set; }
 
+        public List<DovizKodlariGetAllQueryViewModel> DovizKodlari { get; set; }
         public SeriNumaralar SeriNumaralar { get; set; }
 
         public List<SeriNumaralarGetAllQueryViewModel> SeriNumaralarMwList { get; set; }

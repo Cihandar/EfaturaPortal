@@ -16,6 +16,7 @@ namespace EfaturaPortal.Models
         public string FaturaTipi { get; set; }
         public string FaturaSenaryo { get; set; }
         public string   ParaBirimi { get; set; }
+        public string Doviz { get; set; }
         public double DovizKuru { get; set; }
 
         public Guid CarilerId { get; set; }
@@ -34,6 +35,9 @@ namespace EfaturaPortal.Models
         public double Iskonto { get; set; }
         public double Kdv { get; set; }
         public double OdenecekTutar { get; set; }
+
+        public FaturaSenaryo faturaSenaryo { get; set; }
+        public FaturaTipi faturaTipi  { get; set; }
 
 
         public Guid ETTN { get; set; }

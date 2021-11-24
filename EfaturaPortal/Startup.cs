@@ -34,6 +34,10 @@ using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Application.EfaturaApi.Command;
 using EfaturaPortal.Application.EfaturaApi.Authorization;
 using EdmEfatura;
+using EfaturaPortal.Application.Interfaces.DovizKodlaris;
+using EfaturaPortal.Application.DovizKodlaris.Commands;
+using EfaturaPortal.Application.Interfaces.Extentions;
+
 namespace EfaturaPortal
 {
     public class Startup
@@ -68,6 +72,9 @@ namespace EfaturaPortal
             services.AddScoped<ISendEmail, SendEmail>();
             services.AddScoped<IFileUpload, FileUpload>();
             services.AddScoped<IFaturaCrud, FaturaCrud>();
+            services.AddScoped<IDovizKodlariCrud, DovizKodlariCrud>();
+            services.AddScoped<ITcmbDovizKurlari, TcmbDovizKurlari>();
+
             services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();
             services.AddScoped<EFaturaEDMPortClient, EFaturaEDMPortClient>();
