@@ -9,6 +9,6 @@ namespace EfaturaPortal.Models
     {
         public string DovizKodu { get; set; }
         public string DovizAdi { get; set; }
-
+        public int Oncelik { get; set; }
     }
 }

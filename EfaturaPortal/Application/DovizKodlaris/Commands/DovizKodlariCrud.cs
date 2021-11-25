@@ -28,7 +28,7 @@ namespace EfaturaPortal.Application.DovizKodlaris.Commands
         {
 
 
-            var data = context.DovizKodlaris.ToList();
+            var data = context.DovizKodlaris.ToList().OrderBy(o=> o.Oncelik);
 
             var result = mapper.Map<List<DovizKodlariGetAllQueryViewModel>>(data);
 

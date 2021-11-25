@@ -22,8 +22,7 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public string Saat { get; set; }
         public string FaturaNumarasi { get; set; }
         public Guid SeriNumaralarId { get; set; }
-        public string FaturaTipi { get; set; }
-        public string FaturaSenaryo { get; set; }
+ 
         public string ParaBirimi { get; set; }
         public double DovizKuru { get; set; }
 
@@ -46,9 +45,9 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public double Kdv { get; set; }
         public double OdenecekTutar { get; set; }
 
-        public FaturaTipi faturaTipi { get; set; }
+        public FaturaTipi FaturaTipi { get; set; }
 
-        public FaturaSenaryo faturaSenaryo { get; set; }
+        public FaturaSenaryo FaturaSenaryo { get; set; }
 
 
         public Guid ETTN { get; set; }

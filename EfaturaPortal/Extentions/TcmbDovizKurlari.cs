@@ -20,7 +20,7 @@ namespace EfaturaPortal.Extentions
             
 
 
-            if (_tarih.DayOfWeek == DayOfWeek.Monday) _tarih = _tarih.AddDays(-2);
+            if (_tarih.DayOfWeek == DayOfWeek.Sunday) _tarih = _tarih.AddDays(-2);
             if (_tarih.DayOfWeek == DayOfWeek.Saturday) _tarih = _tarih.AddDays(-1);
 
            

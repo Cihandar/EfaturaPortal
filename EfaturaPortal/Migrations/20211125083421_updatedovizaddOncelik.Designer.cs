@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20211125083421_updatedovizaddOncelik")]
+    partial class updatedovizaddOncelik
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace EfaturaPortal.Migrations
                     b.Property<string>("Telefon")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ulke")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Unvani")
                         .HasColumnType("nvarchar(max)");
 
@@ -205,11 +204,11 @@ namespace EfaturaPortal.Migrations
                     b.Property<string>("FaturaNumarasi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FaturaSenaryo")
-                        .HasColumnType("int");
+                    b.Property<string>("FaturaSenaryo")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FaturaTipi")
-                        .HasColumnType("int");
+                    b.Property<string>("FaturaTipi")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FaturaTuru")
                         .HasColumnType("int");
@@ -264,6 +263,12 @@ namespace EfaturaPortal.Migrations
 
                     b.Property<string>("YaziylaTutar")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("faturaSenaryo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("faturaTipi")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

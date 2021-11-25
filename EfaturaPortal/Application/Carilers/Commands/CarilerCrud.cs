@@ -58,7 +58,8 @@ namespace EfaturaPortal.Application.Carilers.Commands
                 data.Telefon = request.Telefon;
                 data.Unvani = request.Unvani;
                 data.VergiDairesi = request.VergiDairesi;
-                data.VergiNumarasi = request.VergiNumarasi;               
+                data.VergiNumarasi = request.VergiNumarasi;
+                data.Ulke = request.Ulke;
 
                 context.SaveChanges();
 
@@ -90,6 +91,16 @@ namespace EfaturaPortal.Application.Carilers.Commands
         public async Task<CarilerGetAllQueryViewModel> GetById(Guid Id)
         {
             var data = context.Carilers.Where(x => x.Id == Id).FirstOrDefault();
+
+            var result = mapper.Map<CarilerGetAllQueryViewModel>(data);
+
+            return result;
+
+        }
+
+        public async Task<CarilerGetAllQueryViewModel> GetCaribyTaxNumber(string TaxNumber)
+        {
+            var data = context.Carilers.Where(x => x.VergiNumarasi == TaxNumber).FirstOrDefault();
 
             var result = mapper.Map<CarilerGetAllQueryViewModel>(data);
 

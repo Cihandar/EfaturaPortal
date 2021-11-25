@@ -27,11 +27,11 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label asp-for="Cariler.VergiNumarasi" class="form-control-label">Müşteri Vergi No</label>
+                            <label asp-for="Cariler.VergiNumarasi" class="form-control-label">*Müşteri Vergi No</label>
                             <div class="input-group mb-3">
                                 <input asp-for="Cariler.VergiNumarasi" class="form-control" id="Tx_Vdno" placeholder="" />
                                 <div class="input-group-append" style="cursor:pointer;" onclick="GetEInvoiceInfo()">
-                                    <div class="input-group-text" >
+                                    <div class="input-group-text">
                                         <span class="fas fa fa-search"></span>
                                     </div>
                                 </div>
@@ -54,12 +54,12 @@
                             </div>
                         </div>
                         @*<div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
-                                <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
-                                <span asp-validation-for="Saat" class="text-danger"> </span>
-                            </div>
-                        </div>*@
+                                <div class="form-group">
+                                    <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
+                                    <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
+                                    <span asp-validation-for="Saat" class="text-danger"> </span>
+                                </div>
+                            </div>*@
                     </div> <!-- /.row - Tarih & Saat -->
 
                     <div class="row">
@@ -90,7 +90,7 @@
         <div class="row">
             <div class="card card-default container-fluid">
                 <div class="card-header">
-                    <h3 class="card-title">Müşteri Cari Bilgileri</h3>
+                    <h3 class="card-title">Fatura Gönderim & Döviz Bilgileri</h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -105,16 +105,16 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="faturaTipi" class="form-control-label">Fatura Tipi</label>
-                                <select  asp-for="faturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>()"></select>
-                                <span asp-validation-for="faturaTipi" class="text-danger"> </span>
+                                <label asp-for="FaturaTipi" class="form-control-label">Fatura Tipi</label>
+                                <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>()"></select>
+                                <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="faturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
-                                <select asp-for="faturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
-                                <span asp-validation-for="faturaSenaryo" class="text-danger"> </span>
+                                <label asp-for="FaturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
+                                <select asp-for="FaturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
+                                <span asp-validation-for="FaturaSenaryo" class="text-danger"> </span>
                             </div>
                         </div>
                     </div> <!-- /.row - Tipi & Senaryo-->
@@ -123,20 +123,19 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Doviz" class="form-control-label">Para Birimi</label>
-                                <select asp-for="Doviz" onchange="DovizKuruGetir()" class="form-control"  data-placeholder="" asp-items="@(new SelectList(Model.DovizKodlari,"DovizKodu","DovizAdi"))" id="Cm_Doviz">
-                                    <option value="0">Müşteri Seç</option>
+                                <select asp-for="Doviz" onchange="DovizKuruGetir()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.DovizKodlari,"DovizKodu","DovizAdi"))" id="Cm_Doviz">
                                 </select>
                                 <span asp-validation-for="Doviz" class="text-danger"> </span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="Dv_DovizKuru">
                             <label asp-for="DovizKuru" class="form-control-label">Doviz Kuru</label>
-                            <input  asp-for="DovizKuru" class="form-control" id="Tx_DovizKuru"  />
+                            <input asp-for="DovizKuru" class="form-control" id="Tx_DovizKuru" />
                             <span asp-validation-for="DovizKuru" class="text-danger"> </span>
                         </div>
                     </div> <!-- /.row - Tipi & Senaryo-->
 
-                </div> <!-- /.card-body --> 
+                </div> <!-- /.card-body -->
 
             </div><!--Card-->
         </div>
@@ -157,20 +156,22 @@
                     </div>
                 </div> <!-- /.card-header -->
 
-                <div class="card-body">
+                <div class="card-body" id="Dv_Cariler">
 
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label asp-for="CarilerId" class="form-control-label">Müşteri Seç</label>
-                                <select asp-for="CarilerId" onchange="TarifeSec()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.CarilerMwList,"Id","Unvani"))" id="cmbtarife">
-                                    <option value="0">Müşteri Seç</option>
-                                </select>
-                                <span asp-validation-for="CarilerId" class="text-danger"> </span>
+                                <label asp-for="Cariler.Unvani" class="form-control-label">Müşteri Seç</label>
+                                <input asp-for="Cariler.Unvani" class="form-control"  id="Tx_Cari_Unvani"/>
+                                <span asp-validation-for="Cariler.Unvani" class="text-danger"> </span>
+                                <input type="hidden" asp-for="CarilerId" id="Hd_CarilerId" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label asp-for="Cariler.EfaturaPostaKutusu" class="form-control-label">Posta Kutusu Seç</label>
                                 <select asp-for="Cariler.EfaturaPostaKutusu" class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
@@ -178,8 +179,62 @@
                                 <span asp-validation-for="CarilerId" class="text-danger"> </span>
                             </div>
                         </div>
-                    </div> <!-- /.row - Tarih & Saat -->
+                    </div>
 
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Cariler.VergiNumarasi" class="form-control-label">Vergi Numarası</label>
+                                <input asp-for="Cariler.VergiNumarasi" class="form-control" data-placeholder="" id="Tx_Cari_VergiNumarasi"  />
+                                <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Cariler.VergiDairesi" class="form-control-label">Vergi Numarası</label>
+                                <input asp-for="Cariler.VergiDairesi" class="form-control" data-placeholder="" id="Tx_Cari_VergiDairesi" />
+                                <span asp-validation-for="Cariler.VergiDairesi" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Cariler.Ulke" class="form-control-label">*Ülke</label>
+                                <input asp-for="Cariler.Ulke" class="form-control" data-placeholder="" id="Tx_Cari_Ulke"   />
+                                <span asp-validation-for="Cariler.Ulke" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="Cariler.Adres" class="form-control-label">*Adres</label>
+                                <input asp-for="Cariler.Adres" class="form-control" data-placeholder=""  autocomplete="off" id="Tx_Cari_Adres"/>
+                                <span asp-validation-for="Cariler.Adres" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Cariler.Email" class="form-control-label">Email</label>
+                                <input asp-for="Cariler.Email" class="form-control" data-placeholder="" id="Tx_Cari_Email"   />
+                                <span asp-validation-for="Cariler.Email" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="Cariler.Telefon" class="form-control-label">Telefon</label>
+                                <input asp-for="Cariler.Telefon" class="form-control" data-placeholder=""  id="Tx_Cari_Telefon"    />
+                                <span asp-validation-for="Cariler.Telefon" class="text-danger"> </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+ 
                 </div> <!-- /.card-body -->
 
             </div><!--Card-->
@@ -206,11 +261,12 @@
     <script>
 
         $(function () {
-          
+
             //Date range picker with time picker
             $('#FaturaTarihi').daterangepicker({
                 singleDatePicker: true,
                 timePicker: true,
+                autoApply: true,
                 timePicker24Hour: true,
                 timePickerIncrement: 30,
                 locale: {
@@ -242,8 +298,16 @@
                     ],
                     firstDay: 1
                 }
-            })
+            },
+                function (start, end, label) {
 
+                })
+
+        });
+
+        $("#FaturaTarihi").on("apply.daterangepicker", function (ev, picker) {
+
+            DovizKuruGetir();
         });
 
         $("#Tx_Vdno").focusout(function () {
@@ -254,6 +318,9 @@
         function GetEInvoiceInfo() {
             $("#Cm_CariPostaKutusu").empty();
             Notiflix.Block.Standard("#loadingCheckTaxNumber");
+            Notiflix.Block.Standard("#Dv_Cariler");
+
+            $("#Tx_Cari_VergiNumarasi").val($("#Tx_Vdno").val());
             $.ajax({
                 type: 'get',
                 url: 'CheckTaxNumber?TaxNumber=' + $("#Tx_Vdno").val(),
@@ -280,7 +347,23 @@
                         GetSeriNumara();
                         Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
 
-                    } 
+                    }
+
+                    if (data.cari != null) {
+
+                        $("#Tx_Cari_Unvani").val(data.cari.unvani);
+                        $("#Tx_Cari_VergiDairesi").val(data.cari.vergiDairesi);
+                        $("#Tx_Cari_Ulke").val(data.cari.ulke);
+                        $("#Tx_Cari_Adres").val(data.cari.adres);
+                        $("#Tx_Cari_Email").val(data.cari.email);
+                        $("#Tx_Cari_Telefon").val(data.cari.telefon);
+                        // $("#Tx_Cari_").val(data.cari.unvani);
+
+
+                    } else {
+                        $("#Tx_Cari_Unvani").val(data.gibUser.title);
+                    }
+
 
                 }
             });
@@ -304,7 +387,7 @@
                 },
                 success: function (data) {
 
-          
+
 
                     $.each(data, function (i, state) {
                         $("#Sb_SeriNumara").append('<option value="' + state.id + '">' + state.seriNo + '</option>');
@@ -315,11 +398,17 @@
         }
 
         function DovizKuruGetir() {
- 
+
+            if ($("#Cm_Doviz").val() == "TRY") {
+                $("#Tx_DovizKuru").val("1");
+                return;
+            }
+
+            Notiflix.Block.Standard("#Dv_DovizKuru");
 
             $.ajax({
                 type: 'get',
-                url: 'GetDovizKuru?DovizKodu=' + $("#Cm_Doviz").val() + '&' + 'Tarih='+$("#FaturaTarihi").val(),
+                url: 'GetDovizKuru?DovizKodu=' + $("#Cm_Doviz").val() + '&' + 'Tarih=' + $("#FaturaTarihi").val(),
                 complete: function () {
                     Notiflix.Block.Remove("*", 0);
                 },

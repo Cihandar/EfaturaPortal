@@ -12,6 +12,7 @@ using EfaturaPortal.Application.Interfaces.SeriNumaralars;
 using EfaturaPortal.Application.Interfaces.Faturas;
 using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Application.Interfaces.Extentions;
+using EfaturaPortal.Application.Interfaces.Cariler;
 
 namespace EfaturaPortal.Controllers
 {
@@ -23,18 +24,21 @@ namespace EfaturaPortal.Controllers
         IEdmEInvoiceLogin _edmLogin;
         IEInvoiceTransactions _eInvoiceCommand;
         ITcmbDovizKurlari _TcmbDovizKurlari;
+        ICarilerCrud _carilerCrud;
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari)
+        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud)
         {
             faturaCrud = _faturaCrud;
             SNumaralarCrud = _SNumaralarCrud;
             _edmLogin = edmLogin;
             _eInvoiceCommand = eInvoiceCommand;
             _TcmbDovizKurlari = TcmbDovizKurlari;
+            _carilerCrud = carilerCrud;
         }
 
 
@@ -49,8 +53,13 @@ namespace EfaturaPortal.Controllers
 
         public async Task<IActionResult> CheckTaxNumber(string TaxNumber)
         {
-            var result = await _eInvoiceCommand.Ef_GetEInvoiceMailBox(FirmaId, TaxNumber);
 
+            var result = await _eInvoiceCommand.Ef_GetEInvoiceMailBox(FirmaId, TaxNumber); // Efatura Kullanıcı Kontrol 
+
+            var cari = await _carilerCrud.GetCaribyTaxNumber(TaxNumber);  // Sistemde Cari olarak Kayıtlımı ? Bir Bak Gel. 
+
+            if(cari!=null) result.Cari = cari;        // Eğer Sistemde Kayıtlı ise result cariyi doldur. >> Result.Cari CarilerGetAllQueryViewModel alır..
+            
             return Json(result);
 
         }

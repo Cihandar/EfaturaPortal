@@ -17,7 +17,7 @@ namespace EfaturaPortal.Models
         public string Adres { get; set; }
         public string Email { get; set; }
         public string Telefon { get; set; }
-
+        public string Ulke { get; set; }
 
     }
 }

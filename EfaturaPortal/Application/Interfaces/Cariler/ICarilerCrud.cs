@@ -16,6 +16,6 @@ namespace EfaturaPortal.Application.Interfaces.Cariler
         Task<CarilerGetAllQueryViewModel> GetById(Guid Id);
         Task<ResultJson> Update(CarilerGetAllQueryViewModel modelvw);
         Task<ResultJson> Add(CarilerGetAllQueryViewModel modelvw);
-
+        Task<CarilerGetAllQueryViewModel> GetCaribyTaxNumber(string TaxNumber);
     }
 }

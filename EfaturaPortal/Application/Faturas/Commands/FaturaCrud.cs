@@ -116,7 +116,7 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
             var result = mapper.Map<FaturaGetAllQueryViewModel>(fatura);
 
-            if (result == null) { result = new FaturaGetAllQueryViewModel(); result.Tarih = DateTime.Now; }
+            if (result == null) { result = new FaturaGetAllQueryViewModel(); result.Tarih = DateTime.Now; result.DovizKuru = 1; }
 
             result.CarilerMwList = await carilerCrud.GetAll(FirmaId);  //Firmaya Ait Cariler Alınıyor..
 
