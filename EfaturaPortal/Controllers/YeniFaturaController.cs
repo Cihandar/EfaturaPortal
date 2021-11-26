@@ -71,6 +71,13 @@ namespace EfaturaPortal.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetCariler()
+        {
+            var result = await _carilerCrud.GetAll(FirmaId);
+
+            return PartialView("_FormPartialCariSec", result);
+        }
+
         #region Create
         [HttpGet]
         public async Task<IActionResult> Create()

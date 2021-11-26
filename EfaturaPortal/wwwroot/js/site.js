@@ -23,6 +23,12 @@ $(document).on("click", ".EfaturaPortalApp-datatables-update", function () {
 
 });
 
+//$(document).on("click", ".EfaturaPortalApp-CariSec", function () {
+//    var element = $(this);
+//    ModalCallWithUrl(element.data("endpoint"), $(this).data("id"), "crud-modal");
+
+//});
+
 // Ajax Form OnBegin on
 var EfaturaPortalAppOnBegin = function (message) {
 
