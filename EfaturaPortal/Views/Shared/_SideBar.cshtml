@@ -33,8 +33,8 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
+         with font-awesome or any other icon font library -->
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-clipboard-list"></i>
                         <p>
@@ -75,15 +75,58 @@
                         </li>
                     </ul>
                 </li>
+
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-receipt"></i>
+                        <p>
+                            Fatura İşlemleri
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/YeniFatura/Create" class="nav-link">
+                                <i class="far fa fa-file-invoice nav-icon"></i>
+                                <p>Fatura Olutur</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/Cariler" class="nav-link">
+                                <i class="far fa-paper-plane nav-icon"></i>
+                                <p>Giden Fatura</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/SeriNumaralar" class="nav-link">
+                                <i class="far fa fa-reply nav-icon"></i>
+                                <p>Gelen Fatura</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/Kullanicilar" class="nav-link">
+                                <i class="far fa-times-circle nav-icon"></i>
+                                <p>İptaller</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @*<li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                    </li>*@
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Simple Link
+                    <span class="right badge badge-danger">New</span>
+                </p>
+            </a>
+        </li>*@
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
