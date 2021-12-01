@@ -250,7 +250,51 @@
 
 <div class="row">
     <div class="col-12">
-        <table class="table table-hover"><thead><tr><th colspan="7" class="col-md-9"><div class="row"><div class="col-md-3"><h6>Mal/Hizmet</h6></div><div class="col-md-1"><h6>Miktar</h6></div><div class="col-md-1-5"><h6>Birim</h6></div><div class="col-md-2"><h6>Birim Fiyatı</h6></div><div class="col-md-1"><h6>İsk. Oranı</h6></div><div class="col-md-1-5"><h6>İskonto Tutarı</h6></div><div class="col-md-1"><h6>KDV Oranı</h6></div></div></th><th class="col-md-2 text-right"><h6>Mal/Hizmet Tutarı</h6></th><th class="col-md-1 text-right"><h6>KDV Tutarı</h6></th></tr></thead><tbody><tr><td colspan="9"><button type="button" class="btn btn-fill  btn-primary"> Mal/Hizmet Ekle</button></td></tr></tbody></table>
+        <table class="table table-hover" >
+            <thead>
+                <tr>
+                    <th colspan="7" class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>Mal/Hizmet</h6>
+                            </div>
+                            <div class="col-md-1">
+                                <h6>Miktar</h6>
+                            </div>
+                            <div class="col-md-1-5">
+                                <h6>Birim</h6>
+                            </div>
+                            <div class="col-md-2">
+                                <h6>Birim Fiyatı</h6>
+                            </div>
+                            <div class="col-md-1">
+                                <h6>İsk. Oranı</h6>
+                            </div>
+                            <div class="col-md-1-5">
+                                <h6>İskonto Tutarı</h6>
+                            </div>
+                            <div class="col-md-1">
+                                <h6>KDV Oranı</h6>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="col-md-2 text-right">
+                        <h6>Mal/Hizmet Tutarı</h6>
+                    </th>
+                    <th class="col-md-1 text-right">
+                        <h6>KDV Tutarı</h6>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="Tb_InvoiceLine">
+ 
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9"><button type="button" class="btn btn-fill  btn-primary" id="Bt_Add_InvoiceLine"> Mal/Hizmet Ekle</button></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div><!--3-Row-->
 
@@ -269,7 +313,7 @@
 {
     <script src="~/plugins/adminLte/plugins/inputmask/jquery.inputmask.min.js"></script>
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
- @*   <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
+    @*   <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
     <script>
 
         var updateTax = false;
@@ -338,6 +382,32 @@
             updateTax = true;
         });
 
+
+        $("#").on("change", function () {
+
+        });
+
+        $("#Bt_Add_InvoiceLine").on("click", function () {
+
+            Notiflix.Block.Standard("#Tb_InvoiceLine");
+
+            var index = GetTableRowLenght();
+            $.ajax({
+                type: 'get',
+                url: 'GetInvoiceLine?index='+index,
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {                    
+                    $("#Tb_InvoiceLine").append(data);
+                }
+            });
+        });
+
+        function GetTableRowLenght() {
+            var result = $("#Tb_InvoiceLine tr").length-1;
+            return result;
+        }
 
         function GetEInvoiceInfo() {
 

@@ -1,0 +1,38 @@
+﻿@model EfaturaPortal.Models.FaturaSatir;
+@{ var index=ViewBag.Index; }
+ 
+
+
+    <tr>
+        <td colspan="7" class="col-md-9">
+            <div class="row">
+                <div class="col-md-3">
+                   <input name="FaturaSatir[@index].Aciklama"  asp-for="Aciklama"  />
+                </div>
+                <div class="col-md-1">
+                    <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" type="number"   />
+                </div>
+                <div class="col-md-1-5">
+                    <input name="FaturaSatir[@index].Birim" asp-for="OlcuBirimi"  />
+                </div>
+                <div class="col-md-2">
+                    <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" />
+                </div>
+                <div class="col-md-1">
+                    <input name="FaturaSatir[@index].IskontoOran" asp-for="IskontoOran" />
+                </div>
+                <div class="col-md-1-5">
+                    <input name="FaturaSatir[@index].IskontoTutar" asp-for="IskontoTutar" />
+                </div>
+                <div class="col-md-1">
+                    <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" />
+                </div>
+            </div>
+        </td>
+        <td class="col-md-2 text-right">
+            <input name="FaturaSatir[@index].Tutar" asp-for="Tutar" />
+        </td>
+        <td class="col-md-1 text-right">
+            <input name="FaturaSatir[@index].KdvTutar" asp-for="KdvTutar" />
+        </td>
+    </tr>

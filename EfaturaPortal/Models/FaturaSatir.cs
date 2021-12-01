@@ -12,6 +12,7 @@ namespace EfaturaPortal.Models
         public string Aciklama { get; set; }
         public double Miktar { get; set; }
         public string OlcuBirimi { get; set; }
+        public double BirimFiyat { get; set; }
         public double Tutar { get; set; }
 
         public string IskontoDurum { get; set; }

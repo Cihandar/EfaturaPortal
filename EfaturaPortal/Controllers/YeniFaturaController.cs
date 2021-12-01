@@ -78,6 +78,12 @@ namespace EfaturaPortal.Controllers
             return PartialView("_FormPartialCariSec", result);
         }
 
+        public async Task<IActionResult> GetInvoiceLine(int index)
+        {
+            ViewBag.Index = index;
+            return PartialView("_InvoiceLineForm",null);
+        }
+
         #region Create
         [HttpGet]
         public async Task<IActionResult> Create()
