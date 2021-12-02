@@ -38,6 +38,17 @@ using EfaturaPortal.Application.Interfaces.DovizKodlaris;
 using EfaturaPortal.Application.DovizKodlaris.Commands;
 using EfaturaPortal.Application.Interfaces.Extentions;
 
+using EfaturaPortal.Application.Interfaces.FaturaSatirs;
+using EfaturaPortal.Application.Interfaces.IstisnaKodlaris;
+using EfaturaPortal.Application.Interfaces.TevkifatKodlaris;
+using EfaturaPortal.Application.Interfaces.OlcuBirimleris;
+
+using EfaturaPortal.Application.FaturaSatirs.Commands;
+using EfaturaPortal.Application.IstisnaKodlaris.Commands;
+using EfaturaPortal.Application.TevkifatKodlaris.Commands;
+using EfaturaPortal.Application.OlcuBirimleris.Commands;
+
+
 namespace EfaturaPortal
 {
     public class Startup
@@ -74,6 +85,11 @@ namespace EfaturaPortal
             services.AddScoped<IFaturaCrud, FaturaCrud>();
             services.AddScoped<IDovizKodlariCrud, DovizKodlariCrud>();
             services.AddScoped<ITcmbDovizKurlari, TcmbDovizKurlari>();
+            services.AddScoped<IOlcuBirimleriCrud, OlcuBirimleriCrud>();
+            services.AddScoped<ITevkifatKodlariCrud, TevkifatKodlariCrud>();
+            services.AddScoped<IIstisnaKodlariCrud, IstisnaKodlariCrud>();
+            services.AddScoped<IFaturaSatirCrud, FaturaSatirCrud>();
+
 
             services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();

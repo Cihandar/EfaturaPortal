@@ -19,7 +19,7 @@ using EfaturaPortal.Application.Interfaces.TevkifatKodlaris;
 
 using EfaturaPortal.Models.ResultModel;
 
-namespace EFaturaSatirPortal.Application.FaturaSatirs.Commands
+namespace EfaturaPortal.Application.FaturaSatirs.Commands
 {
     public class FaturaSatirCrud  : IFaturaSatirCrud
     {
