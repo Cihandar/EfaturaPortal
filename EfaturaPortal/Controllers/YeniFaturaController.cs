@@ -13,6 +13,7 @@ using EfaturaPortal.Application.Interfaces.Faturas;
 using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Application.Interfaces.Extentions;
 using EfaturaPortal.Application.Interfaces.Cariler;
+using EfaturaPortal.Application.Interfaces.FaturaSatirs;
 
 namespace EfaturaPortal.Controllers
 {
@@ -25,13 +26,14 @@ namespace EfaturaPortal.Controllers
         IEInvoiceTransactions _eInvoiceCommand;
         ITcmbDovizKurlari _TcmbDovizKurlari;
         ICarilerCrud _carilerCrud;
+        IFaturaSatirCrud _faturaSatirCrud;
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud)
+        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud)
         {
             faturaCrud = _faturaCrud;
             SNumaralarCrud = _SNumaralarCrud;
@@ -39,6 +41,7 @@ namespace EfaturaPortal.Controllers
             _eInvoiceCommand = eInvoiceCommand;
             _TcmbDovizKurlari = TcmbDovizKurlari;
             _carilerCrud = carilerCrud;
+            _faturaSatirCrud = faturaSatirCrud;
         }
 
 
@@ -80,8 +83,9 @@ namespace EfaturaPortal.Controllers
 
         public async Task<IActionResult> GetInvoiceLine(int index)
         {
+            var result = await _faturaSatirCrud.GetEmptyRow();
             ViewBag.Index = index;
-            return PartialView("_InvoiceLineForm",null);
+            return PartialView("_InvoiceLineForm",result);
         }
 
         #region Create

@@ -29,6 +29,8 @@ namespace EfaturaPortal.Models
         public DbSet<SeriNumaralar> SeriNumaralars { get; set; }
         public DbSet<DovizKodlari> DovizKodlaris { get; set; }
 
+        public DbSet<IstisnaKodlari> IstisnaKodlaris { get; set; }
+        public DbSet<TevkifatKodlari> TevkifatKodlaris { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿@model EfaturaPortal.Models.FaturaSatir;
+﻿@model EfaturaPortal.Application.FaturaSatirs.ViewModels.FaturaSatirGetAllQueryViewModel;
 @{ var index=ViewBag.Index; }
  
 
@@ -13,7 +13,7 @@
                     <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" type="number"   />
                 </div>
                 <div class="col-md-1-5">
-                    <input name="FaturaSatir[@index].Birim" asp-for="OlcuBirimi"  />
+                    <input class="select2" name="FaturaSatir[@index].Birim" asp-for="LstOlcuBirimleri"  />
                 </div>
                 <div class="col-md-2">
                     <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" />
