@@ -24,13 +24,15 @@ namespace EfaturaPortal.Models
         public DbSet<Fatura> Faturas { get; set; }
         public DbSet<FaturaSatir> FaturaSatirs { get; set; }
         public DbSet<Firmalar> Firmalars { get; set; }
-        public DbSet<OlcuBirimleri> OlcuBirimleris { get; set; }
-        public DbSet<ParaBirimleri> ParaBirimleris { get; set; }
         public DbSet<SeriNumaralar> SeriNumaralars { get; set; }
+
         public DbSet<DovizKodlari> DovizKodlaris { get; set; }
 
+        //public DbSet<ParaBirimleri> ParaBirimleris { get; set; }
+        public DbSet<OlcuBirimleri> OlcuBirimleris { get; set; }
         public DbSet<IstisnaKodlari> IstisnaKodlaris { get; set; }
         public DbSet<TevkifatKodlari> TevkifatKodlaris { get; set; }
+
 
     }
 }

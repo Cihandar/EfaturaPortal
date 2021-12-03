@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Application\EsmmApi\" />
     <Folder Include="Application\Faturas\Validators\" />
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\plugins\adminLte\" />
   </ItemGroup>
 
