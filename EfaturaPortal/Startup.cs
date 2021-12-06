@@ -47,7 +47,8 @@ using EfaturaPortal.Application.FaturaSatirs.Commands;
 using EfaturaPortal.Application.IstisnaKodlaris.Commands;
 using EfaturaPortal.Application.TevkifatKodlaris.Commands;
 using EfaturaPortal.Application.OlcuBirimleris.Commands;
-
+using EfaturaPortal.Application.Interfaces.Ulkelers;
+using EfaturaPortal.Application.Ulkelers.Commands;
 
 namespace EfaturaPortal
 {
@@ -89,6 +90,7 @@ namespace EfaturaPortal
             services.AddScoped<ITevkifatKodlariCrud, TevkifatKodlariCrud>();
             services.AddScoped<IIstisnaKodlariCrud, IstisnaKodlariCrud>();
             services.AddScoped<IFaturaSatirCrud, FaturaSatirCrud>();
+            services.AddScoped<IUlkelerCrud, UlkelerCrud>();
 
 
             services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();

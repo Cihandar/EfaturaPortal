@@ -32,6 +32,7 @@ namespace EfaturaPortal.Models
         public DbSet<OlcuBirimleri> OlcuBirimleris { get; set; }
         public DbSet<IstisnaKodlari> IstisnaKodlaris { get; set; }
         public DbSet<TevkifatKodlari> TevkifatKodlaris { get; set; }
+        public DbSet<Ulkeler> Ulkelers { get; set; }
 
 
     }

@@ -253,37 +253,34 @@
         <table class="table table-hover" >
             <thead>
                 <tr>
-                    <th colspan="7" class="col-md-9">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6>Mal/Hizmet</h6>
-                            </div>
-                            <div class="col-md-1">
-                                <h6>Miktar</h6>
-                            </div>
-                            <div class="col-md-1-5">
-                                <h6>Birim</h6>
-                            </div>
-                            <div class="col-md-2">
-                                <h6>Birim Fiyatı</h6>
-                            </div>
-                            <div class="col-md-1">
-                                <h6>İsk. Oranı</h6>
-                            </div>
-                            <div class="col-md-1-5">
-                                <h6>İskonto Tutarı</h6>
-                            </div>
-                            <div class="col-md-1">
-                                <h6>KDV Oranı</h6>
-                            </div>
-                        </div>
+                    <th   class="col-md-12">
+
+                        <h6>Kalem Bilgileri</h6>
+                        @*<div class="row">
+            <div class="col-md-3">
+                <h6>Mal/Hizmet</h6>
+            </div>
+            <div class="col-md-1">
+                <h6>Miktar</h6>
+            </div>
+            <div class="col-md-1-5">
+                <h6>Birim</h6>
+            </div>
+            <div class="col-md-2">
+                <h6>Birim Fiyatı</h6>
+            </div>
+            <div class="col-md-1">
+                <h6>İsk. Oranı</h6>
+            </div>
+            <div class="col-md-1-5">
+                <h6>İskonto Tutarı</h6>
+            </div>
+            <div class="col-md-1">
+                <h6>KDV Oranı</h6>
+            </div>
+        </div>*@
                     </th>
-                    <th class="col-md-2 text-right">
-                        <h6>Mal/Hizmet Tutarı</h6>
-                    </th>
-                    <th class="col-md-1 text-right">
-                        <h6>KDV Tutarı</h6>
-                    </th>
+ 
                 </tr>
             </thead>
             <tbody id="Tb_InvoiceLine">
@@ -398,12 +395,22 @@
                 },
                 success: function (data) {                    
                     $("#Tb_InvoiceLine").append(data);
+
+                    initailizeSelect2($("#select2-" + index));
+
+                    $(".select2-container").attr("style", "");
                 }
             });
         });
 
+        function initailizeSelect2(select) {
+            $(select).select2({
+                tags: true
+            });
+        }
+
         function GetTableRowLenght() {
-            var result = $("#Tb_InvoiceLine tr").length-1;
+            var result = $("#Tb_InvoiceLine tr").length;
             return result;
         }
 
@@ -464,7 +471,6 @@
 
         $(document).ready(function () {
 
-            $(".select2").select2();
 
         });
 

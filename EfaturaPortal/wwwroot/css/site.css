@@ -27,13 +27,16 @@ for details on configuring this project to bundle and minify static web assets. 
     width:100% !important;
 }
 
-/* QR code generator */
-/*#qrCode {
+.select2-selection--single {
+    height: calc(2.25rem + 2px) !important;
+    width: 100% !important;
+}
+    /* QR code generator */
+    /*#qrCode {
     margin: 15px;
 }*/
-
-/* Hide/rearrange for smaller screens */
-/*@media screen and (max-width: 767px) {*/
+    /* Hide/rearrange for smaller screens */
+    /*@media screen and (max-width: 767px) {*/
     /* Hide captions */
     /*.carousel-caption {
         display: none;
