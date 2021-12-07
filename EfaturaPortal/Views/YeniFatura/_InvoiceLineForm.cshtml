@@ -3,8 +3,9 @@
  
 
 
-    <tr>
-        <td colspan="8" class="col-md-9" id="row-@index">
+    <tr data-index="@index">
+       
+        <td colspan="12" class="col-md-12" id="row-@index">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -16,14 +17,14 @@
                 <div class="col-md-1">
                     <div class="form-group">
                         <label asp-for="Miktar" class="form-control-label">Miktar</label>
-                        <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" class="form-control" data-placeholder="" />
+                        <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" class="form-control" data-placeholder=""  />
                         <span asp-validation-for="Miktar" class="text-danger"> </span>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label asp-for="LstOlcuBirimleri" class="form-control-label">Birim</label>
-                        <select class="form-control" name="FaturaSatir[@index].Birim" id="select2-@index">
+                        <select class="form-control" name="FaturaSatir[@index].Birim" id="select2-@index" data-index="@index">
                             @foreach (var birim in Model.LstOlcuBirimleri)
                             {
                                 <option id="@birim.Kodu">@birim.Adi</option>
@@ -33,35 +34,35 @@
                         <span asp-validation-for="LstOlcuBirimleri" class="text-danger"> </span>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <div class="form-group">
                         <label asp-for="BirimFiyat" class="form-control-label">Birim Fiyat</label>
                         <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" class="form-control" data-placeholder="" />
                         <span asp-validation-for="BirimFiyat" class="text-danger"> </span>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 LineIskonto">
                     <div class="form-group">
                         <label asp-for="IskontoOran" class="form-control-label">İnd.Oran</label>
                         <input name="FaturaSatir[@index].IskontoOran" asp-for="IskontoOran" class="form-control" data-placeholder="" />
                         <span asp-validation-for="IskontoOran" class="text-danger"> </span>
                     </div>
                 </div>
-                <div class="col-md-1-5">
+                <div class="col-md-1 LineIskonto">
                     <div class="form-group">
                         <label asp-for="IskontoTutar" class="form-control-label">İnd.Tutar</label>
                         <input name="FaturaSatir[@index].IskontoTutar" asp-for="IskontoTutar" class="form-control" data-placeholder="" />
                         <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 LineKdv">
                     <div class="form-group">
                         <label asp-for="KdvOran" class="form-control-label">Kdv</label>
                         <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" />
                         <span asp-validation-for="KdvOran" class="text-danger"> </span>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 LineKdv">
                     <div class="form-group">
                         <label asp-for="KdvTutar" class="form-control-label">Kdv Tutar</label>
                         <input name="FaturaSatir[@index].KdvTutar" asp-for="KdvTutar" class="form-control" data-placeholder="" />

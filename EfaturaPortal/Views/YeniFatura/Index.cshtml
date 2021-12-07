@@ -256,29 +256,7 @@
                     <th   class="col-md-12">
 
                         <h6>Kalem Bilgileri</h6>
-                        @*<div class="row">
-            <div class="col-md-3">
-                <h6>Mal/Hizmet</h6>
-            </div>
-            <div class="col-md-1">
-                <h6>Miktar</h6>
-            </div>
-            <div class="col-md-1-5">
-                <h6>Birim</h6>
-            </div>
-            <div class="col-md-2">
-                <h6>Birim Fiyatı</h6>
-            </div>
-            <div class="col-md-1">
-                <h6>İsk. Oranı</h6>
-            </div>
-            <div class="col-md-1-5">
-                <h6>İskonto Tutarı</h6>
-            </div>
-            <div class="col-md-1">
-                <h6>KDV Oranı</h6>
-            </div>
-        </div>*@
+ 
                     </th>
  
                 </tr>
@@ -399,6 +377,9 @@
                     initailizeSelect2($("#select2-" + index));
 
                     $(".select2-container").attr("style", "");
+
+                    refreshrow();
+
                 }
             });
         });
@@ -459,7 +440,6 @@
                         $("#Tx_Cari_Telefon").val(data.cari.telefon);
                         // $("#Tx_Cari_").val(data.cari.unvani);
 
-
                     } else {
                         $("#Tx_Cari_Unvani").val(data.gibUser.title);
                     }
@@ -467,6 +447,41 @@
 
                 }
             });
+        }
+
+        function refreshrow() {
+
+            $("input[name^='FaturaSatir']").change(function () {
+
+
+                debugger;
+
+                var index = $(this).closest("tr").data("index");
+
+                var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
+                var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
+                var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
+                var iskontoTutar = $("input[name='FaturaSatir[" + index + "].IskontoTutar']");
+                var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
+                var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
+                var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
+
+                var nettutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+                var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
+                var gtoplam = kdvtutar + nettutar;
+                
+                kdvTutar.val(kdvtutar.toFixed(4));
+                tutar.val(gtoplam.toFixed(4));
+
+            });
+        }
+
+        function toDouble(value) {
+
+            value = value.replace(",", ".");
+            var result = parseFloat(value);
+
+            return result;
         }
 
         $(document).ready(function () {
