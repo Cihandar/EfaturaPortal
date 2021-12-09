@@ -250,19 +250,18 @@
 
 <div class="row">
     <div class="col-12">
-        <table class="table table-hover" >
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th   class="col-md-12">
+                    <th class="col-md-12">
 
                         <h6>Kalem Bilgileri</h6>
- 
+
                     </th>
- 
+
                 </tr>
             </thead>
             <tbody id="Tb_InvoiceLine">
- 
             </tbody>
             <tfoot>
                 <tr>
@@ -358,7 +357,7 @@
         });
 
 
- 
+
 
         $("#Bt_Add_InvoiceLine").on("click", function () {
 
@@ -367,11 +366,11 @@
             var index = GetTableRowLenght();
             $.ajax({
                 type: 'get',
-                url: 'GetInvoiceLine?index='+index,
+                url: 'GetInvoiceLine?index=' + index,
                 complete: function () {
                     Notiflix.Block.Remove("*", 0);
                 },
-                success: function (data) {                    
+                success: function (data) {
                     $("#Tb_InvoiceLine").append(data);
 
                     initailizeSelect2($("#select2-" + index));
@@ -451,6 +450,16 @@
 
         function refreshrow() {
 
+
+            GetNewRow();
+            GetIstisnaAndTevkifat();
+            DeleteRow();
+
+
+
+        }
+
+        function GetNewRow() {
             $("input[name^='FaturaSatir']").change(function () {
 
 
@@ -469,12 +478,69 @@
                 var nettutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
                 var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
                 var gtoplam = kdvtutar + nettutar;
-                
+
                 kdvTutar.val(kdvtutar.toFixed(4));
                 tutar.val(gtoplam.toFixed(4));
 
             });
         }
+
+        function GetIstisnaAndTevkifat() {
+            $(".btnKodlar").on("click", function () {
+                var index = $(this).data("index");
+
+                $("#Kodlar-" + index).fadeIn();
+
+            });
+
+            $("select[name*='TevkifatKodu']").on("change", function () {
+
+                debugger;
+                var index = $(this).data("index");
+                debugger;
+                if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
+
+                    var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
+                    debugger;
+                    var oran = tevkifatText.substr(5, 4);
+                    debugger;
+                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val(oran);
+                    debugger;
+                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", "disabled");
+                    debugger;
+                } else {
+                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", false);
+                    debugger;
+                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val("-1");
+                    debugger;
+                }
+                debugger;
+
+            });
+        }
+
+        function DeleteRow() {
+            $(".btnDelete").on("click", function () {
+                var index = $(this).data("index");
+
+                Notiflix.Confirm.Show(
+                    'Emin misiniz ?',
+                    'Seçili Fatura Satırı Silinecek',
+                    'Evet Sil',
+                    'Hayır Silme',
+                    () => {
+                        ConfirmDeleteRow(this);
+                    }
+                    
+                );
+
+            });
+        }
+
+        function ConfirmDeleteRow(object) {
+            $($(object).closest("tr")).remove()
+        }
+
 
         function toDouble(value) {
 

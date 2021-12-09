@@ -1,81 +1,141 @@
 ﻿@model EfaturaPortal.Application.FaturaSatirs.ViewModels.FaturaSatirGetAllQueryViewModel;
-@{ var index=ViewBag.Index; }
- 
+@{ var index = ViewBag.Index; }
 
 
-    <tr data-index="@index">
-       
-        <td colspan="12" class="col-md-12" id="row-@index">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label asp-for="Aciklama" class="form-control-label">Açıklama</label>
-                        <input name="FaturaSatir[@index].Aciklama" asp-for="Aciklama" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="Aciklama" class="text-danger"> </span>
-                    </div>
+
+<tr data-index="@index">
+
+    <td colspan="12" class="col-md-12" id="row-@index">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Aciklama" class="form-control-label">Açıklama</label>
+                    <input name="FaturaSatir[@index].Aciklama" asp-for="Aciklama" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="Aciklama" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <label asp-for="Miktar" class="form-control-label">Miktar</label>
-                        <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" class="form-control" data-placeholder=""  />
-                        <span asp-validation-for="Miktar" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label asp-for="Miktar" class="form-control-label">Miktar</label>
+                    <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="Miktar" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <label asp-for="LstOlcuBirimleri" class="form-control-label">Birim</label>
-                        <select class="form-control" name="FaturaSatir[@index].Birim" id="select2-@index" data-index="@index">
-                            @foreach (var birim in Model.LstOlcuBirimleri)
-                            {
-                                <option id="@birim.Kodu">@birim.Adi</option>
-                            }
-                        </select>
-                        <span asp-validation-for="LstOlcuBirimleri" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label asp-for="LstOlcuBirimleri" class="form-control-label">Birim</label>
+                    <select class="form-control" name="FaturaSatir[@index].Birim" id="select2-@index" data-index="@index">
+                        @foreach (var birim in Model.LstOlcuBirimleri)
+                        {
+                            <option id="@birim.Kodu">@birim.Adi</option>
+                        }
+                    </select>
+                    <span asp-validation-for="LstOlcuBirimleri" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <label asp-for="BirimFiyat" class="form-control-label">Birim Fiyat</label>
-                        <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="BirimFiyat" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label asp-for="BirimFiyat" class="form-control-label">Birim Fiyat</label>
+                    <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="BirimFiyat" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1 LineIskonto">
-                    <div class="form-group">
-                        <label asp-for="IskontoOran" class="form-control-label">İnd.Oran</label>
-                        <input name="FaturaSatir[@index].IskontoOran" asp-for="IskontoOran" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="IskontoOran" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1 LineIskonto">
+                <div class="form-group">
+                    <label asp-for="IskontoOran" class="form-control-label">İnd.Oran</label>
+                    <input name="FaturaSatir[@index].IskontoOran" asp-for="IskontoOran" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="IskontoOran" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1 LineIskonto">
-                    <div class="form-group">
-                        <label asp-for="IskontoTutar" class="form-control-label">İnd.Tutar</label>
-                        <input name="FaturaSatir[@index].IskontoTutar" asp-for="IskontoTutar" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1 LineIskonto">
+                <div class="form-group">
+                    <label asp-for="IskontoTutar" class="form-control-label">İnd.Tutar</label>
+                    <input name="FaturaSatir[@index].IskontoTutar" asp-for="IskontoTutar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1 LineKdv">
-                    <div class="form-group">
-                        <label asp-for="KdvOran" class="form-control-label">Kdv</label>
-                        <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="KdvOran" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1 LineKdv">
+                <div class="form-group">
+                    <label asp-for="KdvOran" class="form-control-label">Kdv</label>
+                    <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="KdvOran" class="text-danger"> </span>
                 </div>
-                <div class="col-md-1 LineKdv">
-                    <div class="form-group">
-                        <label asp-for="KdvTutar" class="form-control-label">Kdv Tutar</label>
-                        <input name="FaturaSatir[@index].KdvTutar" asp-for="KdvTutar" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="KdvTutar" class="text-danger"> </span>
-                    </div>
+            </div>
+            <div class="col-md-1 LineKdv">
+                <div class="form-group">
+                    <label asp-for="KdvTutar" class="form-control-label">Kdv Tutar</label>
+                    <input name="FaturaSatir[@index].KdvTutar" asp-for="KdvTutar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="KdvTutar" class="text-danger"> </span>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label asp-for="Tutar" class="form-control-label text-center">Tutar</label>
-                        <input name="FaturaSatir[@index].Tutar" asp-for="Tutar" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="Tutar" class="text-danger"> </span>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label asp-for="Tutar" class="form-control-label text-center">Tutar</label>
+                    <input name="FaturaSatir[@index].Tutar" asp-for="Tutar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="Tutar" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <span class="btn btn-primary btnKodlar" data-index="@index">> Kdvsizlik ve Tevkifat Kodları</span>
+            </div>
+            <div class="col-md-10" id="Kodlar-@index" style="display:none;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <select class="form-control" name="FaturaSatir[@index].IstisnaKodu" id="select2-@index" data-index="@index">
+                                    <option value="-1">Kdvsizlik Kodu Seçin</option>
+                                    @foreach (var x in Model.LstIstisnaKodlari)
+                                    {
+                                        <option value="@x.Kodu">@x.Kodu - @x.Aciklama</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select class="form-control" name="FaturaSatir[@index].TevkifatKodu" id="select2-@index" data-index="@index">
+                                    <option value="-1">Tevkifat Kodu Seçin</option>
+                                    @foreach (var x in Model.LstTevkifatKodlari)
+                                    {
+                                        <option value="@x.Kodu">@x.Kodu (@x.Oran) @x.Aciklama</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" name="FaturaSatir[@index].TevkifatOran" id="select2-@index" data-index="@index" disabled>
+                                    <option value="-1">Oran Seç</option>
+                                    <option value="2/10">2/10</option>
+                                    <option value="3/10">3/10</option>
+                                    <option value="4/10">4/10</option>
+                                    <option value="5/10">5/10</option>
+                                    <option value="7/10">7/10</option>
+                                    <option value="9/10">9/10</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </td>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <span class="btn btn-warning btnKodlar" data-index="@index">+ Kdv Ekle</span>
+            </div>
+            <div class="col-md-10" id="DıgerKdvler-@index" style="display:none;">
+
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <span class="btn btn-danger btnDelete" data-index="@index"><i class="far fa fa-trash-alt"></i> Sil</span>
+            </div>
  
-    </tr>
+        </div>
+    </td>
+
+</tr>

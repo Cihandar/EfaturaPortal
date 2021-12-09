@@ -13,7 +13,8 @@ namespace EfaturaPortal.Application.TevkifatKodlaris.ViewModels
     {
 
         public string Kodu { get; set; }
-        public string Adi { get; set; }
+        public string Aciklama { get; set; }
+        public string Oran { get; set; }
 
 
         public  void CreateMappings(Profile configuration)
