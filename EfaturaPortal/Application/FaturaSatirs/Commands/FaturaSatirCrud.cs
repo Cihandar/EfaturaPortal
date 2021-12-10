@@ -16,6 +16,7 @@ using EfaturaPortal.Application.Interfaces.DovizKodlaris;
 using EfaturaPortal.Application.Interfaces.OlcuBirimleris;
 using EfaturaPortal.Application.Interfaces.IstisnaKodlaris;
 using EfaturaPortal.Application.Interfaces.TevkifatKodlaris;
+using EfaturaPortal.Application.Interfaces.VergiKodlaris;
 
 using EfaturaPortal.Models.ResultModel;
 
@@ -30,11 +31,11 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
         public IOlcuBirimleriCrud olcuBirimleriCrud;
         public IIstisnaKodlariCrud istisnaKodlariCrud;
         public ITevkifatKodlariCrud tevkifatKodlariCrud;
+        public IVergiKodlariCrud vergiKodlariCrud;
 
 
 
-
-        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud,IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud)
+        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud,IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud, IVergiKodlariCrud _vergiKodlariCrud)
         {
             context = _context;
             mapper = _mapper;
@@ -43,6 +44,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
             olcuBirimleriCrud = _olcuBirimleriCrud;
             istisnaKodlariCrud = _istisnaKodlariCrud;
             tevkifatKodlariCrud = _tevkifatKodlariCrud;
+            vergiKodlariCrud = _vergiKodlariCrud;
  
         }
 
@@ -121,6 +123,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
             result.LstTevkifatKodlari = await tevkifatKodlariCrud.GetAll();
 
+ 
             return result;
 
         }

@@ -531,14 +531,46 @@
                     () => {
                         ConfirmDeleteRow(this);
                     }
-                    
+
                 );
 
             });
         }
 
         function ConfirmDeleteRow(object) {
+            var index = $(object).closest("tr").data("index");
+            var countRow = GetTableRowLenght();
             $($(object).closest("tr")).remove()
+
+            $("#Tb_InvoiceLine tr").each
+                (
+
+                    function (index, tr)
+                    {
+                  
+                        $(tr).data("index", index);
+                        $(tr).attr("data-index", index);
+                     
+                        $(tr).find("input[name^='FaturaSatir']").each(
+                            function (row, inp) {
+                                var name = $(inp).attr("Name").split('.');
+                                $(inp).attr("Name", "FaturaSatir[" + index + "]." + name[1]);
+                                $(inp).attr("data-index", index);
+                            }
+                        );
+
+                        $(tr).find("select[name^='FaturaSatir']").each(
+                            function (row, inp) {
+                                var name = $(inp).attr("Name").split('.');
+                                $(inp).attr("Name", "FaturaSatir[" + index + "]." + name[1]);
+                                $(inp).attr("data-index", index);
+                            }
+                        );
+                    }
+                );
+
+
+   
         }
 
 

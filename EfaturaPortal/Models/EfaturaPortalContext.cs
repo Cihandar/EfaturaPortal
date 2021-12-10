@@ -34,6 +34,8 @@ namespace EfaturaPortal.Models
         public DbSet<TevkifatKodlari> TevkifatKodlaris { get; set; }
         public DbSet<Ulkeler> Ulkelers { get; set; }
 
+        public DbSet<VergiKodlari> VergiKodlaris { get; set; }
+
 
     }
 }

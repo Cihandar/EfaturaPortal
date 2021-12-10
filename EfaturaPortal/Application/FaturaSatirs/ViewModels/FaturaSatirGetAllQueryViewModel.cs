@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using EfaturaPortal.Application.OlcuBirimleris.ViewModels;
 using EfaturaPortal.Application.IstisnaKodlaris.ViewModels;
 using EfaturaPortal.Application.TevkifatKodlaris.ViewModels;
+using EfaturaPortal.Application.VergiKodlaris.ViewModels;
+
 
 namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
 {
@@ -36,6 +38,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
         public List<IstisnaKodlariGetAllQueryViewModel> LstIstisnaKodlari { get; set; }
         public List<TevkifatKodlariGetAllQueryViewModel> LstTevkifatKodlari { get; set; }
 
+        public List<VergiKodlariGetAllQueryViewModel> LstVergiKodlari { get; set; }
 
         public void CreateMappings(Profile configuration)
         {
