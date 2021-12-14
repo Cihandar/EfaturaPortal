@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-1 LineKdv">
                 <div class="form-group">
-                    <label asp-for="KdvOran" class="form-control-label">Kdv</label>
+                    <label asp-for="KdvOran" class="form-control-label">Kdv (0015)</label>
                     <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" />
                     <span asp-validation-for="KdvOran" class="text-danger"> </span>
                 </div>
@@ -123,12 +123,12 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col-md-2">
-                <span class="btn btn-warning btnKodlar" data-index="@index">+ Kdv Ekle</span>
-            </div>
-            <div class="col-md-10" id="DıgerKdvler-@index" style="display:none;">
+            <div class="col-md-12" id="KdvContent-@index">
 
             </div>
+            <div class="col-md-2">
+                <span class="btn btn-warning btnKdvler" data-index="@index">+ Kdv Ekle</span>
+            </div> 
         </div>
         <div class="row mt-2">
             <div class="col-md-2">

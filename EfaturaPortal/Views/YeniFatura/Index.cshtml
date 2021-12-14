@@ -337,6 +337,10 @@
 
         });
 
+
+
+        //   $(document).ready(function () {
+
         $("#FaturaTarihi").on("apply.daterangepicker", function (ev, picker) {
 
             DovizKuruGetir();
@@ -355,8 +359,6 @@
         $("#Tx_Vdno").on("change", function () {
             updateTax = true;
         });
-
-
 
 
         $("#Bt_Add_InvoiceLine").on("click", function () {
@@ -451,91 +453,92 @@
         function refreshrow() {
 
 
-            GetNewRow();
-            GetIstisnaAndTevkifat();
-            DeleteRow();
+            //GetNewRow();
+            //GetIstisnaAndTevkifat();
+            //DeleteRow();
+            //EkKdvIslemleri();
 
 
 
         }
 
-        function GetNewRow() {
-            $("input[name^='FaturaSatir']").change(function () {
+        //  function GetNewRow() {
+        $(document).on("change", "input[name ^= 'FaturaSatir']", function () {
 
 
+            debugger;
+
+            var index = $(this).closest("tr").data("index");
+
+            var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
+            var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
+            var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
+            var iskontoTutar = $("input[name='FaturaSatir[" + index + "].IskontoTutar']");
+            var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
+            var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
+            var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
+
+            var nettutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+            var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
+            var gtoplam = kdvtutar + nettutar;
+
+            kdvTutar.val(kdvtutar.toFixed(4));
+            tutar.val(gtoplam.toFixed(4));
+
+        });
+        // }
+
+        // function GetIstisnaAndTevkifat() {
+        $(document).on("click", ".btnKodlar", function () {
+            var index = $(this).data("index");
+
+            $("#Kodlar-" + index).fadeIn();
+
+        });
+
+        $(document).on("change", "select[name*='TevkifatKodu']", function () {
+
+            debugger;
+            var index = $(this).data("index");
+            debugger;
+            if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
+
+                var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
                 debugger;
-
-                var index = $(this).closest("tr").data("index");
-
-                var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
-                var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
-                var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
-                var iskontoTutar = $("input[name='FaturaSatir[" + index + "].IskontoTutar']");
-                var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
-                var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
-                var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
-
-                var nettutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
-                var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
-                var gtoplam = kdvtutar + nettutar;
-
-                kdvTutar.val(kdvtutar.toFixed(4));
-                tutar.val(gtoplam.toFixed(4));
-
-            });
-        }
-
-        function GetIstisnaAndTevkifat() {
-            $(".btnKodlar").on("click", function () {
-                var index = $(this).data("index");
-
-                $("#Kodlar-" + index).fadeIn();
-
-            });
-
-            $("select[name*='TevkifatKodu']").on("change", function () {
-
+                var oran = tevkifatText.substr(5, 4);
                 debugger;
-                var index = $(this).data("index");
+                $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val(oran);
                 debugger;
-                if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
+                $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", "disabled");
+                debugger;
+            } else {
+                $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", false);
+                debugger;
+                $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val("-1");
+                debugger;
+            }
+            debugger;
 
-                    var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
-                    debugger;
-                    var oran = tevkifatText.substr(5, 4);
-                    debugger;
-                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val(oran);
-                    debugger;
-                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", "disabled");
-                    debugger;
-                } else {
-                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", false);
-                    debugger;
-                    $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val("-1");
-                    debugger;
+        });
+        // }
+
+        //function DeleteRow() {
+        $(document).on("click", ".btnDelete", function () {
+            var index = $(this).data("index");
+
+            Notiflix.Confirm.Show(
+                'Emin misiniz ?',
+                'Seçili Fatura Satırı Silinecek',
+                'Evet Sil',
+                'Hayır Silme',
+                () => {
+                    ConfirmDeleteRow(this);
                 }
-                debugger;
 
-            });
-        }
+            );
 
-        function DeleteRow() {
-            $(".btnDelete").on("click", function () {
-                var index = $(this).data("index");
-
-                Notiflix.Confirm.Show(
-                    'Emin misiniz ?',
-                    'Seçili Fatura Satırı Silinecek',
-                    'Evet Sil',
-                    'Hayır Silme',
-                    () => {
-                        ConfirmDeleteRow(this);
-                    }
-
-                );
-
-            });
-        }
+        });
+        //  }
 
         function ConfirmDeleteRow(object) {
             var index = $(object).closest("tr").data("index");
@@ -545,12 +548,11 @@
             $("#Tb_InvoiceLine tr").each
                 (
 
-                    function (index, tr)
-                    {
-                  
+                    function (index, tr) {
+
                         $(tr).data("index", index);
                         $(tr).attr("data-index", index);
-                     
+
                         $(tr).find("input[name^='FaturaSatir']").each(
                             function (row, inp) {
                                 var name = $(inp).attr("Name").split('.');
@@ -570,8 +572,77 @@
                 );
 
 
-   
+
         }
+
+        //  function EkKdvIslemleri() {
+
+        $(document).on("click", ".btnKdvler", function () {
+
+            var index = $(this).data("index");
+
+            var kdvindex = $("#KdvContent-" + index + " div[id^='kdvRow']").length;
+
+            $.ajax({
+                type: 'get',
+                url: 'GetInvoiceTaxLine?index=' + index + '&KdvIndex=' + kdvindex,
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {
+                    $("#KdvContent-" + index).append(data);
+                    //EkkdvIslemlerAfterLoad();
+                }
+            });
+
+        });
+
+
+
+
+        // }
+
+
+        // function EkkdvIslemlerAfterLoad() {
+
+        $(document).on("click", "div[id^='btnkdvSil']", function () {
+
+
+            var index = $(this).data("index");
+
+            var satirindex = index.split('-')[0];
+
+            $("#kdvRow-" + index).remove();
+
+            $("#KdvContent-" + satirindex).find("div[id^='kdvRow']").each(function (i, divdata) {
+
+
+
+                $(divdata).find("select[name*='Kdvler']").each(
+                    function (row, inp) {
+                        var name = $(inp).attr("Name").split('.');
+                        $(inp).attr("Name", "FaturaSatir[" + satirindex + "].Kdvler[" + i + "]." + name[2]);
+                        $(inp).attr("data-index", i);
+                    }
+                );
+
+                $(divdata).find("input[name*='Kdvler']").each(
+                    function (row, inp) {
+                        var name = $(inp).attr("Name").split('.');
+                        $(inp).attr("Name", "FaturaSatir[" + satirindex + "].Kdvler[" + i + "]." + name[2]);
+                    }
+                );
+
+                $(divdata).find("div[id^='btnkdvSil']").attr("data-index", satirindex + "-" + i);
+                $(divdata).find("div[id^='btnkdvSil']").attr("id", "btnkdvSil-" + satirindex + "-" + i);
+
+
+            });
+            //EkKdvIslemleri();
+            //EkkdvIslemlerAfterLoad();
+
+        });
+        // }
 
 
         function toDouble(value) {
@@ -582,10 +653,8 @@
             return result;
         }
 
-        $(document).ready(function () {
 
 
-        });
 
         function GetSeriNumara() {
             $("#Sb_SeriNumara").empty();
@@ -636,6 +705,8 @@
             });
 
         }
+
+             //   });
     </script>
 
 }

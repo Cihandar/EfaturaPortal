@@ -14,6 +14,7 @@ using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Application.Interfaces.Extentions;
 using EfaturaPortal.Application.Interfaces.Cariler;
 using EfaturaPortal.Application.Interfaces.FaturaSatirs;
+using EfaturaPortal.Application.Interfaces.VergiKodlaris;
 
 namespace EfaturaPortal.Controllers
 {
@@ -27,13 +28,14 @@ namespace EfaturaPortal.Controllers
         ITcmbDovizKurlari _TcmbDovizKurlari;
         ICarilerCrud _carilerCrud;
         IFaturaSatirCrud _faturaSatirCrud;
+        IVergiKodlariCrud _vergiKodlariCrud;
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud)
+        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud,IVergiKodlariCrud vergiKodlariCrud)
         {
             faturaCrud = _faturaCrud;
             SNumaralarCrud = _SNumaralarCrud;
@@ -42,6 +44,7 @@ namespace EfaturaPortal.Controllers
             _TcmbDovizKurlari = TcmbDovizKurlari;
             _carilerCrud = carilerCrud;
             _faturaSatirCrud = faturaSatirCrud;
+            _vergiKodlariCrud = vergiKodlariCrud;
         }
 
 
@@ -88,6 +91,13 @@ namespace EfaturaPortal.Controllers
             return PartialView("_InvoiceLineForm",result);
         }
 
+        public async Task<IActionResult> GetInvoiceTaxLine(int index,int KdvIndex)
+        {
+            var result = await _vergiKodlariCrud.GetAll();
+            ViewBag.Index = index;
+            ViewBag.KdvIndex = KdvIndex;
+            return PartialView("_InvoiceLineTax", result);
+        }
         #region Create
         [HttpGet]
         public async Task<IActionResult> Create()

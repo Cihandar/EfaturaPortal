@@ -51,6 +51,8 @@ using EfaturaPortal.Application.Interfaces.Ulkelers;
 using EfaturaPortal.Application.Ulkelers.Commands;
 using EfaturaPortal.Application.Interfaces.VergiKodlaris;
 using EfaturaPortal.Application.VergiKodlaris.Commands;
+using EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers;
+using EfaturaPortal.Application.FaturaSatirKdvlers.Commands;
 
 namespace EfaturaPortal
 {
@@ -93,6 +95,7 @@ namespace EfaturaPortal
             services.AddScoped<IVergiKodlariCrud, VergiKodlariCrud>();
             services.AddScoped<IIstisnaKodlariCrud, IstisnaKodlariCrud>();
             services.AddScoped<IFaturaSatirCrud, FaturaSatirCrud>();
+            services.AddScoped<IFaturaSatirKdvlerCrud, FaturaSatirKdvlerCrud>();
             services.AddScoped<IUlkelerCrud, UlkelerCrud>();
 
 
