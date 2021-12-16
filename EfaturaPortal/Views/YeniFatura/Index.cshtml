@@ -465,10 +465,16 @@
         //  function GetNewRow() {
         $(document).on("change", "input[name ^= 'FaturaSatir']", function () {
 
-
-            debugger;
+ 
 
             var index = $(this).closest("tr").data("index");
+
+            SatirHesapla(index);
+
+        });
+        // }
+
+        function SatirHesapla(index) {
 
             var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
@@ -477,47 +483,115 @@
             var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
             var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
             var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
+            var tevtutar = $("input[name='FaturaSatir[" + index + "].TevkifatTutar']");
+            var kdvlitutar = $("input[name='FaturaSatir[" + index + "].KdvliTutar']");
 
-            var nettutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+            var indoran = toDouble(iskontoOran.val());
+
+            var birimtutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+            var nettutar = birimtutar;
+            var indtutar = 0;
+            var stopajtutar = 0;
+
+            if (indoran > 0) {
+                indtutar = birimtutar * (indoran / 100)
+                nettutar = birimtutar - indtutar;
+            }  
+
+
+
             var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
             var gtoplam = kdvtutar + nettutar;
 
-            kdvTutar.val(kdvtutar.toFixed(4));
-            tutar.val(gtoplam.toFixed(4));
 
-        });
-        // }
+
+
+
+            var tevkifatoran = $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val();
+
+            if (tevkifatoran != "-1") {
+                var tevkifat = tevkifatoran.split("/");
+                var oran = toDouble(tevkifat[0]) / toDouble(tevkifat[1]);
+                var tevkifattutar = kdvtutar * oran;
+                gtoplam = (kdvtutar-tevkifattutar) + nettutar;
+                tevtutar.val(tevkifattutar.toFixed(4));
+            } else {
+                tevtutar.val("");
+            }
+
+
+            $("KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
+
+                var kdvkodu = $(kdvrow).find("select[name^='FaturaSatir']").val();
+
+                if (kdvkodu == "0003" || kdvkodu == "0011") {
+
+                    var oran = $()
+
+
+                } else {
+
+                }
+
+            });
+
+
+            iskontoTutar.val(indtutar.toFixed(4));
+            tutar.val(nettutar.toFixed(4));
+            kdvTutar.val(kdvtutar.toFixed(4));
+            kdvlitutar.val(gtoplam.toFixed(4));
+        }
+
+      
 
         // function GetIstisnaAndTevkifat() {
         $(document).on("click", ".btnKodlar", function () {
             var index = $(this).data("index");
 
-            $("#Kodlar-" + index).fadeIn();
+            var fattipi = $("#Sb_FaturaTipi").val();
+
+            if (fattipi == "0" || fattipi == "1") {
+                Notiflix.Report.Failure('Fatura Tipi', "İstisna veya Tevkifat kodlarını açabilmek için Fatura Tipini İstisnalı veya Tevkifatlı fatura olarak seçin !", 'Tamam');
+                $("#Sb_FaturaTipi").focus();
+            } else {
+                $("#Kodlar-" + index).fadeIn();
+            }
+
+          
+
+        });
+
+        $(document).on("change", "select[name*='TevkifatOran']", function () {
+            var index = $(this).data("index");
+
+            SatirHesapla(index);
 
         });
 
         $(document).on("change", "select[name*='TevkifatKodu']", function () {
 
-            debugger;
+        
             var index = $(this).data("index");
-            debugger;
+ 
             if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
 
                 var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
-                debugger;
+ 
                 var oran = tevkifatText.substr(5, 4);
-                debugger;
+     
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val(oran);
-                debugger;
+ 
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", "disabled");
-                debugger;
+
+                SatirHesapla(index);
+  
             } else {
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", false);
-                debugger;
+          
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val("-1");
-                debugger;
+       
             }
-            debugger;
+     
 
         });
         // }
@@ -568,6 +642,42 @@
                                 $(inp).attr("data-index", index);
                             }
                         );
+
+                        $(tr).find("div[id^='KdvContent']").each(function (c, divcontent) {
+
+                            $(divcontent).find("div[id^='kdvRow']").each(function (i, divdata) {
+
+                                $(divdata).find("select[name*='Kdvler']").each(
+                                    function (row, inp) {
+                                        var name = $(inp).attr("name").split('.');
+                                        debugger;
+                                        $(inp).attr("Name", "FaturaSatir[" + index + "].Kdvler[" + i + "]." + name[2]);
+                                        $(inp).attr("data-index", i);
+                                    }
+                                );
+
+                                $(divdata).find("input[name*='Kdvler']").each(
+                                    function (row, inp) {
+                                        var name = $(inp).attr("name").split('.');
+                                        debugger;
+                                        $(inp).attr("Name", "FaturaSatir[" + index + "].Kdvler[" + i + "]." + name[2]);
+                                    }
+                                );
+
+                                $(divdata).attr("id", "kdvRow-" + index + "-" + i);
+                                $(divdata).find("div[id^='btnkdvSil']").attr("data-index", index + "-" + i);
+                                $(divdata).find("div[id^='btnkdvSil']").attr("id", "btnkdvSil-" + index + "-" + i);
+
+                            });
+
+                            $(divcontent).attr("id", "KdvContent-" + index);
+
+
+                        });
+
+
+
+
                     }
                 );
 
@@ -607,7 +717,7 @@
 
         $(document).on("click", "div[id^='btnkdvSil']", function () {
 
-
+            debugger;
             var index = $(this).data("index");
 
             var satirindex = index.split('-')[0];
@@ -633,9 +743,9 @@
                     }
                 );
 
+                $(divdata).attr("id", "kdvRow-" + satirindex + "-" + i);
                 $(divdata).find("div[id^='btnkdvSil']").attr("data-index", satirindex + "-" + i);
                 $(divdata).find("div[id^='btnkdvSil']").attr("id", "btnkdvSil-" + satirindex + "-" + i);
-
 
             });
             //EkKdvIslemleri();
@@ -706,7 +816,7 @@
 
         }
 
-             //   });
+                 //   });
     </script>
 
 }

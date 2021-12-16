@@ -7,7 +7,7 @@
 
     <td colspan="12" class="col-md-12" id="row-@index">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label asp-for="Aciklama" class="form-control-label">Açıklama</label>
                     <input name="FaturaSatir[@index].Aciklama" asp-for="Aciklama" class="form-control" data-placeholder="" />
@@ -54,6 +54,13 @@
                     <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
                 </div>
             </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label asp-for="Tutar" class="form-control-label">Net Tutar</label>
+                    <input name="FaturaSatir[@index].Tutar" asp-for="Tutar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="Tutar" class="text-danger"> </span>
+                </div>
+            </div>
             <div class="col-md-1 LineKdv">
                 <div class="form-group">
                     <label asp-for="KdvOran" class="form-control-label">Kdv (0015)</label>
@@ -70,9 +77,9 @@
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <label asp-for="Tutar" class="form-control-label text-center">Tutar</label>
-                    <input name="FaturaSatir[@index].Tutar" asp-for="Tutar" class="form-control" data-placeholder="" />
-                    <span asp-validation-for="Tutar" class="text-danger"> </span>
+                    <label asp-for="KdvliTutar" class="form-control-label text-center">Tutar</label>
+                    <input name="FaturaSatir[@index].KdvliTutar" asp-for="KdvliTutar" class="form-control" data-placeholder="" />
+                    <span asp-validation-for="KdvliTutar" class="text-danger"> </span>
                 </div>
             </div>
         </div>
@@ -97,7 +104,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <select class="form-control" name="FaturaSatir[@index].TevkifatKodu" id="select2-@index" data-index="@index">
                                     <option value="-1">Tevkifat Kodu Seçin</option>
                                     @foreach (var x in Model.LstTevkifatKodlari)
@@ -106,7 +113,7 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <select class="form-control" name="FaturaSatir[@index].TevkifatOran" id="select2-@index" data-index="@index" disabled>
                                     <option value="-1">Oran Seç</option>
                                     <option value="2/10">2/10</option>
@@ -116,6 +123,9 @@
                                     <option value="7/10">7/10</option>
                                     <option value="9/10">9/10</option>
                                 </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" name="FaturaSatir[@index].TevkifatTutar" placeholder="Tevkifat Tutar" />
                             </div>
                         </div>
                     </div>
