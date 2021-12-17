@@ -13,6 +13,7 @@ using EfaturaPortal.Application.Carilers.Commands;
 using EfaturaPortal.Application.Interfaces.Faturas;
 using EfaturaPortal.Application.Interfaces.Cariler;
 using EfaturaPortal.Application.Interfaces.DovizKodlaris;
+using EfaturaPortal.Application.Interfaces.OdemeTurleris;
 using EfaturaPortal.Models.ResultModel;
 
 namespace EfaturaPortal.Application.Faturas.Commands
@@ -23,15 +24,16 @@ namespace EfaturaPortal.Application.Faturas.Commands
         public IMapper mapper;
         public ICarilerCrud carilerCrud;
         public IDovizKodlariCrud dovizKodlariCrud;
- 
+        public IOdemeTurleriCrud odemeTurleriCrud;
         
 
-        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud)
+        public FaturaCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud, IOdemeTurleriCrud _odemeTurleriCrud)
         {
             context = _context;
             mapper = _mapper;
             carilerCrud = _carilerCrud;
             dovizKodlariCrud = _dovizKodlariCrud;
+            odemeTurleriCrud = _odemeTurleriCrud;
  
         }
 
@@ -74,14 +76,18 @@ namespace EfaturaPortal.Application.Faturas.Commands
                 fatura.Notlar = request.Notlar;
                 fatura.OdemeHesapNo = request.OdemeHesapNo;
                 fatura.OdemeKanali = request.OdemeKanali;
-                fatura.OdemeSekli = request.OdemeSekli;
+                fatura.OdemeSekliKodu = request.OdemeSekliKodu;
+                fatura.OdemeSekliAdi = request.OdemeSekliAdi;
                 fatura.OdemeTarihi = request.OdemeTarihi;
                 fatura.OdenecekTutar = request.OdenecekTutar;
                 fatura.ParaBirimi = request.ParaBirimi;
                 fatura.SeriNumaralarId = request.SeriNumaralarId;
                 fatura.Tarih = request.Tarih;
-                fatura.Toplam = request.Toplam;
-                fatura.YaziylaTutar = request.YaziylaTutar;              
+                fatura.Toplam = request.Toplam;                
+                fatura.YaziylaTutar = request.YaziylaTutar;
+                fatura.TevkifatToplam = request.TevkifatToplam;
+                fatura.DigerVergilerToplam = request.DigerVergilerToplam;
+                
 
                 context.SaveChanges();
 
@@ -121,7 +127,8 @@ namespace EfaturaPortal.Application.Faturas.Commands
             result.CarilerMwList = await carilerCrud.GetAll(FirmaId);  //Firmaya Ait Cariler Alınıyor..
 
             result.DovizKodlari = await dovizKodlariCrud.GetAll();
-   
+
+            result.OdemeTurleriList = await odemeTurleriCrud.GetAll();
 
             return result;
 

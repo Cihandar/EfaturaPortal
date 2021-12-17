@@ -36,7 +36,7 @@ namespace EfaturaPortal.Models
 
         public DbSet<FaturaSatirKdvler> FaturaSatirKdvlers { get; set; }
 
-
+        public DbSet<OdemeTurleri> OdemeTurleris { get; set; }
 
         public DbSet<VergiKodlari> VergiKodlaris { get; set; }
 

@@ -198,7 +198,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Cariler.VergiDairesi" class="form-control-label">Vergi Numarası</label>
+                                <label asp-for="Cariler.VergiDairesi" class="form-control-label">Vergi Dairesi</label>
                                 <input asp-for="Cariler.VergiDairesi" class="form-control" data-placeholder="" id="Tx_Cari_VergiDairesi" />
                                 <span asp-validation-for="Cariler.VergiDairesi" class="text-danger"> </span>
                             </div>
@@ -244,6 +244,60 @@
                 </div> <!-- /.card-body -->
 
             </div><!--Card-->
+        </div>
+    </div>
+    <div class="col-lg-5 col-md-12 ml-md-5">
+        <div class="card card-default container-fluid">
+            <div class="card-header">
+                <h3 class="card-title">Ödeme Şekli ve Hesap Bilgileri</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div> <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="OdemeTarihi" class="form-control-label">Ödeme Tarihi</label>
+                            <input asp-for="OdemeTarihi" type="text" class="form-control seridenapp-forms-select2" id="OdemeTarihi" />
+                            <span asp-validation-for="OdemeTarihi" class="text-danger"> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="OdemeSekliKodu" class="form-control-label">Ödeme Türü Seçin</label>
+                            <select asp-for="OdemeSekliKodu" class="form-control">
+                                <option value="-1">Lütfen Ödeme Türü Seçin</option>
+                                @foreach (var data in Model.OdemeTurleriList)
+                                {
+                                    <option value="@data.Kodu">@data.Adi</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="OdemeKanali" class="form-control-label">Ödeme Kanalı</label>
+                            <input asp-for="OdemeKanali" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="OdemeHesapNo" class="form-control-label">Ödeme Hesap No</label>
+                            <input asp-for="OdemeHesapNo" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div><!--2-Row-->
@@ -304,7 +358,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="Toplam" class="form-control" readonly/>
+                            <input asp-for="Toplam" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -314,7 +368,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="Iskonto" class="form-control" readonly/>
+                            <input asp-for="Iskonto" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -324,7 +378,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="Kdv" class="form-control" readonly/>
+                            <input asp-for="Kdv" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -334,7 +388,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="DigerVergilerToplam" class="form-control" readonly/>
+                            <input asp-for="DigerVergilerToplam" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -344,7 +398,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="TevkifatToplam" class="form-control" readonly/>
+                            <input asp-for="TevkifatToplam" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -354,7 +408,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <input asp-for="OdenecekTutar" class="form-control"  readonly/>
+                            <input asp-for="OdenecekTutar" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
@@ -387,7 +441,7 @@
         $(function () {
 
             //Date range picker with time picker
-            $('#FaturaTarihi').daterangepicker({
+            $('input[id*="Tarih"').daterangepicker({
                 singleDatePicker: true,
                 timePicker: true,
                 autoApply: true,
@@ -671,11 +725,11 @@
             var tevkifattoplam = 0;
 
             $("#Tb_InvoiceLine tr").each(function (index, row) {
-                tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val()); 
-                kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val()); 
-                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val()); 
-                gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val()); 
-                tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val()); 
+                tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val());
+                kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val());
+                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());
+                gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val());
+                tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val());
                 $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
                     digervergitoplam = toDouble(digervergitoplam + $(kdvrow).find("input[name*='KdvTutar']").val());
                 });
@@ -975,7 +1029,7 @@
 
         }
 
-                                                     //   });
+                                                                                     //   });
     </script>
 
 }

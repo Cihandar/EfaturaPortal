@@ -53,6 +53,8 @@ using EfaturaPortal.Application.Interfaces.VergiKodlaris;
 using EfaturaPortal.Application.VergiKodlaris.Commands;
 using EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers;
 using EfaturaPortal.Application.FaturaSatirKdvlers.Commands;
+using EfaturaPortal.Application.Interfaces.OdemeTurleris;
+using EfaturaPortal.Application.OdemeTurleris.Commands;
 
 namespace EfaturaPortal
 {
@@ -98,6 +100,7 @@ namespace EfaturaPortal
             services.AddScoped<IFaturaSatirKdvlerCrud, FaturaSatirKdvlerCrud>();
             services.AddScoped<IUlkelerCrud, UlkelerCrud>();
 
+            services.AddScoped<IOdemeTurleriCrud, OdemeTurleriCrud>();
 
             services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();

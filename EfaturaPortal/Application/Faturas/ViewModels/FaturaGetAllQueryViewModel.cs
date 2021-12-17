@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using EfaturaPortal.Application.SeriNumaralars.ViewModels;
 using EfaturaPortal.Application.Carilers.ViewModels;
 using EfaturaPortal.Application.DovizKodlaris.ViewModels;
-
+using EfaturaPortal.Application.OdemeTurleris.ViewModels;
 namespace EfaturaPortal.Application.Faturas.ViewModels
 {
     public class FaturaGetAllQueryViewModel : IHaveCustomMapping
@@ -31,7 +31,10 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public Guid CarilerId { get; set; }
 
         public DateTime OdemeTarihi { get; set; }
-        public string OdemeSekli { get; set; }
+        public string OdemeSekliKodu { get; set; }
+
+        public string OdemeSekliAdi { get; set; }
+
         public string OdemeKanali { get; set; }
         public string OdemeHesapNo { get; set; }
 
@@ -63,6 +66,8 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public List<SeriNumaralarGetAllQueryViewModel> SeriNumaralarMwList { get; set; }
 
         public List<CarilerGetAllQueryViewModel> CarilerMwList { get; set; }
+
+        public List<OdemeTurleriGetAllQueryViewModel> OdemeTurleriList { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {

@@ -21,7 +21,8 @@ namespace EfaturaPortal.Models
         public Guid CarilerId { get; set; }
 
         public DateTime OdemeTarihi { get; set; }
-        public string OdemeSekli { get; set; }
+        public string OdemeSekliKodu { get; set; }
+        public string OdemeSekliAdi { get; set; }
         public string OdemeKanali { get; set; }
         public string OdemeHesapNo { get; set; }
 
@@ -36,6 +37,8 @@ namespace EfaturaPortal.Models
         public double OdenecekTutar { get; set; }
         public double TevkifatToplam { get; set; }
         public double DigerVergilerToplam { get; set; }
+
+        
 
         public FaturaSenaryo FaturaSenaryo { get; set; }
         public FaturaTipi FaturaTipi  { get; set; }
