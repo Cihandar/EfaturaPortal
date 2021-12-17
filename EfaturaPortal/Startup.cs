@@ -177,6 +177,9 @@ namespace EfaturaPortal
                 app.UseHsts();
             }
 
+
+
+
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

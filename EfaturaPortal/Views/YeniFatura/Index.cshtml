@@ -433,8 +433,25 @@
 {
     <script src="~/plugins/adminLte/plugins/inputmask/jquery.inputmask.min.js"></script>
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
-    @*   <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
+    @*<script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
     <script>
+        /// INITIALİZE
+
+       /// INITIALİZE
+
+
+        // FUNC
+
+
+        ///FUNC
+
+
+        //EVENT
+
+
+        //EVENT
+
+
 
         var updateTax = false;
 
@@ -622,6 +639,7 @@
 
         function SatirHesapla(index) {
 
+            // REVİEW var selector = "input[name = 'FaturaSatir[" + index + "]";
             var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
             var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
@@ -676,12 +694,14 @@
 
 
 
-
+                    //REVİEW
+                    var oran = 0;
                     if (kdvkodu == "0003" || kdvkodu == "0011") {
 
                         var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
 
                         if (oran > 0) {
+                            //REVİEW
                             var ekkdvtutar = (nettutar * (oran / 100));
                             $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
                             gtoplam = gtoplam - ekkdvtutar;
@@ -692,7 +712,7 @@
                         var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
 
                         if (oran > 0) {
-
+                            //REVİEW
                             var ekkdvtutar = (nettutar * (oran / 100));
 
                             $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
@@ -725,13 +745,15 @@
             var tevkifattoplam = 0;
 
             $("#Tb_InvoiceLine tr").each(function (index, row) {
+                //REVİEW
                 tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val());
                 kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val());
                 iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());
                 gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val());
                 tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val());
+
                 $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
-                    digervergitoplam = toDouble(digervergitoplam + $(kdvrow).find("input[name*='KdvTutar']").val());
+                    digervergitoplam = digervergitoplam + toDouble($(kdvrow).find("input[name*='KdvTutar']").val());
                 });
 
             });
@@ -745,6 +767,12 @@
 
 
         }
+
+        //REVİEW
+        //function GenelToplam(name, value) {
+        //    if (value && value > 0)
+        //        $("#GenelToplam").find("input[name='" + name + "']").val(value.toFixed(4))
+        //}
 
 
 
@@ -765,23 +793,19 @@
             } else {
                 $("#Kodlar-" + index).fadeIn();
             }
-
-
-
         });
 
         $(document).on("change", "select[name*='TevkifatOran']", function () {
             var index = $(this).data("index");
 
             SatirHesapla(index);
-
         });
 
         $(document).on("change", "select[name*='TevkifatKodu']", function () {
 
 
             var index = $(this).data("index");
-
+            //REVİEW select[name='FaturaSatir[" + index + "].TevkifatKodu']
             if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
 
                 var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
@@ -838,6 +862,7 @@
 
                         $(tr).find("input[name^='FaturaSatir']").each(
                             function (row, inp) {
+                                //REVİEW
                                 var name = $(inp).attr("Name").split('.');
                                 $(inp).attr("Name", "FaturaSatir[" + index + "]." + name[1]);
                                 $(inp).attr("data-index", index);
@@ -934,9 +959,6 @@
             $("#kdvRow-" + index).remove();
 
             $("#KdvContent-" + satirindex).find("div[id^='kdvRow']").each(function (i, divdata) {
-
-
-
                 $(divdata).find("select[name*='Kdvler']").each(
                     function (row, inp) {
                         var name = $(inp).attr("Name").split('.');
@@ -963,7 +985,6 @@
         });
         // }
 
-
         function toDouble(value) {
 
             if (value == null || value == "") {
@@ -976,15 +997,9 @@
             return result;
         }
 
-
-
-
         function GetSeriNumara() {
             $("#Sb_SeriNumara").empty();
             Notiflix.Block.Standard("#dv_SeriNumara");
-
-
-
             $.ajax({
                 type: 'get',
                 url: 'GetSeriNumaralar?faturaTuru=' + $("#Sb_FaturaTuru").val(),
@@ -992,26 +1007,20 @@
                     Notiflix.Block.Remove("*", 0);
                 },
                 success: function (data) {
-
-
-
                     $.each(data, function (i, state) {
                         $("#Sb_SeriNumara").append('<option value="' + state.id + '">' + state.seriNo + '</option>');
                     });
-
                 }
             });
         }
 
         function DovizKuruGetir() {
-
             if ($("#Cm_Doviz").val() == "TRY") {
                 $("#Tx_DovizKuru").val("1");
                 return;
             }
 
             Notiflix.Block.Standard("#Dv_DovizKuru");
-
             $.ajax({
                 type: 'get',
                 url: 'GetDovizKuru?DovizKodu=' + $("#Cm_Doviz").val() + '&' + 'Tarih=' + $("#FaturaTarihi").val(),
@@ -1026,10 +1035,9 @@
                     }
                 }
             });
-
         }
 
-                                                                                     //   });
+                                                                                             //   });
     </script>
 
 }
