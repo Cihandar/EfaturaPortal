@@ -34,6 +34,8 @@ namespace EfaturaPortal.Models
         public double Iskonto { get; set; }
         public double Kdv { get; set; }
         public double OdenecekTutar { get; set; }
+        public double TevkifatToplam { get; set; }
+        public double DigerVergilerToplam { get; set; }
 
         public FaturaSenaryo FaturaSenaryo { get; set; }
         public FaturaTipi FaturaTipi  { get; set; }

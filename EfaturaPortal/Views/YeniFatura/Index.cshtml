@@ -250,27 +250,119 @@
 
 <div class="row">
     <div class="col-12">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="col-md-12">
+        <div class="card card-default container-fluid">
+            <div class="card-header">
+                <h3 class="card-title">Fatura Kalemleri</h3>
 
-                        <h6>Kalem Bilgileri</h6>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div> <!-- /.card-header -->
+            <div class="card-body" style="padding:0px;">
+                <table class="table table-hover">
+                    @*<thead>
+                            <tr>
+                                <th class="col-md-12">
 
-                    </th>
+                                    <h6>Kalem Bilgileri</h6>
 
-                </tr>
-            </thead>
-            <tbody id="Tb_InvoiceLine">
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="9"><button type="button" class="btn btn-fill  btn-primary" id="Bt_Add_InvoiceLine"> Mal/Hizmet Ekle</button></td>
-                </tr>
-            </tfoot>
-        </table>
+                                </th>
+
+                            </tr>
+                        </thead>*@
+                    <tbody id="Tb_InvoiceLine">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9"><button type="button" class="btn btn-fill  btn-primary" id="Bt_Add_InvoiceLine"> Mal/Hizmet Ekle</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div><!--3-Row-->
+
+<div class="row" id="GenelToplam">
+    <div class="col-md-6">
+        <div class="card card-default container-fluid">
+            <div class="card-header">
+                <h3 class="card-title">Dip Toplamlar</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div> <!-- /.card-header -->
+            <div class="card-body" style="">
+                <div class="row">
+                    <div class="col-md-4">
+                        Net Toplam
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="Toplam" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        İskonto Toplam
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="Iskonto" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        0015-Kdv Toplam
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="Kdv" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        Diğer Vergi Toplamları
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="DigerVergilerToplam" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        Tevkifat Toplam
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="TevkifatToplam" class="form-control" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        Genel Toplam (Ödenecek Tutar)
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input asp-for="OdenecekTutar" class="form-control"  readonly/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 @section css
 {
@@ -465,7 +557,7 @@
         //  function GetNewRow() {
         $(document).on("change", "input[name ^= 'FaturaSatir']", function () {
 
- 
+
 
             var index = $(this).closest("tr").data("index");
 
@@ -496,7 +588,7 @@
             if (indoran > 0) {
                 indtutar = birimtutar * (indoran / 100)
                 nettutar = birimtutar - indtutar;
-            }  
+            }
 
 
 
@@ -509,27 +601,51 @@
 
             var tevkifatoran = $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val();
 
+            debugger;
             if (tevkifatoran != "-1") {
+                debugger;
                 var tevkifat = tevkifatoran.split("/");
                 var oran = toDouble(tevkifat[0]) / toDouble(tevkifat[1]);
                 var tevkifattutar = kdvtutar * oran;
-                gtoplam = (kdvtutar-tevkifattutar) + nettutar;
+                gtoplam = (kdvtutar - tevkifattutar) + nettutar;
                 tevtutar.val(tevkifattutar.toFixed(4));
             } else {
                 tevtutar.val("");
             }
 
 
-            $("KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
+            $("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
 
                 var kdvkodu = $(kdvrow).find("select[name^='FaturaSatir']").val();
 
-                if (kdvkodu == "0003" || kdvkodu == "0011") {
-
-                    var oran = $()
+                if (kdvkodu != "-1") {
 
 
-                } else {
+
+
+                    if (kdvkodu == "0003" || kdvkodu == "0011") {
+
+                        var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
+
+                        if (oran > 0) {
+                            var ekkdvtutar = (nettutar * (oran / 100));
+                            $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
+                            gtoplam = gtoplam - ekkdvtutar;
+                        }
+
+                    } else {
+
+                        var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
+
+                        if (oran > 0) {
+
+                            var ekkdvtutar = (nettutar * (oran / 100));
+
+                            $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
+
+                            gtoplam = gtoplam + ekkdvtutar;
+                        }
+                    }
 
                 }
 
@@ -540,9 +656,48 @@
             tutar.val(nettutar.toFixed(4));
             kdvTutar.val(kdvtutar.toFixed(4));
             kdvlitutar.val(gtoplam.toFixed(4));
+
+            GenelToplamHesapla()
         }
 
-      
+
+        function GenelToplamHesapla() {
+
+            var tutar = 0;
+            var kdvtutar = 0;
+            var iskontotutar = 0;
+            var gtoplam = 0;
+            var digervergitoplam = 0;
+            var tevkifattoplam = 0;
+
+            $("#Tb_InvoiceLine tr").each(function (index, row) {
+                tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val()); 
+                kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val()); 
+                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val()); 
+                gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val()); 
+                tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val()); 
+                $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
+                    digervergitoplam = toDouble(digervergitoplam + $(kdvrow).find("input[name*='KdvTutar']").val());
+                });
+
+            });
+
+            $("#GenelToplam").find("input[name='Toplam']").val(tutar.toFixed(4));
+            $("#GenelToplam").find("input[name='Kdv']").val(kdvtutar.toFixed(4));
+            $("#GenelToplam").find("input[name='Iskonto']").val(iskontotutar.toFixed(4));
+            $("#GenelToplam").find("input[name='OdenecekTutar']").val(gtoplam.toFixed(4));
+            $("#GenelToplam").find("input[name='TevkifatToplam']").val(tevkifattoplam.toFixed(4));
+            $("#GenelToplam").find("input[name='DigerVergilerToplam']").val(digervergitoplam.toFixed(4));
+
+
+        }
+
+
+
+        $(document).on("change", "select[name*='Kodu']", function () {
+            var index = $(this).closest("tr").data("index");
+            SatirHesapla(index);
+        });
 
         // function GetIstisnaAndTevkifat() {
         $(document).on("click", ".btnKodlar", function () {
@@ -557,7 +712,7 @@
                 $("#Kodlar-" + index).fadeIn();
             }
 
-          
+
 
         });
 
@@ -570,28 +725,28 @@
 
         $(document).on("change", "select[name*='TevkifatKodu']", function () {
 
-        
+
             var index = $(this).data("index");
- 
+
             if ($("select[name='FaturaSatir[" + index + "].TevkifatKodu']").val() != "650") {
 
                 var tevkifatText = $("select[name='FaturaSatir[" + index + "].TevkifatKodu'] option:selected").text();
- 
+
                 var oran = tevkifatText.substr(5, 4);
-     
+
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val(oran);
- 
+
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", "disabled");
 
                 SatirHesapla(index);
-  
+
             } else {
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").prop("disabled", false);
-          
+
                 $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val("-1");
-       
+
             }
-     
+
 
         });
         // }
@@ -757,7 +912,11 @@
 
         function toDouble(value) {
 
-            value = value.replace(",", ".");
+            if (value == null || value == "") {
+                value = 0;
+            } else {
+                value = value.replace(",", ".");
+            }
             var result = parseFloat(value);
 
             return result;
@@ -816,7 +975,7 @@
 
         }
 
-                 //   });
+                                                     //   });
     </script>
 
 }

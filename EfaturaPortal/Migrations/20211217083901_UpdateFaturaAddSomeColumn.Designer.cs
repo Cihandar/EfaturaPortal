@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20211217083901_UpdateFaturaAddSomeColumn")]
+    partial class UpdateFaturaAddSomeColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

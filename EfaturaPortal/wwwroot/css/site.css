@@ -35,12 +35,21 @@ for details on configuring this project to bundle and minify static web assets. 
 .LineKdv {
     background-color: rgb(219, 251, 255);
 }
+
 .LineIskonto {
     background: rgb(247, 255, 219);
 }
 
 .LineTutar {
     background-color: rgb(150, 255, 148);
+}
+
+.faturakalemborder {
+    border-top: 2px solid #1360ad !important;
+}
+
+.form-control-label {
+    white-space: nowrap !important;
 }
     /* QR code generator */
     /*#qrCode {

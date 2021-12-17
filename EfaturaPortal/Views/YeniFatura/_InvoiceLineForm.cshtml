@@ -5,7 +5,7 @@
 
 <tr data-index="@index">
 
-    <td colspan="12" class="col-md-12" id="row-@index">
+    <td colspan="12" class="col-md-12 faturakalemborder" id="row-@index">
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
@@ -64,7 +64,7 @@
             <div class="col-md-1 LineKdv">
                 <div class="form-group">
                     <label asp-for="KdvOran" class="form-control-label">Kdv (0015)</label>
-                    <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" />
+                    <input name="FaturaSatir[@index].KdvOran" asp-for="KdvOran" class="form-control" data-placeholder="" value="18" />
                     <span asp-validation-for="KdvOran" class="text-danger"> </span>
                 </div>
             </div>
