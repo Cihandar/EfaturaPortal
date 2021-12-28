@@ -10,8 +10,8 @@ using EfaturaPortal.Application.OlcuBirimleris.ViewModels;
 using EfaturaPortal.Application.IstisnaKodlaris.ViewModels;
 using EfaturaPortal.Application.TevkifatKodlaris.ViewModels;
 using EfaturaPortal.Application.VergiKodlaris.ViewModels;
-
-
+using EfaturaPortal.Application.FaturaSatirKdvlers.ViewModels;
+using EfaturaPortal.Application.VergiKodlaris.ViewModels;
 namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
 {
     public class FaturaSatirGetAllQueryViewModel : IHaveCustomMapping
@@ -39,6 +39,8 @@ namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
         public List<TevkifatKodlariGetAllQueryViewModel> LstTevkifatKodlari { get; set; }
 
         public List<VergiKodlariGetAllQueryViewModel> LstVergiKodlari { get; set; }
+
+        public List<FaturaSatirKdvlerGetAllQueryViewModel> Kdvler { get; set; }
 
         public void CreateMappings(Profile configuration)
         {

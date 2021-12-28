@@ -1,423 +1,451 @@
 ﻿
 @model EfaturaPortal.Application.Faturas.ViewModels.FaturaGetAllQueryViewModel;
+
 @{
 
     var action = Model == null || Model.Id == Guid.Empty ? "create" : "update";
     //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
 }
 
+<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/@action">
+    <button type="submit" id="kaydet" class="btn btn-success">Kaydet</button>
+    <div class="row">
+        <!--1 Row-->
 
-<div class="row">
-    <!--1 Row-->
+        <div class="col-lg-6 col-md-12">
+            <div class="row">
+                <div class="card card-default container-fluid">
+                    <div class="card-header">
+                        <h3 class="card-title">Tarih Ve Seri No Bilgileri</h3>
 
-    <div class="col-lg-6 col-md-12">
-        <div class="row">
-            <div class="card card-default container-fluid">
-                <div class="card-header">
-                    <h3 class="card-title">Tarih Ve Seri No Bilgileri</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div> <!-- /.card-header -->
 
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div> <!-- /.card-header -->
+                    <div class="card-body" id="loadingCheckTaxNumber">
 
-                <div class="card-body" id="loadingCheckTaxNumber">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label asp-for="Cariler.VergiNumarasi" class="form-control-label">*Müşteri Vergi No</label>
-                            <div class="input-group mb-3">
-                                <input asp-for="Cariler.VergiNumarasi" class="form-control" id="Tx_Vdno" placeholder="" />
-                                <div class="input-group-append" style="cursor:pointer;" onclick="GetEInvoiceInfo()">
-                                    <div class="input-group-text">
-                                        <span class="fas fa fa-search"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label asp-for="Cariler.VergiNumarasi" class="form-control-label">*Müşteri Vergi No</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="Cariler.VergiNumarasi" class="form-control" id="Tx_Vdno" placeholder="" />
+                                    <div class="input-group-append" style="cursor:pointer;" onclick="GetEInvoiceInfo()">
+                                        <div class="input-group-text">
+                                            <span class="fas fa fa-search"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="FaturaTuru" class="form-control-label">Fatura Türü</label>
-                            <select disabled asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" id="Sb_FaturaTuru" onchange="GetSeriNumara()" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>()"></select>
-                            <span asp-validation-for="FaturaTuru" class="text-danger"> </span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
-                                <input asp-for="Tarih" type="text" class="form-control seridenapp-forms-select2" id="FaturaTarihi" />
-                                <span asp-validation-for="Tarih" class="text-danger"> </span>
-                            </div>
-                        </div>
-                        @*<div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
-                                    <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
-                                    <span asp-validation-for="Saat" class="text-danger"> </span>
-                                </div>
-                            </div>*@
-                    </div> <!-- /.row - Tarih & Saat -->
-
-                    <div class="row">
-                        <div class="col-md-6" id="dv_SeriNumara">
-                            <div class="form-group">
-                                <label asp-for="SeriNumaralarId" class="form-control-label">Seri No</label>
-                                <select asp-for="SeriNumaralarId" class="form-control seridenapp-forms-select2" id="Sb_SeriNumara"></select>
-                                <span asp-validation-for="SeriNumaralarId" class="text-danger"> </span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="FaturaNumarasi" class="form-control-label">Fatura Numarası</label>
-                                <input asp-for="FaturaNumarasi" class="form-control seridenapp-forms-select2" />
-                                <span asp-validation-for="FaturaNumarasi" class="text-danger"> </span>
-                            </div>
-                        </div>
-                    </div> <!-- /.row SeriNo & FatNo -->
-
-                </div> <!-- /.card-body -->
-
-
-            </div><!--Card-->
-        </div>
-    </div><!--1.col-md-6-->
-
-    <div class="col-lg-5 col-md-12 ml-md-5">
-        <div class="row">
-            <div class="card card-default container-fluid">
-                <div class="card-header">
-                    <h3 class="card-title">Fatura Gönderim & Döviz Bilgileri</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div> <!-- /.card-header -->
-
-                <div class="card-body">
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="FaturaTipi" class="form-control-label">Fatura Tipi</label>
-                                <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>()"></select>
-                                <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="FaturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
-                                <select asp-for="FaturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
-                                <span asp-validation-for="FaturaSenaryo" class="text-danger"> </span>
-                            </div>
-                        </div>
-                    </div> <!-- /.row - Tipi & Senaryo-->
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Doviz" class="form-control-label">Para Birimi</label>
-                                <select asp-for="Doviz" onchange="DovizKuruGetir()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.DovizKodlari,"DovizKodu","DovizAdi"))" id="Cm_Doviz">
-                                </select>
-                                <span asp-validation-for="Doviz" class="text-danger"> </span>
-                            </div>
-                        </div>
-                        <div class="col-md-6" id="Dv_DovizKuru">
-                            <label asp-for="DovizKuru" class="form-control-label">Doviz Kuru</label>
-                            <input asp-for="DovizKuru" class="form-control" id="Tx_DovizKuru" />
-                            <span asp-validation-for="DovizKuru" class="text-danger"> </span>
-                        </div>
-                    </div> <!-- /.row - Tipi & Senaryo-->
-
-                </div> <!-- /.card-body -->
-
-            </div><!--Card-->
-        </div>
-    </div><!--Col-Md-6-->
-</div><!--1-Row-->
-
-<div class="row">
-    <div class="col-lg-6 col-md-12">
-        <div class="row">
-            <div class="card card-default container-fluid">
-                <div class="card-header">
-                    <h3 class="card-title">Müşteri Cari Bilgileri</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div> <!-- /.card-header -->
-
-                <div class="card-body" id="Dv_Cariler">
-
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label asp-for="Cariler.Unvani" class="form-control-label">Ünvan</label>
-                            <div class="input-group mb-3">
-                                <input asp-for="Cariler.Unvani" class="form-control" id="Tx_Cari_Unvani" />
-                                <span asp-validation-for="Cariler.Unvani" class="text-danger"> </span>
-                                <div class="input-group-append" style="cursor:pointer;" onclick="">
-                                    <div class="btn btn-primary EfaturaPortalApp-datatables-create" data-endpoint="/YeniFatura/GetCariler" data-id="carisec">
-                                        <span class="">Müşteri Seç</span>
-                                    </div>
-                                </div>
-                                <input type="hidden" asp-for="CarilerId" id="Hd_CarilerId" />
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="Cariler.EfaturaPostaKutusu" class="form-control-label">Posta Kutusu Seç</label>
-                                <select asp-for="Cariler.EfaturaPostaKutusu" class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
-                                </select>
-                                <span asp-validation-for="CarilerId" class="text-danger"> </span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Cariler.VergiNumarasi" class="form-control-label">Vergi Numarası</label>
-                                <input asp-for="Cariler.VergiNumarasi" class="form-control" data-placeholder="" id="Tx_Cari_VergiNumarasi" />
                                 <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Cariler.VergiDairesi" class="form-control-label">Vergi Dairesi</label>
-                                <input asp-for="Cariler.VergiDairesi" class="form-control" data-placeholder="" id="Tx_Cari_VergiDairesi" />
-                                <span asp-validation-for="Cariler.VergiDairesi" class="text-danger"> </span>
+                            <div class="col-md-6">
+                                <label asp-for="FaturaTuru" class="form-control-label">Fatura Türü</label>
+                                <select disabled asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" id="Sb_FaturaTuru" onchange="GetSeriNumara()" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>()"></select>
+                                <span asp-validation-for="FaturaTuru" class="text-danger"> </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label asp-for="Cariler.Ulke" class="form-control-label">*Ülke</label>
-                                <input asp-for="Cariler.Ulke" class="form-control" data-placeholder="" id="Tx_Cari_Ulke" />
-                                <span asp-validation-for="Cariler.Ulke" class="text-danger"> </span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
+                                    <input asp-for="Tarih" type="text" class="form-control seridenapp-forms-select2" id="FaturaTarihi" />
+                                    <span asp-validation-for="Tarih" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
+                                        <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
+                                        <span asp-validation-for="Saat" class="text-danger"> </span>
+                                    </div>
+                                </div>*@
+                        </div> <!-- /.row - Tarih & Saat -->
+
+                        <div class="row">
+                            <div class="col-md-6" id="dv_SeriNumara">
+                                <div class="form-group">
+                                    <label asp-for="SeriNumaralarId" class="form-control-label">Seri No</label>
+                                    <select asp-for="SeriNumaralarId" class="form-control seridenapp-forms-select2" id="Sb_SeriNumara"></select>
+                                    <span asp-validation-for="SeriNumaralarId" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FaturaNumarasi" class="form-control-label">Fatura Numarası</label>
+                                    <input asp-for="FaturaNumarasi" class="form-control seridenapp-forms-select2" />
+                                    <span asp-validation-for="FaturaNumarasi" class="text-danger"> </span>
+                                </div>
+                            </div>
+                        </div> <!-- /.row SeriNo & FatNo -->
+
+                    </div> <!-- /.card-body -->
+
+
+                </div><!--Card-->
+            </div>
+        </div><!--1.col-md-6-->
+
+        <div class="col-lg-5 col-md-12 ml-md-5">
+            <div class="row">
+                <div class="card card-default container-fluid">
+                    <div class="card-header">
+                        <h3 class="card-title">Fatura Gönderim & Döviz Bilgileri</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div> <!-- /.card-header -->
+
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FaturaTipi" class="form-control-label">Fatura Tipi</label>
+                                    <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>()"></select>
+                                    <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FaturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
+                                    <select asp-for="FaturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
+                                    <span asp-validation-for="FaturaSenaryo" class="text-danger"> </span>
+                                </div>
+                            </div>
+                        </div> <!-- /.row - Tipi & Senaryo-->
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Doviz" class="form-control-label">Para Birimi</label>
+                                    <select asp-for="Doviz" onchange="DovizKuruGetir()" class="form-control" data-placeholder="" asp-items="@(new SelectList(Model.DovizKodlari,"DovizKodu","DovizAdi"))" id="Cm_Doviz">
+                                    </select>
+                                    <span asp-validation-for="Doviz" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6" id="Dv_DovizKuru">
+                                <label asp-for="DovizKuru" class="form-control-label">Doviz Kuru</label>
+                                <input asp-for="DovizKuru" class="form-control" id="Tx_DovizKuru" />
+                                <span asp-validation-for="DovizKuru" class="text-danger"> </span>
+                            </div>
+                        </div> <!-- /.row - Tipi & Senaryo-->
+
+                    </div> <!-- /.card-body -->
+
+                </div><!--Card-->
+            </div>
+        </div><!--Col-Md-6-->
+    </div><!--1-Row-->
+
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <div class="row">
+                <div class="card card-default container-fluid">
+                    <div class="card-header">
+                        <h3 class="card-title">Müşteri Cari Bilgileri</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div> <!-- /.card-header -->
+
+                    <div class="card-body" id="Dv_Cariler">
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="Cariler.Unvani" class="form-control-label">Ünvan</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="Cariler.Unvani" class="form-control" id="Tx_Cari_Unvani" />
+                                    <span asp-validation-for="Cariler.Unvani" class="text-danger"> </span>
+                                    <div class="input-group-append" style="cursor:pointer;" onclick="">
+                                        <div class="btn btn-primary EfaturaPortalApp-datatables-create" data-endpoint="/YeniFatura/GetCariler" data-id="carisec">
+                                            <span class="">Müşteri Seç</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" asp-for="CarilerId" id="Hd_CarilerId" />
+                                    <input type="hidden" asp-for="Cariler.Id" id="Hd_Cariler.Id" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.EfaturaPostaKutusu" class="form-control-label">Posta Kutusu Seç</label>
+                                    <select asp-for="Cariler.EfaturaPostaKutusu" class="form-control" data-placeholder="" id="Cm_CariPostaKutusu">
+                                    </select>
+                                    <span asp-validation-for="Cariler.EfaturaPostaKutusu" class="text-danger"> </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label asp-for="Cariler.Adres" class="form-control-label">*Adres</label>
-                                <input asp-for="Cariler.Adres" class="form-control" data-placeholder="" autocomplete="off" id="Tx_Cari_Adres" />
-                                <span asp-validation-for="Cariler.Adres" class="text-danger"> </span>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.VergiNumarasi" class="form-control-label">Vergi Numarası</label>
+                                    <input asp-for="Cariler.VergiNumarasi" class="form-control" data-placeholder="" id="Tx_Cari_VergiNumarasi" />
+                                    <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.VergiDairesi" class="form-control-label">Vergi Dairesi</label>
+                                    <input asp-for="Cariler.VergiDairesi" class="form-control" data-placeholder="" id="Tx_Cari_VergiDairesi" />
+                                    <span asp-validation-for="Cariler.VergiDairesi" class="text-danger"> </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label asp-for="Cariler.Email" class="form-control-label">Email</label>
-                                <input asp-for="Cariler.Email" class="form-control" data-placeholder="" id="Tx_Cari_Email" />
-                                <span asp-validation-for="Cariler.Email" class="text-danger"> </span>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.Ulke" class="form-control-label">*Ülke</label>
+                                    <input asp-for="Cariler.Ulke" class="form-control" data-placeholder="" id="Tx_Cari_Ulke" />
+                                    <span asp-validation-for="Cariler.Ulke" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.Adres" class="form-control-label">*Adres</label>
+                                    <input asp-for="Cariler.Adres" class="form-control" data-placeholder="" autocomplete="off" id="Tx_Cari_Adres" />
+                                    <span asp-validation-for="Cariler.Adres" class="text-danger"> </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label asp-for="Cariler.Telefon" class="form-control-label">Telefon</label>
-                                <input asp-for="Cariler.Telefon" class="form-control" data-placeholder="" id="Tx_Cari_Telefon" />
-                                <span asp-validation-for="Cariler.Telefon" class="text-danger"> </span>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.Email" class="form-control-label">Email</label>
+                                    <input asp-for="Cariler.Email" class="form-control" data-placeholder="" id="Tx_Cari_Email" />
+                                    <span asp-validation-for="Cariler.Email" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label asp-for="Cariler.Telefon" class="form-control-label">Telefon</label>
+                                    <input asp-for="Cariler.Telefon" class="form-control" data-placeholder="" id="Tx_Cari_Telefon" />
+                                    <span asp-validation-for="Cariler.Telefon" class="text-danger"> </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                </div> <!-- /.card-body -->
+                    </div> <!-- /.card-body -->
 
-            </div><!--Card-->
+                </div><!--Card-->
+            </div>
         </div>
-    </div>
-    <div class="col-lg-5 col-md-12 ml-md-5">
-        <div class="card card-default container-fluid">
-            <div class="card-header">
-                <h3 class="card-title">Ödeme Şekli ve Hesap Bilgileri</h3>
+        <div class="col-lg-5 col-md-12 ml-md-5">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Ödeme Şekli ve Hesap Bilgileri</h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div> <!-- /.card-header -->
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="OdemeTarihi" class="form-control-label">Ödeme Tarihi</label>
-                            <input asp-for="OdemeTarihi" type="text" class="form-control seridenapp-forms-select2" id="OdemeTarihi" />
-                            <span asp-validation-for="OdemeTarihi" class="text-danger"> </span>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="OdemeTarihi" class="form-control-label">Ödeme Tarihi</label>
+                                <input asp-for="OdemeTarihi" type="text" class="form-control seridenapp-forms-select2" id="OdemeTarihi" />
+                                <span asp-validation-for="OdemeTarihi" class="text-danger"> </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="OdemeSekliKodu" class="form-control-label">Ödeme Türü Seçin</label>
-                            <select asp-for="OdemeSekliKodu" class="form-control">
-                                <option value="-1">Lütfen Ödeme Türü Seçin</option>
-                                @foreach (var data in Model.OdemeTurleriList)
-                                {
-                                    <option value="@data.Kodu">@data.Adi</option>
-                                }
-                            </select>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="OdemeSekliKodu" class="form-control-label">Ödeme Türü Seçin</label>
+                                <select asp-for="OdemeSekliKodu" class="form-control">
+                                    <option value="-1">Lütfen Ödeme Türü Seçin</option>
+                                    @foreach (var data in Model.OdemeTurleriList)
+                                    {
+                                        <option value="@data.Kodu">@data.Adi</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="OdemeKanali" class="form-control-label">Ödeme Kanalı</label>
-                            <input asp-for="OdemeKanali" class="form-control" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="OdemeKanali" class="form-control-label">Ödeme Kanalı</label>
+                                <input asp-for="OdemeKanali" class="form-control" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="OdemeHesapNo" class="form-control-label">Ödeme Hesap No</label>
-                            <input asp-for="OdemeHesapNo" class="form-control" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="OdemeHesapNo" class="form-control-label">Ödeme Hesap No</label>
+                                <input asp-for="OdemeHesapNo" class="form-control" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div><!--2-Row-->
+    </div><!--2-Row-->
 
-<div class="row">
-    <div class="col-12">
-        <div class="card card-default container-fluid">
-            <div class="card-header">
-                <h3 class="card-title">Fatura Kalemleri</h3>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Fatura Kalemleri</h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div> <!-- /.card-header -->
-            <div class="card-body" style="padding:0px;">
-                <table class="table table-hover">
-                    @*<thead>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+                <div class="card-body" style="padding:0px;">
+                    <table class="table table-hover">
+                        @*<thead>
+                                <tr>
+                                    <th class="col-md-12">
+
+                                        <h6>Kalem Bilgileri</h6>
+
+                                    </th>
+
+                                </tr>
+                            </thead>*@
+                        <tbody id="Tb_InvoiceLine">
+                        </tbody>
+                        <tfoot>
                             <tr>
-                                <th class="col-md-12">
-
-                                    <h6>Kalem Bilgileri</h6>
-
-                                </th>
-
+                                <td colspan="9"><button type="button" class="btn btn-fill  btn-primary" id="Bt_Add_InvoiceLine"> Mal/Hizmet Ekle</button></td>
                             </tr>
-                        </thead>*@
-                    <tbody id="Tb_InvoiceLine">
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="9"><button type="button" class="btn btn-fill  btn-primary" id="Bt_Add_InvoiceLine"> Mal/Hizmet Ekle</button></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</div><!--3-Row-->
+    </div><!--3-Row-->
 
-<div class="row" id="GenelToplam">
-    <div class="col-md-6">
-        <div class="card card-default container-fluid">
-            <div class="card-header">
-                <h3 class="card-title">Dip Toplamlar</h3>
+    <div class="row" id="GenelToplam">
+        <div class="col-md-6">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Dip Toplamlar</h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div> <!-- /.card-header -->
-            <div class="card-body" style="">
-                <div class="row">
-                    <div class="col-md-4">
-                        Net Toplam
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="Toplam" class="form-control" readonly />
+                </div> <!-- /.card-header -->
+                <div class="card-body" style="">
+                    <div class="row">
+                        <div class="col-md-4">
+                            Net Toplam
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="Toplam" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        İskonto Toplam
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="Iskonto" class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-4">
+                            İskonto Toplam
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="Iskonto" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        0015-Kdv Toplam
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="Kdv" class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-4">
+                            0015-Kdv Toplam
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="Kdv" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        Diğer Vergi Toplamları
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="DigerVergilerToplam" class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-4">
+                            Diğer Vergi Toplamları
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="DigerVergilerToplam" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        Tevkifat Toplam
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="TevkifatToplam" class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-4">
+                            Tevkifat Toplam
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="TevkifatToplam" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        Genel Toplam (Ödenecek Tutar)
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <input asp-for="OdenecekTutar" class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-4">
+                            Genel Toplam (Ödenecek Tutar)
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input asp-for="OdenecekTutar" class="form-control" readonly />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
-</div>
 
+        <div class="col-md-6">
+            <div class="card card-default container-fluid">
+                <div class="card-header">
+                    <h3 class="card-title">Notlar</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div> <!-- /.card-header -->
+                <div class="card-body" style="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Notlar" class="form-control-label">Notlar</label>
+                                <textarea asp-for="Notlar" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 @section css
 {
     <link href="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
@@ -585,6 +613,9 @@
                         $("#Tx_Cari_Adres").val(data.cari.adres);
                         $("#Tx_Cari_Email").val(data.cari.email);
                         $("#Tx_Cari_Telefon").val(data.cari.telefon);
+                        $("#Hd_CarilerId").val(data.cari.id);
+                        $("#Hd_Cariler.Id").val(data.cari.id);
+
                         // $("#Tx_Cari_").val(data.cari.unvani);
 
                     } else {
@@ -1029,7 +1060,7 @@
 
         }
 
-                                                                                     //   });
+                                                                                                         //   });
     </script>
 
 }

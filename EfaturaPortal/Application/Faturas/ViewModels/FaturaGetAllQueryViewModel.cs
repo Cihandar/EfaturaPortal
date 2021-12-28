@@ -10,6 +10,7 @@ using EfaturaPortal.Application.SeriNumaralars.ViewModels;
 using EfaturaPortal.Application.Carilers.ViewModels;
 using EfaturaPortal.Application.DovizKodlaris.ViewModels;
 using EfaturaPortal.Application.OdemeTurleris.ViewModels;
+using EfaturaPortal.Application.FaturaSatirs.ViewModels;
 namespace EfaturaPortal.Application.Faturas.ViewModels
 {
     public class FaturaGetAllQueryViewModel : IHaveCustomMapping
@@ -68,6 +69,8 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public List<CarilerGetAllQueryViewModel> CarilerMwList { get; set; }
 
         public List<OdemeTurleriGetAllQueryViewModel> OdemeTurleriList { get; set; }
+
+        public List<FaturaSatirGetAllQueryViewModel>  FaturaSatir { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {
