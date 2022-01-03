@@ -98,6 +98,8 @@ namespace EfaturaPortal.Controllers
             ViewBag.KdvIndex = KdvIndex;
             return PartialView("_InvoiceLineTax", result);
         }
+
+
         #region Create
         [HttpGet]
         public async Task<IActionResult> Create()
