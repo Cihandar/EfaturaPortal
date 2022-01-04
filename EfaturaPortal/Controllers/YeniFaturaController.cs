@@ -70,6 +70,15 @@ namespace EfaturaPortal.Controllers
 
         }
 
+        public async Task<IActionResult> GetCariWithId(Guid Id)
+        {
+            var cari = await _carilerCrud.GetById(Id);
+            var result =await _eInvoiceCommand.Ef_GetEInvoiceMailBox(FirmaId, cari.VergiNumarasi);
+            result.Cari = cari;
+
+            return Json(result);
+        }
+
         public async Task<IActionResult> GetDovizKuru(string DovizKodu,string Tarih)
         {
             var result = await _TcmbDovizKurlari.DovizKuruAl(DovizKodu, Tarih);
@@ -115,6 +124,14 @@ namespace EfaturaPortal.Controllers
             var result = await faturaCrud.Add(model);
             return Json(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create2(FaturaVw model)
+        {
+ 
+            return Json(null);
+        }
+
         #endregion
 
 

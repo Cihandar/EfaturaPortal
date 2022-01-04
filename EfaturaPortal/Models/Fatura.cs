@@ -16,7 +16,7 @@ namespace EfaturaPortal.Models
  
         public string   ParaBirimi { get; set; }
         public string Doviz { get; set; }
-        public double DovizKuru { get; set; }
+        public float DovizKuru { get; set; }
 
         public Guid CarilerId { get; set; }
 
@@ -30,13 +30,13 @@ namespace EfaturaPortal.Models
 
         public string YaziylaTutar { get; set; }
 
-        public double Toplam { get; set; }
-        public double Artirim { get; set; }
-        public double Iskonto { get; set; }
-        public double Kdv { get; set; }
-        public double OdenecekTutar { get; set; }
-        public double TevkifatToplam { get; set; }
-        public double DigerVergilerToplam { get; set; }
+        public float Toplam { get; set; }
+        public float Artirim { get; set; }
+        public float Iskonto { get; set; }
+        public float Kdv { get; set; }
+        public float OdenecekTutar { get; set; }
+        public float TevkifatToplam { get; set; }
+        public float DigerVergilerToplam { get; set; }
 
         
 

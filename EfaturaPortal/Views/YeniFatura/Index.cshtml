@@ -8,7 +8,7 @@
 }
 
 <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/@action">
-    <button type="submit" id="kaydet" class="btn btn-success">Kaydet</button>
+ 
     <div class="row">
         <!--1 Row-->
 
@@ -361,7 +361,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="Toplam" class="form-control" readonly />
+                                <input asp-for="Toplam" class="form-control" type="number" readonly />
                             </div>
                         </div>
                     </div>
@@ -371,7 +371,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="Iskonto" class="form-control" readonly />
+                                <input asp-for="Iskonto" class="form-control" type="number" readonly />
                             </div>
                         </div>
                     </div>
@@ -381,7 +381,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="Kdv" class="form-control" readonly />
+                                <input asp-for="Kdv" class="form-control" type="number" readonly />
                             </div>
                         </div>
                     </div>
@@ -391,7 +391,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="DigerVergilerToplam" class="form-control" readonly />
+                                <input asp-for="DigerVergilerToplam" type="number" class="form-control" readonly />
                             </div>
                         </div>
                     </div>
@@ -401,7 +401,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="TevkifatToplam" class="form-control" readonly />
+                                <input asp-for="TevkifatToplam" type="number" class="form-control" readonly />
                             </div>
                         </div>
                     </div>
@@ -411,7 +411,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="OdenecekTutar" class="form-control" readonly />
+                                <input asp-for="OdenecekTutar" type="number" class="form-control" readonly />
                             </div>
                         </div>
                     </div>
@@ -445,6 +445,11 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <button type="submit" id="kaydet" class="btn btn-success">Faturayı Kaydet</button>
+    </div>
+
 </form>
 @section css
 {
@@ -523,7 +528,7 @@
         $("#Tx_Vdno").focusout(function () {
             if ($("#Tx_Vdno").val() == "") return;
 
-            if (!degisti) return;
+            if (!updateTax) return;
 
             updateTax = false;
 
@@ -533,6 +538,8 @@
         $("#Tx_Vdno").on("change", function () {
             updateTax = true;
         });
+
+
 
 
         $("#Bt_Add_InvoiceLine").on("click", function () {
@@ -639,6 +646,65 @@
 
         }
 
+        //Cari Seç
+        $(document).on("click", ".EfaturaPortalApp-Carisec", function () {
+
+            var id = $(this).data("id");
+            Notiflix.Block.Standard(".modal-content");
+            $.ajax({
+                type: 'get',
+                url: 'GetCariWithId?Id=' + id,
+                complete: function () {
+                    Notiflix.Block.Remove("*", 0);
+                },
+                success: function (data) {
+                    console.log(data);
+                    debugger;
+                    if (!data.success) {
+                        if (data.errorMessage != null) {
+                            Notiflix.Report.Failure('Hata <br> Kodu :' + data.errorCode, data.errorMessage, 'Tamam');
+                        } else {
+                            $("#Sb_FaturaTuru").val("1");
+                            GetSeriNumara();
+                            Notiflix.Notify.Warning('E-Arşiv Fatura Kesiyorsunuz !');
+
+                        }
+                    } else {
+                        $("#Sb_FaturaTuru").val("0");
+                        $.each(data.gibUser, function (i, state) {
+                            $("#Cm_CariPostaKutusu").append('<option value="' + state.alias + '">' + state.alias + '</option>');
+                        });
+                        GetSeriNumara();
+                        Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
+
+                    }
+
+                    if (data.cari != null) {
+
+                        $("#Tx_Cari_Unvani").val(data.cari.unvani);
+                        $("#Tx_Cari_VergiDairesi").val(data.cari.vergiDairesi);
+                        $("#Tx_Cari_Ulke").val(data.cari.ulke);
+                        $("#Tx_Cari_Adres").val(data.cari.adres);
+                        $("#Tx_Cari_Email").val(data.cari.email);
+                        $("#Tx_Cari_Telefon").val(data.cari.telefon);
+                        $("#Hd_CarilerId").val(data.cari.id);
+                        $("#Hd_Cariler.Id").val(data.cari.id);
+                        $("#Tx_Cari_VergiNumarasi").val(data.cari.vergiNumarasi);
+                        $("#Tx_Vdno").val(data.cari.vergiNumarasi);
+                        $('.EfaturaPortalApp-forms-modal').modal('hide');
+                        // $("#Tx_Cari_").val(data.cari.unvani);
+
+                    } else {
+                        $("#Tx_Cari_Unvani").val(data.gibUser.title);
+                    }
+
+
+                }
+            });
+
+        });
+
+
         //  function GetNewRow() {
         $(document).on("change", "input[name ^= 'FaturaSatir']", function () {
 
@@ -736,7 +802,8 @@
 
             });
 
-
+            birimFiyat.val(birimFiyat.val().replace(",", "."));
+            miktar.val(miktar.val().replace(",", "."));
             iskontoTutar.val(indtutar.toFixed(4));
             tutar.val(nettutar.toFixed(4));
             kdvTutar.val(kdvtutar.toFixed(4));
@@ -761,8 +828,13 @@
                 iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());
                 gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val());
                 tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val());
+
                 $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
-                    digervergitoplam = toDouble(digervergitoplam + $(kdvrow).find("input[name*='KdvTutar']").val());
+                    debugger;
+                    var data = toDouble($(kdvrow).find("input[name*='KdvTutar']").val());
+                    debugger;
+                    digervergitoplam = digervergitoplam + data;
+                    debugger;
                 });
 
             });
@@ -1060,7 +1132,7 @@
 
         }
 
-                                                                                                         //   });
+                                                                                                             //   });
     </script>
 
 }

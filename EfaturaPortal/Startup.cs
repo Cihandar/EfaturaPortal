@@ -55,6 +55,9 @@ using EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers;
 using EfaturaPortal.Application.FaturaSatirKdvlers.Commands;
 using EfaturaPortal.Application.Interfaces.OdemeTurleris;
 using EfaturaPortal.Application.OdemeTurleris.Commands;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace EfaturaPortal
 {
@@ -106,6 +109,9 @@ namespace EfaturaPortal
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();
             services.AddScoped<EFaturaEDMPortClient, EFaturaEDMPortClient>();
             #endregion
+
+
+            services.Configure<RequestLocalizationOptions>(opts => { var supportedCultures = new List<CultureInfo> { new CultureInfo("tr"), new CultureInfo("en"), }; opts.DefaultRequestCulture = new RequestCulture("tr"); opts.SupportedCultures = supportedCultures; opts.SupportedUICultures = supportedCultures; opts.SetDefaultCulture("tr"); });
 
             //AutoMapper
 
@@ -178,7 +184,14 @@ namespace EfaturaPortal
             }
 
 
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US")
+            }); 
 
+            //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+
+            //app.UseRequestLocalization(options.Value);
 
             app.UseRouting();
             app.UseHttpsRedirection();
@@ -186,9 +199,8 @@ namespace EfaturaPortal
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
- 
-            
 
+ 
 
             #region Routing
             app.UseEndpoints(endpoints =>

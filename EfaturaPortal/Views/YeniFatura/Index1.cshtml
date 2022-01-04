@@ -1,0 +1,8 @@
+﻿@model EfaturaPortal.Application.Faturas.ViewModels.FaturaVw;
+<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="YeniFatura" asp-action="create2" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" 
+      data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" 
+      data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/create2">
+    <input asp-for="Topal" type="number"  />
+    <input asp-for="Kdv" type="number"  />
+    <button type="submit">Gönder</button>
+</form>

@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20211231080857_updatesometable")]
+    partial class updatesometable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,14 +301,8 @@ namespace EfaturaPortal.Migrations
                     b.Property<float>("IskontoOran")
                         .HasColumnType("real");
 
-                    b.Property<float>("IskontoTutar")
-                        .HasColumnType("real");
-
-                    b.Property<string>("IstisnaAciklama")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IstisnaKodu")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IskontoTutar")
+                        .HasColumnType("int");
 
                     b.Property<float>("KdvOran")
                         .HasColumnType("real");
@@ -331,18 +327,6 @@ namespace EfaturaPortal.Migrations
 
                     b.Property<int>("Sirano")
                         .HasColumnType("int");
-
-                    b.Property<string>("TevkifatAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TevkifatKodu")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TevkifatOran")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("TevkifatTutar")
-                        .HasColumnType("real");
 
                     b.Property<float>("Tutar")
                         .HasColumnType("real");

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers
 {
-    interface IFaturaSatirKdvlerCrud
+   public  interface IFaturaSatirKdvlerCrud
     {
         Task<ResultJsonWithData<FaturaSatir>> Add(FaturaSatirKdvlerGetAllQueryViewModel FaturaSatirvw);
         Task<List<FaturaSatirKdvlerGetAllQueryViewModel>> GetAll(Guid FaturaSatirId);

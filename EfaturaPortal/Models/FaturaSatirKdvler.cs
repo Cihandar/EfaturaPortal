@@ -15,8 +15,8 @@ namespace EfaturaPortal.Models
         public Guid FaturaSatirId { get; set; }
         public string Kodu { get; set; }
         public string Adi { get; set; }
-        public double KdvOran { get; set; }
-        public double KdvTutar { get; set; }
+        public float KdvOran { get; set; }
+        public float KdvTutar { get; set; }
 
 
         public virtual FaturaSatir FaturaSatir { get; set; }
