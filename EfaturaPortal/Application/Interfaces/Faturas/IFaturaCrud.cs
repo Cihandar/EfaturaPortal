@@ -16,8 +16,10 @@ namespace EfaturaPortal.Application.Interfaces.Faturas
     {
         Task<ResultJsonWithData<Fatura>> Add(FaturaGetAllQueryViewModel faturavw);
         Task<ResultJson> Update(FaturaGetAllQueryViewModel faturavw);
-        Task<List<FaturaGetAllQueryViewModel>> GetAll(Guid faturaId);
+        Task<List<FaturaGetAllQueryViewModel>> GetAll(Guid firmaId);
         Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId, Guid FirmaId);
+
+        Task<List<FaturaGetAllQueryViewModel>> GetAllbyfiltre(Guid firmaId, InvoiceSearch filtre);
 
     }
 }

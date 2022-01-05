@@ -165,11 +165,11 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
         }
 
-        public async Task<List<FaturaGetAllQueryViewModel>> GetAll(Guid faturaId)
+        public async Task<List<FaturaGetAllQueryViewModel>> GetAll(Guid firmaId)
         {
 
 
-            var fatura = context.Faturas.Include(x => x.Cariler).Where(x => x.Id == faturaId).ToList();
+            var fatura = context.Faturas.Include(x => x.Cariler).Where(x => x.FirmaId == firmaId).ToList();
 
             var result = mapper.Map<List<FaturaGetAllQueryViewModel>>(fatura);
 
@@ -178,6 +178,26 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
         }
 
+        public async Task<List<FaturaGetAllQueryViewModel>> GetAllbyfiltre(Guid firmaId,InvoiceSearch filtre)
+        {
+
+            string whereQuery = "SELECT F.* FROM Faturas F INNER JOIN Carilers Cari ON Cari.Id==F.CarilerId Where F.FirmaId='"+ firmaId.ToString() + "' ";
+
+            if (!string.IsNullOrWhiteSpace(filtre.FaturaNumarasi)) whereQuery += " AND F.FaturaNumarasi Lıke '%" + filtre.FaturaNumarasi + "%'  ";
+            if (!string.IsNullOrWhiteSpace(filtre.Unvan)) whereQuery += " AND Cari.Unvani Lıke '%" + filtre.Unvan + "%'  ";
+            if (!string.IsNullOrWhiteSpace(filtre.Vdno)) whereQuery += " AND Cari.VergiNumarasi Lıke '%" + filtre.Vdno + "%'  ";
+           
+            whereQuery += " AND F.Tarih Between '" + filtre.IlkTarih.ToString("MM.dd.yyyy") + "' AND '"+ filtre.SonTarih.ToString("MM.dd.yyyy") + "'  ";
+
+
+            var fatura = context.Faturas.FromSqlRaw(whereQuery).Include(x => x.Cariler).ToList();
+
+            var result = mapper.Map<List<FaturaGetAllQueryViewModel>>(fatura);
+
+            return result;
+
+
+        }
 
         public async Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId, Guid FirmaId)
         {
