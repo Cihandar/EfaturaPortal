@@ -51,6 +51,15 @@ for details on configuring this project to bundle and minify static web assets. 
 .form-control-label {
     white-space: nowrap !important;
 }
+
+.gridIslemBtn
+{
+    padding:0px !important;
+    height:25px !important;
+    width:25px !important;
+    font-size:10px;
+    margin-right:2px !important;
+}
     /* QR code generator */
     /*#qrCode {
     margin: 15px;

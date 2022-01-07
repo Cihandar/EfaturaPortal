@@ -181,13 +181,13 @@ namespace EfaturaPortal.Application.Faturas.Commands
         public async Task<List<FaturaGetAllQueryViewModel>> GetAllbyfiltre(Guid firmaId,InvoiceSearch filtre)
         {
 
-            string whereQuery = "SELECT F.* FROM Faturas F INNER JOIN Carilers Cari ON Cari.Id==F.CarilerId Where F.FirmaId='"+ firmaId.ToString() + "' ";
+            string whereQuery = "SELECT F.* FROM Faturas F INNER JOIN Carilers Cari ON Cari.Id=F.CarilerId Where F.FirmaId='"+ firmaId.ToString() + "' ";
 
-            if (!string.IsNullOrWhiteSpace(filtre.FaturaNumarasi)) whereQuery += " AND F.FaturaNumarasi Lıke '%" + filtre.FaturaNumarasi + "%'  ";
-            if (!string.IsNullOrWhiteSpace(filtre.Unvan)) whereQuery += " AND Cari.Unvani Lıke '%" + filtre.Unvan + "%'  ";
-            if (!string.IsNullOrWhiteSpace(filtre.Vdno)) whereQuery += " AND Cari.VergiNumarasi Lıke '%" + filtre.Vdno + "%'  ";
+            if (!string.IsNullOrWhiteSpace(filtre.FaturaNumarasi)) whereQuery += " AND F.FaturaNumarasi LIKE '%" + filtre.FaturaNumarasi + "%'  ";
+            if (!string.IsNullOrWhiteSpace(filtre.Unvan)) whereQuery += " AND Cari.Unvani LIKE '%" + filtre.Unvan + "%'  ";
+            if (!string.IsNullOrWhiteSpace(filtre.Vdno)) whereQuery += " AND Cari.VergiNumarasi LIKE '%" + filtre.Vdno + "%'  ";
            
-            whereQuery += " AND F.Tarih Between '" + filtre.IlkTarih.ToString("MM.dd.yyyy") + "' AND '"+ filtre.SonTarih.ToString("MM.dd.yyyy") + "'  ";
+            whereQuery += " AND F.Tarih BETWEEN '" + filtre.IlkTarih.ToString("MM.dd.yyyy") + " 00:00' AND '" + filtre.SonTarih.ToString("MM.dd.yyyy") + " 23:59'  ";
 
 
             var fatura = context.Faturas.FromSqlRaw(whereQuery).Include(x => x.Cariler).ToList();

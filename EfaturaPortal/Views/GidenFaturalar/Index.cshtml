@@ -11,42 +11,51 @@
         <div class="card">
 
             <div class="card-header">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="form-control-label">Fatura Numarası</label>
-                            <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Fatura Numarası" id="Tx_Src_fatno" />
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="form-control-label">Vergi Numarası</label>
-                            <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Müşteri VKN" id="Tx_Src_vkn" />
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="form-control-label">Müşteri Ünvanı</label>
-                            <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Müşteri Ünvanı" id="Tx_Src_unvan" />
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="form-control-label">Fatura Tarihi</label>
-                            <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Müşteri Ünvanı" id="Tx_Src_tarih" />
-                        </div>
-                    </div>
+                <form id="filtrealani" novalidate>
+                    <div class="row">
 
-                </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Fatura Numarası</label>
+                                <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Fatura Numarası" id="Tx_Src_fatno" name="FaturaNumarasi" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Vergi Numarası</label>
+                                <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Müşteri VKN" id="Tx_Src_vkn" name="Vdno" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Müşteri Ünvanı</label>
+                                <input class="form-control" data-placeholder="" autocomplete="off" placeholder="Müşteri Ünvanı" id="Tx_Src_unvan" name="Unvan" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Fatura İlk Tarihi</label>
+                                <input class="form-control" data-placeholder="" autocomplete="off" placeholder="" id="Tx_Src_tarih" name="IlkTarih" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Fatura Son Tarihi</label>
+                                <input class="form-control" data-placeholder="" autocomplete="off" placeholder="" id="Tx_Src_son_tarih" name="SonTarih" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
                 <div class="row">
                     <div class="col-md-2">
-                        <input type="radio"  name="FaturaTuru" id="faturaturu1" value="hepsi" />
-                        <label class="form-control-label">Hepsi</label>              
-                 
-                        <input type="radio"   name="FaturaTuru" id="faturaturu2" value="E-Fatura" />
-                        <label class="form-control-label">E-Fatura</label>                 
-                   
-                        <input type="radio"   name="FaturaTuru" id="faturaturu3" value="E-Arsiv" />
+                        <input type="radio" name="FaturaTuru" id="faturaturu1" value="hepsi" />
+                        <label class="form-control-label">Hepsi</label>
+
+                        <input type="radio" name="FaturaTuru" id="faturaturu2" value="E-Fatura" />
+                        <label class="form-control-label">E-Fatura</label>
+
+                        <input type="radio" name="FaturaTuru" id="faturaturu3" value="E-Arsiv" />
                         <label class="form-control-label">E-Arşiv</label>
                     </div>
                     <div class="col-md-2">
@@ -58,7 +67,8 @@
                 <table class=" table table-striped- table-bordered table-hover table-checkable" id="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+
+                            <th>Seç</th>
                             <th>İşlemler</th>
                             <th>Durum</th>
                             <th>Fatura Türü</th>
@@ -82,7 +92,7 @@
 @section css
 {
     <link href="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
-
+    <link href="~/plugins/adminLte/plugins/datatables-select/css/select.bootstrap4.css" rel="stylesheet" />
     <style>
         .notiflix-block-position {
             min-height: 0px !important;
@@ -95,6 +105,7 @@
 {
     <script src="~/plugins/adminLte/plugins/inputmask/jquery.inputmask.min.js"></script>
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/adminLte/plugins/datatables-select/js/dataTables.select.js"></script>
     <script>
 
 
@@ -106,6 +117,7 @@
                 timePicker: true,
                 autoApply: true,
                 timePicker24Hour: true,
+                singleDatePicker: true,
                 timePickerIncrement: 30,
                 locale: {
                     format: 'DD.MM.YYYY',
@@ -144,31 +156,33 @@
         });
 
         $(document).ready(function () {
-            getData("GidenFaturalar/GetAll","false");
+            getData("GidenFaturalar/GetAll", "false");
         });
 
         var getData = function (url, filtre) {
 
-            var formData = new FormData();
+            var formData = null;
 
             if (filtre == "true") {
 
                 //var formData = { faturaNumarasi: $("#Tx_Src_fatno").val(), Unvan: $("#Tx_Src_unvan").val(), vdno: $("#Tx_Src_vkn").val(), ilkTarih: $('#Tx_Src_tarih').data('daterangepicker').startDate, sonTarih: $('#Tx_Src_tarih').data('daterangepicker').endDate };
 
-                formData.append("FaturaNumarasi", $("#Tx_Src_fatno").val());
-                formData.append("Unvan", $("#Tx_Src_unvan").val());
-                formData.append("Vdno", $("#Tx_Src_vkn").val());
-                formData.append("IlkTarih", $('#Tx_Src_tarih').data('daterangepicker').startDate);
-                formData.append("SonTarih", $('#Tx_Src_tarih').data('daterangepicker').endDate);
+                //formData.append("FaturaNumarasi", $("#Tx_Src_fatno").val());
+                //formData.append("Unvan", $("#Tx_Src_unvan").val());
+                //formData.append("Vdno", $("#Tx_Src_vkn").val());
+                //formData.append("IlkTarih", $('#Tx_Src_tarih').data('daterangepicker').startDate);
+                //formData.append("SonTarih", $('#Tx_Src_tarih').data('daterangepicker').endDate);
+
+                formData = $("#filtrealani").serialize();
             }
             console.log(formData);
             $.ajax({
                 url: url,
                 type: "POST",
                 cache: false,
-                contentType: 'application/x-www-form-urlencoded',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove
                 processData: false,
-                data:formData,
+                data: formData,
                 complete: function () {
 
                 },
@@ -181,6 +195,16 @@
                         dom: "<'row'<'col-sm-8 text-left'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
                         lengthHappyHour: [[5, 10, 25, 50, -1], ["50 Kayıt", "100 Kayıt", "200 Kayıt", "250 Kayıt", "Hepsi"]],
                         pageLength: 50,
+
+                        columnDefs: [{
+                            orderable: false,
+                            className: 'select-checkbox',
+                            targets: 0
+                        }],
+                        select: {
+                            style: 'os',
+                            selector: 'td:first-child'
+                        },
                         language: {
                             "emptyTable": "Kayıt bulunamadı",
                             "info": "_START_ - _END_ arası kayıtlar",
@@ -211,17 +235,25 @@
                             // { extend: 'colvis', text: 'Göster' }
                         ],
                         columns: [
-                            { "data": null, visible: false },
+
+                            {
+                                targets: 0,
+                                data: null,
+                                defaultContent: '',
+                                orderable: false,
+                                className: 'select-checkbox'
+                            },
+
                             {
                                 data: null,
-                                className: "dt-center",
+                                className: "",
                                 targets: -1,
                                 orderable: false,
                                 width: "100px",
                                 render: function (data, type, full, meta) {
 
-                                    return '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
-                                        '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update" title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-print"></i></button>';
+                                    return '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-view gridIslemBtn"  title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
+                                        '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-print gridIslemBtn" title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-print"></i></button>';
                                 }
                             },
                             {
@@ -290,9 +322,9 @@
 
         $(document).on("click", ".btn-filtre", function () {
 
-         
+
             getData("GidenFaturalar/GetAllbyFiltre", "true");
-        
+
 
         });
     </script>

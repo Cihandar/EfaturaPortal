@@ -7,8 +7,8 @@
     //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
 }
 
-<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, datatableUpdate)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/@action">
- 
+<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="CreateInvoiceBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectGidenFaturalar)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/@action">
+
     <div class="row">
         <!--1 Row-->
 
@@ -446,11 +446,12 @@
         </div>
     </div>
 
-    <div class="row">
-        <button type="submit" id="kaydet" class="btn btn-success">Faturayı Kaydet</button>
-    </div>
+    <button type="submit" id="kaydet" style="display:none" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
 
 </form>
+<div class="row">
+    <button type="submit" id="kaydet" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
+</div>
 @section css
 {
     <link href="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
@@ -1132,7 +1133,29 @@
 
         }
 
-                                                                                                             //   });
+        $(document).on("click", ".btn-kaydet", function () {
+            Notiflix.Confirm.Show(
+                'Emin misiniz ?',
+                'Faturanız Taslak olarak kayıt edilecek. Onaylıyor musunuz ? ',
+                'Evet Onaylıyorum',
+                'Vazgeç',
+                () => {
+                    $("#kaydet").click();
+                }
+
+            );
+        });
+
+        function CreateInvoiceBegin() {
+
+        }
+
+        function redirectGidenFaturalar() {
+            window.location.href = '/GidenFaturalar';
+        }
+
+
+                                                                                                                 //   });
     </script>
 
 }
