@@ -48,6 +48,7 @@ namespace EfaturaPortal.Models
         public EfaturaDurum EfaturaDurum { get; set; }
 
         public virtual Cariler Cariler { get; set; }
+        public virtual Firmalar Firmalar { get; set; }
         public virtual SeriNumaralar SeriNumaralar { get; set; }
 
     }

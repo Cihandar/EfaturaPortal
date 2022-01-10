@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20220110073922_updateFaturaaddVirtualFirmalar")]
+    partial class updateFaturaaddVirtualFirmalar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

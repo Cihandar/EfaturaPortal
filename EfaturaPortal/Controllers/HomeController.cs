@@ -5,13 +5,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EfaturaPortal.Models;
+using EfaturaPortal.Application.EfaturaApi.Command;
+using EfaturaPortal.Application.Faturas.Commands;
+using EfaturaPortal.Application.Interfaces.EfaturaApis;
+using EfaturaPortal.Application.Interfaces.Faturas;
 
 namespace EfaturaPortal.Controllers
 {
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+
+        ICreateUbl _createUbl;
+        IFaturaCrud _faturaCrud;
+        
+        public HomeController(ICreateUbl createUbl,IFaturaCrud faturaCrud)
         {
+            _createUbl = createUbl;
+            _faturaCrud = faturaCrud;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var faturaId = Guid.Parse("77550957-c3c5-484e-a213-bcb40ec7e024");
+
+            var firma = await _faturaCrud.GetById(faturaId, FirmaId);
+
+            var data = await _createUbl.Create(firma);
+
+
             return View();
         }
 

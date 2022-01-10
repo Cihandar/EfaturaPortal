@@ -58,6 +58,8 @@ using EfaturaPortal.Application.OdemeTurleris.Commands;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.Extensions.Options;
+using EfaturaPortal.Application.Interfaces.Tools;
+using EfaturaPortal.Application.Tools;
 
 namespace EfaturaPortal
 {
@@ -108,6 +110,9 @@ namespace EfaturaPortal
             services.AddScoped<IEInvoiceTransactions, EInvoiceTransactions>();
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();
             services.AddScoped<EFaturaEDMPortClient, EFaturaEDMPortClient>();
+            services.AddScoped<ICreateUbl, CreateUbl>();
+
+            services.AddScoped<IToolsCodes, ToolsCodes>();
             #endregion
 
 

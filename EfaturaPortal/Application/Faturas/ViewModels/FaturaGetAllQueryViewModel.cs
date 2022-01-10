@@ -60,6 +60,7 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
 
 
         public Cariler Cariler { get; set; }
+        public Firmalar Firmalar { get; set; }
 
         public List<DovizKodlariGetAllQueryViewModel> DovizKodlari { get; set; }
         public SeriNumaralar SeriNumaralar { get; set; }

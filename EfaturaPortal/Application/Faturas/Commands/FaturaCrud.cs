@@ -201,7 +201,7 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
         public async Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId, Guid FirmaId)
         {
-            var fatura = context.Faturas.Where(x => x.Id == faturaId).FirstOrDefault();
+            var fatura = context.Faturas.Where(x => x.Id == faturaId).Include(x => x.Cariler).Include(y => y.Firmalar).Include(z => z.SeriNumaralar).FirstOrDefault();
 
             var result = mapper.Map<FaturaGetAllQueryViewModel>(fatura);
 
