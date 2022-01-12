@@ -213,6 +213,8 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
             result.OdemeTurleriList = await odemeTurleriCrud.GetAll();
 
+            result.FaturaSatir = await faturaSatirCrud.GetAll(faturaId);
+            
             return result;
 
         }

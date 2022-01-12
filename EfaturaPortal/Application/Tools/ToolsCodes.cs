@@ -50,5 +50,13 @@ namespace EfaturaPortal.Application.Tools
                 yazi += "";
             return yazi;
         }
+
+        public async Task<decimal> toDecimal(string value)
+        {
+            decimal result = 0;
+            if (decimal.TryParse(value, out result))
+                return result;
+            else return 0;
+        }
     }
 }

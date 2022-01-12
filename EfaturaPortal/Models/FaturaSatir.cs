@@ -12,6 +12,7 @@ namespace EfaturaPortal.Models
         public string Aciklama { get; set; }
         public float Miktar { get; set; }
         public string OlcuBirimi { get; set; }
+        public int OlcuBirimleriId { get; set; }
         public float BirimFiyat { get; set; }
         public float Tutar { get; set; }
 
@@ -29,11 +30,15 @@ namespace EfaturaPortal.Models
         public string TevkifatOran { get; set; }
         public float TevkifatTutar { get; set; }
 
+
+        public int? IstisnaKodlariId { get; set; }
         public string IstisnaKodu { get; set; }
         public string IstisnaAciklama { get; set; }
 
 
         public virtual Fatura Fatura { get; set; }
-      
+        public virtual OlcuBirimleri OlcuBirimleri { get; set; }
+        public virtual IstisnaKodlari IstisnaKodlari { get; set; }
+ 
     }
 }

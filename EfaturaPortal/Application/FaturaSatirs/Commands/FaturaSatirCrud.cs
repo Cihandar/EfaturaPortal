@@ -22,7 +22,7 @@ using EfaturaPortal.Models.ResultModel;
 
 namespace EfaturaPortal.Application.FaturaSatirs.Commands
 {
-    public class FaturaSatirCrud  : IFaturaSatirCrud
+    public class FaturaSatirCrud : IFaturaSatirCrud
     {
         public EfaturaPortalContext context;
         public IMapper mapper;
@@ -35,7 +35,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
 
 
-        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud,IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud, IVergiKodlariCrud _vergiKodlariCrud)
+        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud, IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud, IVergiKodlariCrud _vergiKodlariCrud)
         {
             context = _context;
             mapper = _mapper;
@@ -45,7 +45,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
             istisnaKodlariCrud = _istisnaKodlariCrud;
             tevkifatKodlariCrud = _tevkifatKodlariCrud;
             vergiKodlariCrud = _vergiKodlariCrud;
- 
+
         }
 
         public async Task<ResultJsonWithData<FaturaSatir>> Add(FaturaSatirGetAllQueryViewModel FaturaSatirvw)
@@ -74,11 +74,11 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
                 var FaturaSatir = context.FaturaSatirs.FirstOrDefault(x => x.Id == request.Id);
 
-         
+
 
                 context.SaveChanges();
 
-                return new ResultJson { Success = true, Message = "Kayıt Başarılı"   };
+                return new ResultJson { Success = true, Message = "Kayıt Başarılı" };
 
             }
             catch (Exception ex)
@@ -86,18 +86,35 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
                 return new ResultJson { Success = false, Message = "Hata : " + ex.Message };
             }
 
-    
+
         }
 
         public async Task<List<FaturaSatirGetAllQueryViewModel>> GetAll(Guid FaturaId)
         {
 
 
-            var FaturaSatir = context.FaturaSatirs.Where(x => x.FaturaId==FaturaId).ToList();
+            var FaturaSatir = context.FaturaSatirs.Where(x => x.FaturaId == FaturaId).Include(x => x.OlcuBirimleri).Include(x => x.IstisnaKodlari).ToList();
 
-            var result = mapper.Map<List<FaturaSatirGetAllQueryViewModel>>(FaturaSatir);
 
-            return  result;
+            //foreach (var data in FaturaSatir)
+            //{
+            //    if (data.IstisnaKodlariId != null && data.IstisnaKodlariId != 0) data.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == data.IstisnaKodlariId ).FirstOrDefault();
+            //}
+
+            
+
+            var data = mapper.Map<List<FaturaSatirGetAllQueryViewModel>>(FaturaSatir);
+
+            var result = new List<FaturaSatirGetAllQueryViewModel>();
+
+            foreach (var x in data)
+            {
+               x.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(y => y.FaturaSatirId == x.Id).ToList();
+
+                result.Add(x);
+            }
+
+            return result;
 
 
         }
@@ -105,9 +122,11 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
         public async Task<FaturaSatirGetAllQueryViewModel> GetById(Guid FaturaSatirId)
         {
-            var FaturaSatir = context.FaturaSatirs.Where(x => x.Id == FaturaSatirId).FirstOrDefault();
+            var FaturaSatir = context.FaturaSatirs.Where(x => x.Id == FaturaSatirId).Include(x=> x.OlcuBirimleri).Include(x=>x.IstisnaKodlari).FirstOrDefault();
+           // if (FaturaSatir.IstisnaKodlariId != null && FaturaSatir.IstisnaKodlariId != 0) FaturaSatir.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == FaturaSatir.IstisnaKodlariId).FirstOrDefault();
+            var result = mapper.Map<FaturaSatirGetAllQueryViewModel>(FaturaSatir);
 
-            var result = mapper.Map<FaturaSatirGetAllQueryViewModel>(FaturaSatir);   
+            result.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(x => x.FaturaSatirId == result.Id).ToList();
 
             return result;
 
@@ -123,8 +142,26 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
             result.LstTevkifatKodlari = await tevkifatKodlariCrud.GetAll();
 
- 
+
             return result;
+
+        }
+
+
+        public async Task<List<KdvlerViewModel>> GetKdv(Guid FaturaId)
+        {
+            var query = string.Format(@"SELECT Kodu,Adi,KdvOran,SUM(KdvTutar) KdvTutar,SUM(Tutar) Tutar FROM  (
+                                        SELECT '0015' Kodu,'KDV' Adi ,KdvOran,KdvTutar,Tutar,TevkifatKodu,Isnull(TevkifatAdi,'') TevkifatAdi,ISNULL(TevkifatOran,'') TevkifatOran,TevkifatTutar,IstisnaKodu,ISNULL(IstisnaAciklama,'') IstisnaAciklama  FROM FaturaSatirs FS WHERE FaturaId='{0}'
+                                        UNION ALL
+                                        SELECT FSK.Kodu,FSK.Adi,FSK.KdvOran,FSK.KdvTutar,FS.Tutar,'','','',0,'',''  FROM FaturaSatirs FS INNER JOIN FaturaSatirKdvlers FSK ON FS.Id=FSK.FaturaSatirId and  FS.FaturaId='{0}') as KdvTable
+                                        GROUP BY Kodu,Adi,KdvOran,TevkifatKodu,TevkifatAdi,TevkifatOran,TevkifatTutar,IstisnaKodu,IstisnaAciklama", FaturaId.ToString());
+
+            var data = context.FaturaSatirs.FromSqlRaw(query).ToList();
+
+            var result = mapper.Map<List<KdvlerViewModel>>(data);
+
+            return result;
+
 
         }
 

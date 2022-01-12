@@ -43,6 +43,12 @@ namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
 
         public string IstisnaAciklama { get; set; }
 
+        public OlcuBirimleri OlcuBirimleri{ get; set; }
+
+        public IstisnaKodlari IstisnaKodlari { get; set; }
+
+        public  List<FaturaSatirKdvler> FaturaSatirKdvler  { get; set; }
+
         public List<OlcuBirimleriGetAllQueryViewModel> LstOlcuBirimleri { get; set; }
         public List<IstisnaKodlariGetAllQueryViewModel> LstIstisnaKodlari { get; set; }
         public List<TevkifatKodlariGetAllQueryViewModel> LstTevkifatKodlari { get; set; }

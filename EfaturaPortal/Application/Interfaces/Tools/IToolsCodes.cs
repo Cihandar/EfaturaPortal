@@ -8,5 +8,6 @@ namespace EfaturaPortal.Application.Interfaces.Tools
     public interface IToolsCodes
     {
         Task<string> YaziyaCevir(string gelentutar);
+        Task<decimal> toDecimal(string value);
     }
 }
