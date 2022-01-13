@@ -8,6 +8,10 @@ using EfaturaPortal.Models.EfaturaModel;
 using EdmEfatura;
 using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Extentions;
+using System.Xml.Xsl;
+using System.Xml;
+using System.IO;
+using System.Text;
 
 namespace EfaturaPortal.Application.EfaturaApi.Command
 {
@@ -67,6 +71,23 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             {
                 return new CheckUserResult { Success = false, ErrorCode = ex.Detail.ERROR_CODE.ToString(), ErrorMessage = ex.Detail.ERROR_LONG_DES };
             }
+        }
+
+        public async Task<string> GetInvoiceForView(string xmlInvoice,byte[] design)
+        {
+            
+            XslCompiledTransform transform = new XslCompiledTransform();
+            using (XmlReader reader = XmlReader.Create(new StringReader(Encoding.UTF8.GetString(design))))
+            {
+                transform.Load(reader);
+            }
+            StringWriter results = new StringWriter();
+            using (XmlReader reader = XmlReader.Create(new StringReader(xmlInvoice)))
+            {
+                transform.Transform(reader, null, results);
+            }
+
+            return results.ToString();
         }
 
  

@@ -150,18 +150,27 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
         public async Task<List<KdvlerViewModel>> GetKdv(Guid FaturaId)
         {
-            var query = string.Format(@"SELECT Kodu,Adi,KdvOran,SUM(KdvTutar) KdvTutar,SUM(Tutar) Tutar FROM  (
+            try
+            {
+
+
+            var query = string.Format(@"SELECT Kodu Aciklama,Adi OlcuBirimi,KdvOran,SUM(KdvTutar) KdvTutar,SUM(Tutar) Tutar,TevkifatKodu,TevkifatAdi,TevkifatOran,TevkifatTutar,IstisnaKodu,IstisnaAciklama FROM  (
                                         SELECT '0015' Kodu,'KDV' Adi ,KdvOran,KdvTutar,Tutar,TevkifatKodu,Isnull(TevkifatAdi,'') TevkifatAdi,ISNULL(TevkifatOran,'') TevkifatOran,TevkifatTutar,IstisnaKodu,ISNULL(IstisnaAciklama,'') IstisnaAciklama  FROM FaturaSatirs FS WHERE FaturaId='{0}'
                                         UNION ALL
                                         SELECT FSK.Kodu,FSK.Adi,FSK.KdvOran,FSK.KdvTutar,FS.Tutar,'','','',0,'',''  FROM FaturaSatirs FS INNER JOIN FaturaSatirKdvlers FSK ON FS.Id=FSK.FaturaSatirId and  FS.FaturaId='{0}') as KdvTable
                                         GROUP BY Kodu,Adi,KdvOran,TevkifatKodu,TevkifatAdi,TevkifatOran,TevkifatTutar,IstisnaKodu,IstisnaAciklama", FaturaId.ToString());
 
-            var data = context.FaturaSatirs.FromSqlRaw(query).ToList();
+            var result = context.FaturaSatirs.FromSqlRaw(query).Select(y=> new KdvlerViewModel { Kodu= y.Aciklama,Adi=y.OlcuBirimi,KdvOran=y.KdvOran,KdvTutar=y.KdvTutar,Tutar =y.Tutar,TevkifatKodu=y.TevkifatKodu,TevkifatAdi=y.TevkifatAdi,TevkifatOran=y.TevkifatOran,TevkifatTutar=y.TevkifatTutar,IstisnaAciklama=y.IstisnaAciklama,IstisnaKodu=y.IstisnaKodu }).ToList();
 
-            var result = mapper.Map<List<KdvlerViewModel>>(data);
+          //  var result = data; // mapper.Map<List<KdvlerViewModel>>(data);
 
             return result;
+            }
+            catch (Exception ex)
+            {
 
+                return null;
+            }
 
         }
 

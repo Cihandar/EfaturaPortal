@@ -28,9 +28,9 @@ namespace EfaturaPortal.Controllers
         {
             var faturaId = Guid.Parse("77550957-c3c5-484e-a213-bcb40ec7e024");
 
-            var firma = await _faturaCrud.GetById(faturaId, FirmaId);
+            //var firma = await _faturaCrud.GetById(faturaId, FirmaId);
 
-            var data = await _createUbl.Create(firma);
+            //var data = await _createUbl.Create(firma);
 
 
             return View();

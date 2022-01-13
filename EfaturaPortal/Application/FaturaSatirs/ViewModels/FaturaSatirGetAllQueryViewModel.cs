@@ -21,7 +21,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.ViewModels
         public int Sirano { get; set; }
         public string Aciklama { get; set; }
         public float Miktar { get; set; }
-        public string OlcuBirimi { get; set; }
+        public int OlcuBirimleriId { get; set; }
         public float BirimFiyat { get; set; }
         public float Tutar { get; set; }
 

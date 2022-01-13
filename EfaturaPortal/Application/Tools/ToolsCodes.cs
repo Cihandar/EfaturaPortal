@@ -1,7 +1,9 @@
 ﻿using EfaturaPortal.Application.Interfaces.Tools;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EfaturaPortal.Application.Tools
@@ -57,6 +59,20 @@ namespace EfaturaPortal.Application.Tools
             if (decimal.TryParse(value, out result))
                 return result;
             else return 0;
+        }
+
+
+        public async Task<byte[]> GetXSLTFiletoBinary(string fileName)
+        {
+            byte[] data;
+
+            if (!string.IsNullOrWhiteSpace(fileName) && File.Exists("/uploads/Xslt/" + fileName))
+            {
+                 data = Encoding.UTF8.GetBytes(new StreamReader(new FileStream("/uploads/Xslt/" + fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8).ReadToEnd());
+            }else { data = null; }
+           
+            return data;
+
         }
     }
 }

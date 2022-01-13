@@ -19,5 +19,6 @@ namespace EfaturaPortal.Application.Interfaces.FaturaSatirs
         Task<List<FaturaSatirGetAllQueryViewModel>> GetAll(Guid FaturaId);
         Task<FaturaSatirGetAllQueryViewModel> GetById(Guid FaturaSatirId);
         Task<FaturaSatirGetAllQueryViewModel> GetEmptyRow();
+        Task<List<KdvlerViewModel>> GetKdv(Guid FaturaId);
     }
 }

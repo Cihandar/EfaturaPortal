@@ -219,6 +219,14 @@
                         /*order: [[6, 'desc']],*/
                         buttons: [
                             {
+                                text: 'Gönder',
+                                className: 'btn-success EfaturaPortalApp-SendInvoice',
+                                attr: {
+                                    "data-endpoint": "",
+                                    title: "Seçili Faturaları Gönder"
+                                },
+                            },
+                            {
                                 text: 'Yeni Fatura',
                                 className: 'btn-warning EfaturaPortalApp-datatables-create',
                                 attr: {
@@ -230,8 +238,8 @@
                             { extend: 'print', text: 'Listeyi Yazdır' },
                             //{ extend: 'copyHtml5', text: 'Kopyala' },
                             { extend: 'excelHtml5', text: 'Excel' },
-                            { extend: 'csvHtml5', text: 'CSV' },
-                            { extend: 'pdfHtml5', text: 'PDF' },
+                            //{ extend: 'csvHtml5', text: 'CSV' },
+                            //{ extend: 'pdfHtml5', text: 'PDF' },
                             // { extend: 'colvis', text: 'Göster' }
                         ],
                         columns: [
@@ -252,8 +260,8 @@
                                 width: "100px",
                                 render: function (data, type, full, meta) {
 
-                                    return '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-view gridIslemBtn"  title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
-                                        '<button class="col-5 btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-print gridIslemBtn" title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-print"></i></button>';
+                                    return '<div class="btn-group btn-group-sm"><button class="col-5 btn btn-warning font-weight-bold btn-pill  min-w-90px EfaturaPortalApp-InvoiceView gridIslemBtn"  title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
+                                        '<button class="col-5 btn btn-info font-weight-bold btn-pill   min-w-90px EfaturaPortalApp-datatables-print gridIslemBtn" title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-print"></i></button></div>';
                                 }
                             },
                             {
@@ -326,6 +334,22 @@
             getData("GidenFaturalar/GetAllbyFiltre", "true");
 
 
+        });
+
+        $(document).on("click", ".EfaturaPortalApp-InvoiceView", function () {
+            var faturaId = $(this).data("id");
+
+            $.ajax({
+                url: "GidenFaturalar/GetInvoiceView?FaturaId=" + faturaId,
+                type: "get",
+                cache: false,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+            
         });
     </script>
 

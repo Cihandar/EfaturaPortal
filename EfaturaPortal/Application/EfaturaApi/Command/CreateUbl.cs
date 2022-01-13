@@ -333,7 +333,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             mtt.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Toplam + faturaVM.Iskonto).ToString()) };
             mtt.TaxExclusiveAmount = new TaxExclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(faturaVM.Toplam.ToString()) };
             mtt.TaxInclusiveAmount = new TaxInclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.OdenecekTutar).ToString()) };
-            if (faturaVM.Iskonto > 0) mtt.AllowanceTotalAmount = new AllowanceTotalAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Iskonto.ToString()) };
+            if (faturaVM.Iskonto > 0) mtt.AllowanceTotalAmount = new AllowanceTotalAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Iskonto.ToString())) };
             //    if (fatura.ArtirimToplam > 0) mtt.ChargeTotalAmount = new ChargeTotalAmountType { currencyID = faturaVM.Doviz, Value = mat.decimalecevir(fatura.ArtirimToplam.ToString()) };
             mtt.PayableAmount = new PayableAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(faturaVM.OdenecekTutar.ToString()) };
 

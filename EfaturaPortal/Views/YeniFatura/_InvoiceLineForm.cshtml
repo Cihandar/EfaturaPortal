@@ -24,10 +24,10 @@
             <div class="col-md-1">
                 <div class="form-group">
                     <label asp-for="LstOlcuBirimleri" class="form-control-label">Birim</label>
-                    <select class="form-control" name="FaturaSatir[@index].Birim" id="select2-@index" data-index="@index">
+                    <select class="form-control" name="FaturaSatir[@index].OlcuBirimleriId" id="select2-@index" data-index="@index">
                         @foreach (var birim in Model.LstOlcuBirimleri)
                         {
-                            <option id="@birim.Kodu">@birim.Adi</option>
+                            <option value="@birim.Id">@birim.Adi</option>
                         }
                     </select>
                     <span asp-validation-for="LstOlcuBirimleri" class="text-danger"> </span>

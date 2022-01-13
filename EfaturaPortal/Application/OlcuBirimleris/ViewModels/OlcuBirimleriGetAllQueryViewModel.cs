@@ -11,7 +11,7 @@ namespace EfaturaPortal.Application.OlcuBirimleris.ViewModels
 {
     public class OlcuBirimleriGetAllQueryViewModel : IHaveCustomMapping
     {
-
+        public int Id { get; set; }
         public string Kodu { get; set; }
         public string Adi { get; set; }
 

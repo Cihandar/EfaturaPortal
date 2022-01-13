@@ -9,5 +9,6 @@ namespace EfaturaPortal.Application.Interfaces.EfaturaApis
     public interface IEInvoiceTransactions
     {
         Task<CheckUserResult> Ef_GetEInvoiceMailBox(Guid FirmaId, string taxNumber);
+        Task<string> GetInvoiceForView(string xmlInvoice, byte[] design);
     }
 }
