@@ -17,22 +17,14 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-
-
-
-
                     <iframe id="iframeInvoice" style="width: 100%; height:600px;" srcdoc="@view"></iframe>
-
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary OtelApp-forms-modal-close" data-dismiss="modal">Vazgeç</button>
 
             </div>
-
         </div>
-
     </div>
 </div>
 
@@ -43,10 +35,8 @@
 </style>
 
 <script>
-
     $(document).on("click", ".btnYazdir", function () {
-        $("#iframeInvoice").get(0).contentWindow.print();
- 
+        $("#iframeInvoice").get(0).contentWindow.print(); 
     });
 </script>
 
