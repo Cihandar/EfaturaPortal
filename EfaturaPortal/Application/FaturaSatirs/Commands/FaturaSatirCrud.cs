@@ -17,8 +17,10 @@ using EfaturaPortal.Application.Interfaces.OlcuBirimleris;
 using EfaturaPortal.Application.Interfaces.IstisnaKodlaris;
 using EfaturaPortal.Application.Interfaces.TevkifatKodlaris;
 using EfaturaPortal.Application.Interfaces.VergiKodlaris;
-
 using EfaturaPortal.Models.ResultModel;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
+using EfaturaPortal.Application.Interfaces.Tools;
 
 namespace EfaturaPortal.Application.FaturaSatirs.Commands
 {
@@ -32,10 +34,11 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
         public IIstisnaKodlariCrud istisnaKodlariCrud;
         public ITevkifatKodlariCrud tevkifatKodlariCrud;
         public IVergiKodlariCrud vergiKodlariCrud;
+        private IConfiguration _config;
+        public IToolsCodes _tools;
 
 
-
-        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud, IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud, IVergiKodlariCrud _vergiKodlariCrud)
+        public FaturaSatirCrud(EfaturaPortalContext _context, IMapper _mapper, ICarilerCrud _carilerCrud, IDovizKodlariCrud _dovizKodlariCrud, IOlcuBirimleriCrud _olcuBirimleriCrud, IIstisnaKodlariCrud _istisnaKodlariCrud, ITevkifatKodlariCrud _tevkifatKodlariCrud, IVergiKodlariCrud _vergiKodlariCrud, IConfiguration config, IToolsCodes tools)
         {
             context = _context;
             mapper = _mapper;
@@ -45,7 +48,8 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
             istisnaKodlariCrud = _istisnaKodlariCrud;
             tevkifatKodlariCrud = _tevkifatKodlariCrud;
             vergiKodlariCrud = _vergiKodlariCrud;
-
+            _config = config;
+            _tools = tools;
         }
 
         public async Task<ResultJsonWithData<FaturaSatir>> Add(FaturaSatirGetAllQueryViewModel FaturaSatirvw)
@@ -101,7 +105,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
             //    if (data.IstisnaKodlariId != null && data.IstisnaKodlariId != 0) data.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == data.IstisnaKodlariId ).FirstOrDefault();
             //}
 
-            
+
 
             var data = mapper.Map<List<FaturaSatirGetAllQueryViewModel>>(FaturaSatir);
 
@@ -109,7 +113,7 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
             foreach (var x in data)
             {
-               x.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(y => y.FaturaSatirId == x.Id).ToList();
+                x.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(y => y.FaturaSatirId == x.Id).ToList();
 
                 result.Add(x);
             }
@@ -122,8 +126,8 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
         public async Task<FaturaSatirGetAllQueryViewModel> GetById(Guid FaturaSatirId)
         {
-            var FaturaSatir = context.FaturaSatirs.Where(x => x.Id == FaturaSatirId).Include(x=> x.OlcuBirimleri).Include(x=>x.IstisnaKodlari).FirstOrDefault();
-           // if (FaturaSatir.IstisnaKodlariId != null && FaturaSatir.IstisnaKodlariId != 0) FaturaSatir.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == FaturaSatir.IstisnaKodlariId).FirstOrDefault();
+            var FaturaSatir = context.FaturaSatirs.Where(x => x.Id == FaturaSatirId).Include(x => x.OlcuBirimleri).Include(x => x.IstisnaKodlari).FirstOrDefault();
+            // if (FaturaSatir.IstisnaKodlariId != null && FaturaSatir.IstisnaKodlariId != 0) FaturaSatir.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == FaturaSatir.IstisnaKodlariId).FirstOrDefault();
             var result = mapper.Map<FaturaSatirGetAllQueryViewModel>(FaturaSatir);
 
             result.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(x => x.FaturaSatirId == result.Id).ToList();
@@ -152,19 +156,45 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
         {
             try
             {
+                var con = new SqlConnection(_config.GetConnectionString("EfaturaPortalCon"));
 
-
-            var query = string.Format(@"SELECT Kodu Aciklama,Adi OlcuBirimi,KdvOran,SUM(KdvTutar) KdvTutar,SUM(Tutar) Tutar,TevkifatKodu,TevkifatAdi,TevkifatOran,TevkifatTutar,IstisnaKodu,IstisnaAciklama FROM  (
+                var query = string.Format(@"SELECT Kodu,Adi,ISNULL(KdvOran,0)  KdvOran,SUM(ISNULL(KdvTutar,0)) KdvTutar,SUM(ISNULL(Tutar,0)) Tutar,TevkifatKodu,TevkifatAdi,TevkifatOran,ISNULL(TevkifatTutar,0) TevkifatTutar,IstisnaKodu,IstisnaAciklama FROM  (
                                         SELECT '0015' Kodu,'KDV' Adi ,KdvOran,KdvTutar,Tutar,TevkifatKodu,Isnull(TevkifatAdi,'') TevkifatAdi,ISNULL(TevkifatOran,'') TevkifatOran,TevkifatTutar,IstisnaKodu,ISNULL(IstisnaAciklama,'') IstisnaAciklama  FROM FaturaSatirs FS WHERE FaturaId='{0}'
                                         UNION ALL
                                         SELECT FSK.Kodu,FSK.Adi,FSK.KdvOran,FSK.KdvTutar,FS.Tutar,'','','',0,'',''  FROM FaturaSatirs FS INNER JOIN FaturaSatirKdvlers FSK ON FS.Id=FSK.FaturaSatirId and  FS.FaturaId='{0}') as KdvTable
                                         GROUP BY Kodu,Adi,KdvOran,TevkifatKodu,TevkifatAdi,TevkifatOran,TevkifatTutar,IstisnaKodu,IstisnaAciklama", FaturaId.ToString());
 
-            var result = context.FaturaSatirs.FromSqlRaw(query).Select(y=> new KdvlerViewModel { Kodu= y.Aciklama,Adi=y.OlcuBirimi,KdvOran=y.KdvOran,KdvTutar=y.KdvTutar,Tutar =y.Tutar,TevkifatKodu=y.TevkifatKodu,TevkifatAdi=y.TevkifatAdi,TevkifatOran=y.TevkifatOran,TevkifatTutar=y.TevkifatTutar,IstisnaAciklama=y.IstisnaAciklama,IstisnaKodu=y.IstisnaKodu }).ToList();
+                var cmd = new SqlCommand(query, con);
+                if (con.State != System.Data.ConnectionState.Open) con.Open();
+                var dr = cmd.ExecuteReader();
+                var result = new List<KdvlerViewModel>();
+                while (dr.Read())
+                {
+                    var kdv = new KdvlerViewModel();
+                    kdv.Kodu = dr.GetFieldValue<string>(dr.GetOrdinal("Kodu"));
+                    kdv.Adi = dr.GetFieldValue<string>(dr.GetOrdinal("Adi"));
+                    kdv.KdvOran = await _tools.toFloat(dr.GetValue(2).ToString());
+                    kdv.KdvTutar = await _tools.toFloat(dr.GetValue(3).ToString());
+                    kdv.Tutar = await _tools.toFloat(dr.GetValue(4).ToString());
+                    kdv.TevkifatKodu = dr.GetFieldValue<string>(dr.GetOrdinal("TevkifatKodu"));
+                    kdv.TevkifatAdi = dr.GetFieldValue<string>(dr.GetOrdinal("TevkifatAdi"));
+                    kdv.TevkifatOran = dr.GetFieldValue<string>(dr.GetOrdinal("TevkifatOran"));
+                    kdv.TevkifatTutar = await _tools.toFloat(dr.GetValue(8).ToString());
+                    kdv.IstisnaKodu = dr.GetFieldValue<string>(dr.GetOrdinal("IstisnaKodu"));
+                    kdv.IstisnaAciklama = dr.GetFieldValue<string>(dr.GetOrdinal("IstisnaAciklama"));
+                    result.Add(kdv);
+                }
 
-          //  var result = data; // mapper.Map<List<KdvlerViewModel>>(data);
 
-            return result;
+
+                con.Close();
+
+
+                //var result = context.FaturaSatirs.FromSqlRaw(query).Select(y=> new KdvlerViewModel { Kodu= y.Aciklama,Adi=y.OlcuBirimi,KdvOran=y.KdvOran,KdvTutar=y.KdvTutar,Tutar =y.Tutar,TevkifatKodu=y.TevkifatKodu,TevkifatAdi=y.TevkifatAdi,TevkifatOran=y.TevkifatOran,TevkifatTutar=y.TevkifatTutar,IstisnaAciklama=y.IstisnaAciklama,IstisnaKodu=y.IstisnaKodu }).ToList();
+
+                //  var result = data; // mapper.Map<List<KdvlerViewModel>>(data);
+
+                return result;
             }
             catch (Exception ex)
             {

@@ -62,14 +62,16 @@ namespace EfaturaPortal.Controllers
             var result = await faturaCrud.GetAllbyfiltre(FirmaId,filtre);
             return Json(result);
         }
-        public async Task<string> GetInvoiceView(Guid FaturaId)
+        public async Task<IActionResult> GetInvoiceView(Guid Id)
         {
-            var faturaResult = await faturaCrud.GetById(FaturaId, FirmaId);
-            var kdvResult = await _faturaSatirCrud.GetKdv(FaturaId);
+            var faturaResult = await faturaCrud.GetById(Id, FirmaId);
+            var kdvResult = await _faturaSatirCrud.GetKdv(Id);
             var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
             var design = await _toolsCodes.GetXSLTFiletoBinary(faturaResult.SeriNumaralar.SablonDosyaAdi);
             var result = await _eInvoiceCommand.GetInvoiceForView(xmlInvoice, design);
-            return result;           
+         //   result = result.Replace(@"""", "&quot;");
+            ViewBag.InvoiceView = result;
+            return PartialView("_InvoiceViewFormPartial", null);
         }
 
         #region Create

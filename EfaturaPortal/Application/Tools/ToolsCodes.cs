@@ -1,4 +1,5 @@
 ﻿using EfaturaPortal.Application.Interfaces.Tools;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,11 @@ namespace EfaturaPortal.Application.Tools
 {
     public class ToolsCodes : IToolsCodes
     {
+        private readonly IWebHostEnvironment _environment;
+        public ToolsCodes(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
         public async  Task<string> YaziyaCevir(string gelentutar)
         {
             //Todo:Dövize göre uyarlanacak
@@ -61,14 +67,23 @@ namespace EfaturaPortal.Application.Tools
             else return 0;
         }
 
+        public async Task<float> toFloat(string value)
+        {
+            float result = 0;
+            if (float.TryParse(value, out result))
+                return result;
+            else return 0;
+        }
 
         public async Task<byte[]> GetXSLTFiletoBinary(string fileName)
         {
             byte[] data;
 
-            if (!string.IsNullOrWhiteSpace(fileName) && File.Exists("/uploads/Xslt/" + fileName))
+            var designfile = Path.Combine(_environment.WebRootPath, "uploads\\Xslt\\" + fileName);
+
+            if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(designfile))
             {
-                 data = Encoding.UTF8.GetBytes(new StreamReader(new FileStream("/uploads/Xslt/" + fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8).ReadToEnd());
+                 data = Encoding.UTF8.GetBytes(new StreamReader(new FileStream(designfile, FileMode.Open, FileAccess.Read), Encoding.UTF8).ReadToEnd());
             }else { data = null; }
            
             return data;

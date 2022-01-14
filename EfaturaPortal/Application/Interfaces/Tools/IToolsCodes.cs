@@ -9,6 +9,7 @@ namespace EfaturaPortal.Application.Interfaces.Tools
     {
         Task<string> YaziyaCevir(string gelentutar);
         Task<decimal> toDecimal(string value);
+        Task<float> toFloat(string value);
         Task<byte[]> GetXSLTFiletoBinary(string fileName);
 
     }

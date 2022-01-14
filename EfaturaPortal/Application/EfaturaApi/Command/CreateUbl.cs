@@ -16,6 +16,7 @@ using EfaturaPortal.Application.FaturaSatirs.ViewModels;
 using EfaturaPortal.Models;
 using System.Xml;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EfaturaPortal.Application.EfaturaApi.Command
 {
@@ -24,12 +25,13 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         IFirmalarCrud _firmaCrud;
         ISeriNumaralarCrud _seriNumaralarCrud;
         IToolsCodes _toolsCodes;
-
-        public CreateUbl(IFirmalarCrud firmalarCrud, ISeriNumaralarCrud seriNumaralarCrud, IToolsCodes toolsCodes)
+        private readonly IWebHostEnvironment _environment;
+        public CreateUbl(IFirmalarCrud firmalarCrud, ISeriNumaralarCrud seriNumaralarCrud, IToolsCodes toolsCodes,IWebHostEnvironment environment)
         {
             _firmaCrud = firmalarCrud;
             _seriNumaralarCrud = seriNumaralarCrud;
             _toolsCodes = toolsCodes;
+            _environment = environment;
         }
         public async Task<string> Create(FaturaGetAllQueryViewModel faturaVM, List<KdvlerViewModel> kdvler)
         {
@@ -132,8 +134,9 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         {
             var docref = new List<DocumentReferenceType>();
 
+            var designfile = Path.Combine(_environment.WebRootPath, "uploads\\Xslt\\" + faturaVM.SeriNumaralar.SablonDosyaAdi);
 
-            if (!string.IsNullOrWhiteSpace(faturaVM.SeriNumaralar.SablonDosyaAdi) && File.Exists("/uploads/Xslt/" + faturaVM.SeriNumaralar.SablonDosyaAdi))
+            if (!string.IsNullOrWhiteSpace(faturaVM.SeriNumaralar.SablonDosyaAdi) && File.Exists(designfile))
             {
                 docref.Add(
                     new DocumentReferenceType
@@ -149,7 +152,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                                 encodingCode = "Base64",
                                 filename = "default.xslt",
                                 mimeCode = "application/xml",
-                                Value = await GetXSLTFiletoBinary(faturaVM.SeriNumaralar.SablonDosyaAdi)
+                                Value = await GetXSLTFiletoBinary(designfile)
                             }
                         }
                     });
@@ -169,7 +172,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
         private async Task<byte[]> GetXSLTFiletoBinary(string fileName)
         {
-            var data = Encoding.UTF8.GetBytes(new StreamReader(new FileStream("/uploads/Xslt/" + fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8).ReadToEnd());
+            var data = Encoding.UTF8.GetBytes(new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read), Encoding.UTF8).ReadToEnd());
             return data;
 
         }
@@ -355,7 +358,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             decimal oran = 0;
             foreach (var x in faturaVM.FaturaSatir)
             {
-                if (!string.IsNullOrEmpty(x.TevkifatKodu))
+                if (!string.IsNullOrEmpty(x.TevkifatKodu) && x.TevkifatKodu!="-1")
                 {
                     tevkifatkodu = x.TevkifatKodu;
                     tevkifatoran = x.TevkifatOran;
