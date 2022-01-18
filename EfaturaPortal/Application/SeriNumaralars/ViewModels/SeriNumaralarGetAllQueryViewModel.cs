@@ -22,6 +22,8 @@ namespace EfaturaPortal.Application.SeriNumaralars.ViewModels
         public string SablonDosyaAdi { get; set; }
         public Guid FirmaId { get; set; }
 
+        public int Yil { get; set; }
+
         public  void CreateMappings(Profile configuration)
         {
             configuration.CreateMap<SeriNumaralarGetAllQueryViewModel, SeriNumaralar>();

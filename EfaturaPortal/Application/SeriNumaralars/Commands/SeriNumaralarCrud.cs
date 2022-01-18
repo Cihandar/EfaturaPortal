@@ -55,6 +55,7 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
                 data.SablonDosyaAdi = modelvw.SablonDosyaAdi;
                 data.SablonAdi = modelvw.SablonAdi;
                 data.SeriNo = modelvw.SeriNo;
+                data.Yil = modelvw.Yil;
 
                 context.SaveChanges();
 
@@ -124,6 +125,35 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
 
             return result;
 
+        }
+
+        public async Task<ResultJson> GetLastInvoiceNumberAndUpdate(Guid FirmaId, string SeriNo,int Yil,FaturaTuru faturaTuru)
+        {
+            var result = new ResultJson();
+            var InvNum = context.SeriNumaralars.Where(x => x.FirmaId == FirmaId && x.SeriNo == SeriNo && x.Yil == Yil && x.FaturaTuru == faturaTuru).FirstOrDefault();
+            if(InvNum!=null)
+            {
+                result.Success = true;
+                result.Value = await CreateInvoiceNumber(InvNum.SonFaturaNo + 1, Yil, SeriNo);
+
+                InvNum.SonFaturaNo = InvNum.SonFaturaNo + 1;
+                context.SaveChanges();
+
+            }else
+            {
+                result.Success = false;
+                result.Message = string.Format("{0} Yılı için tanımlı bir seri no bulunamadı !", Yil);
+            }
+
+
+            return result;
+
+        }
+
+        private async Task<string> CreateInvoiceNumber(int number,int yil,string seriNo)
+        {
+            var invnmbr = seriNo + yil.ToString() + number.ToString().PadLeft(9, '0');
+            return invnmbr;
         }
 
 

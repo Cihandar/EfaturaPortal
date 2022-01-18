@@ -40,7 +40,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             invoice.UBLVersionID = new UBLVersionIDType { Value = "2.1" };
             invoice.CustomizationID = new CustomizationIDType { Value = "TR1.2" };
 
-            invoice.ProfileID = await GetProfileIDType(faturaVM);
+            if (faturaVM.FaturaTuru == Models.Enum.FaturaTuru.EFatura) invoice.ProfileID = await GetProfileIDType(faturaVM); else invoice.ProfileID = new ProfileIDType { Value = "EARSIVFATURA" };
 
             invoice.ID = new IDType { Value = faturaVM.FaturaNumarasi };
             invoice.CopyIndicator = new CopyIndicatorType { Value = false };
@@ -67,7 +67,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             invoice.LegalMonetaryTotal = await GetMonetaryTotal(faturaVM);
 
-            invoice.WithholdingTaxTotal = await GetWithHoldingTaxTotal(faturaVM);
+            if(faturaVM.TevkifatToplam>0) invoice.WithholdingTaxTotal = await GetWithHoldingTaxTotal(faturaVM);
 
             invoice.InvoiceLine = await GetInvoiceLineTypes(faturaVM);
 

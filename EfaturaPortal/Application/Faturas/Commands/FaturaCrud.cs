@@ -17,6 +17,7 @@ using EfaturaPortal.Application.Interfaces.OdemeTurleris;
 using EfaturaPortal.Models.ResultModel;
 using EfaturaPortal.Application.Interfaces.FaturaSatirs;
 using EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers;
+using EfaturaPortal.Models.Enum;
 
 namespace EfaturaPortal.Application.Faturas.Commands
 {
@@ -217,6 +218,28 @@ namespace EfaturaPortal.Application.Faturas.Commands
             
             return result;
 
+        }
+
+        public async Task<ResultJson> UpdateInvoiceStatus(Guid FaturaId,EfaturaDurum status)
+        {
+            try
+            {
+
+  
+            var fatura = context.Faturas.Where(x => x.Id == FaturaId).FirstOrDefault();
+            if(fatura!=null)
+            {
+                fatura.EfaturaDurum = status;
+            }
+            context.SaveChanges();
+
+            return new ResultJson { Success = true };
+            }
+            catch (Exception ex)
+            {
+
+                return new ResultJson { Success = false, Message = ex.Message };
+            }
         }
 
 

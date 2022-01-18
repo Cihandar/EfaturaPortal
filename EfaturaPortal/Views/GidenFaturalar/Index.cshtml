@@ -67,7 +67,7 @@
                 <table class=" table table-striped- table-bordered table-hover table-checkable" id="table">
                     <thead>
                         <tr>
-
+                            <th>#</th>
                             <th>Seç</th>
                             <th>İşlemler</th>
                             <th>Durum</th>
@@ -105,7 +105,7 @@
 {
     <script src="~/plugins/adminLte/plugins/inputmask/jquery.inputmask.min.js"></script>
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="~/plugins/adminLte/plugins/datatables-select/js/dataTables.select.js"></script>
+    @* <script src="~/plugins/adminLte/plugins/datatables-select/js/dataTables.select.js"></script>*@
     <script>
 
 
@@ -243,15 +243,16 @@
                             // { extend: 'colvis', text: 'Göster' }
                         ],
                         columns: [
-
+                            { "data": null, visible: false },
                             {
-                                targets: 0,
                                 data: null,
-                                defaultContent: '',
+                                className: "",
+                                targets: -1,
                                 orderable: false,
-                                className: 'select-checkbox'
+                                render: function (data, type, full, meta) {
+                                    return "<input class='select-checkbox' type='checkbox' data-id='" + data.id + "'></input>";
+                                }
                             },
-
                             {
                                 data: null,
                                 className: "",
@@ -349,8 +350,29 @@
                     console.log(data);
                 }
             });
-            
+
         });
+
+        $(document).on("click", ".EfaturaPortalApp-SendInvoice", function () {
+
+            $(".select-checkbox").each(function (index, data) {
+                if ($(data).is(':checked')) {
+                    $.ajax({
+                        url: "GidenFaturalar/SendInvoice?Id=" + $(data).data("id"),
+                        type: "get",
+                        cache: false,
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove
+                        processData: false,
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+
+
+        });
+
     </script>
 
 }

@@ -15,6 +15,7 @@ namespace EfaturaPortal.Models
         public int Oncelik { get; set; }
         public string SablonAdi { get; set; }
         public string SablonDosyaAdi { get; set; }
+        public int Yil { get; set; }
 
     }
 }

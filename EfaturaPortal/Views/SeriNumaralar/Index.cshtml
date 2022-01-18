@@ -1,5 +1,5 @@
 ﻿@*
-   
+
 *@
 @{
 }
@@ -9,7 +9,7 @@
         <div class="card card-primary">
 
             <div class="card-header">
-               Fatura Seri Numara Tanımları
+                Fatura Seri Numara Tanımları
             </div>
 
             <div class="card-body">
@@ -58,9 +58,10 @@
                         if (data == '2') return "E-Smm";
 
 
- 
+
                     }
                 },
+                { "data": "yil" },
                 { "data": "seriNo" },
                 { "data": "sonFaturaNo" },
                 {
@@ -77,12 +78,12 @@
 
                 },
                 {
-                    data: null, 
+                    data: null,
                     className: "dt-center",
                     targets: -1,
                     orderable: false,
                     render: function (data, type, full, meta) {
-                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Düzenle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id +'">Güncelle</button>';
+                        return '<button class="btn btn-info font-weight-bold btn-pill mr-2  min-w-90px EfaturaPortalApp-datatables-update"  title="Düzenle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '">Güncelle</button>';
                     }
                 }
             ];

@@ -17,13 +17,14 @@ using EfaturaPortal.Application.Interfaces.FaturaSatirs;
 using EfaturaPortal.Application.Interfaces.VergiKodlaris;
 using EfaturaPortal.Models.ResultModel;
 using EfaturaPortal.Application.Interfaces.Tools;
+using System.Text;
 
 namespace EfaturaPortal.Controllers
 {
     public class GidenFaturalarController : BaseController
     {
         IFaturaCrud faturaCrud;
-        ISeriNumaralarCrud SNumaralarCrud;
+        ISeriNumaralarCrud _SeriNumaralarCrud;
         IEdmEInvoiceLogin _edmLogin;
         IEInvoiceTransactions _eInvoiceCommand;
         ITcmbDovizKurlari _TcmbDovizKurlari;
@@ -37,10 +38,10 @@ namespace EfaturaPortal.Controllers
             return View();
         }
 
-        public GidenFaturalarController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud,IVergiKodlariCrud vergiKodlariCrud,ICreateUbl createUbl,IToolsCodes toolsCodes)
+        public GidenFaturalarController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud,IVergiKodlariCrud vergiKodlariCrud,ICreateUbl createUbl,IToolsCodes toolsCodes)
         {
             faturaCrud = _faturaCrud;
-            SNumaralarCrud = _SNumaralarCrud;
+            _SeriNumaralarCrud = SNumaralarCrud;
             _edmLogin = edmLogin;
             _eInvoiceCommand = eInvoiceCommand;
             _TcmbDovizKurlari = TcmbDovizKurlari;
@@ -74,6 +75,36 @@ namespace EfaturaPortal.Controllers
             return PartialView("_InvoiceViewFormPartial", null);
         }
 
+        public async Task<IActionResult> SendInvoice(Guid Id)
+        {
+
+            var faturaResult = await faturaCrud.GetById(Id, FirmaId);
+            if(string.IsNullOrEmpty(faturaResult.FaturaNumarasi))
+            {
+                var resultNumber = await _SeriNumaralarCrud.GetLastInvoiceNumberAndUpdate(FirmaId, faturaResult.SeriNumaralar.SeriNo, faturaResult.Tarih.Year, faturaResult.FaturaTuru);
+                if(resultNumber.Success)
+                {
+                    faturaResult.FaturaNumarasi = resultNumber.Value;
+                }else
+                {
+                    return Json(faturaResult);
+                }
+             
+            }
+            var kdvResult = await _faturaSatirCrud.GetKdv(Id);
+            var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
+
+            var result = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.ASCII.GetBytes(xmlInvoice));
+
+            if(result.Success)
+            {
+                var statusResult = await faturaCrud.UpdateInvoiceStatus(faturaResult.Id, EfaturaDurum.Yuklendi);
+            }
+
+            return Json(result);
+
+
+        }
         #region Create
 
 

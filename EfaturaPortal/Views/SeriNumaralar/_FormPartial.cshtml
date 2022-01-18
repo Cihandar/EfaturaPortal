@@ -20,11 +20,22 @@
 
                     <!--Ünvanı-->
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label asp-for="FaturaTuru" class="form-control-label">Ünvanı</label>
                                 <select asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>()"></select>
                                 <span asp-validation-for="FaturaTuru" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Yil" class="form-control-label">Yıl Seçin</label>
+                                <select asp-for="Yil" class="form-control seridenapp-forms-select2" data-placeholder="Yıl Seçin">
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                </select>
+                                <span asp-validation-for="Yil" class="text-danger"> </span>
                             </div>
                         </div>
                     </div>
