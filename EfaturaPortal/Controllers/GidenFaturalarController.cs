@@ -85,16 +85,17 @@ namespace EfaturaPortal.Controllers
                 if(resultNumber.Success)
                 {
                     faturaResult.FaturaNumarasi = resultNumber.Value;
+                    var InNumberResult = faturaCrud.UpdateInvoiceNumber(Id, resultNumber.Value);
                 }else
                 {
                     return Json(faturaResult);
-                }
-             
+                }             
             }
+
             var kdvResult = await _faturaSatirCrud.GetKdv(Id);
             var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
 
-            var result = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.ASCII.GetBytes(xmlInvoice));
+            var result = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
 
             if(result.Success)
             {

@@ -409,7 +409,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
                 List<TaxSubtotalType> txsub = new List<TaxSubtotalType>();
 
-                txsub.Add(await GetTaxSubtotalTypes(faturaVM.Doviz, "0015", "KDV", x.IstisnaKodlari, x.KdvliTutar, x.Tutar, x.KdvOran));
+                txsub.Add(await GetTaxSubtotalTypes(faturaVM.Doviz, "0015", "KDV", x.IstisnaKodlari, x.KdvTutar, x.Tutar, x.KdvOran));
 
 
                 foreach (var kdvler in x.FaturaSatirKdvler)

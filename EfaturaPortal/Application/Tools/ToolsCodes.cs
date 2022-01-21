@@ -63,7 +63,7 @@ namespace EfaturaPortal.Application.Tools
         {
             decimal result = 0;
             if (decimal.TryParse(value, out result))
-                return result;
+                return Math.Round(result,2);
             else return 0;
         }
 

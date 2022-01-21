@@ -20,6 +20,6 @@ namespace EfaturaPortal.Application.Interfaces.Faturas
         Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId, Guid FirmaId);
         Task<List<FaturaGetAllQueryViewModel>> GetAllbyfiltre(Guid firmaId, InvoiceSearch filtre);
         Task<ResultJson> UpdateInvoiceStatus(Guid FaturaId, EfaturaDurum status);
-
+        Task<ResultJson> UpdateInvoiceNumber(Guid FaturaId, string InNumber);
     }
 }

@@ -18,6 +18,7 @@ using EfaturaPortal.Models.ResultModel;
 using EfaturaPortal.Application.Interfaces.FaturaSatirs;
 using EfaturaPortal.Application.Interfaces.FaturaSatirKdvlers;
 using EfaturaPortal.Models.Enum;
+using EfaturaPortal.Application.Carilers.ViewModels;
 
 namespace EfaturaPortal.Application.Faturas.Commands
 {
@@ -49,6 +50,17 @@ namespace EfaturaPortal.Application.Faturas.Commands
             try
             {
                 var fatura = mapper.Map<Fatura>(faturavw);
+
+                if (faturavw.CarilerId == null || fatura.CarilerId == Guid.Empty)
+                {
+                    fatura.Cariler.FirmaId = fatura.FirmaId;
+                    var cariVm = mapper.Map<CarilerGetAllQueryViewModel>(fatura.Cariler);
+                    cariVm.Id = Guid.NewGuid();
+                    fatura.CarilerId = cariVm.Id;
+                    var cariResult = carilerCrud.Add(cariVm);
+                  //  context.Carilers.Add(faturavw.Cariler);
+
+                }
 
                 var faturaid = Guid.NewGuid();
 
@@ -97,14 +109,10 @@ namespace EfaturaPortal.Application.Faturas.Commands
                     fatura.OdemeSekliAdi = dataodemesekli.Adi;
                 }
 
-                if (faturavw.CarilerId == null || fatura.CarilerId == Guid.Empty)
-                {
-
-                    context.Carilers.Add(faturavw.Cariler);
-                    
-                }
+      
 
                 fatura.Cariler = null;
+
                 context.Faturas.Add(fatura);
 
                 context.SaveChanges();
@@ -241,6 +249,30 @@ namespace EfaturaPortal.Application.Faturas.Commands
                 return new ResultJson { Success = false, Message = ex.Message };
             }
         }
+
+
+        public async Task<ResultJson> UpdateInvoiceNumber(Guid FaturaId, string InNumber)
+        {
+            try
+            {
+
+
+                var fatura = context.Faturas.Where(x => x.Id == FaturaId).FirstOrDefault();
+                if (fatura != null)
+                {
+                    fatura.FaturaNumarasi = InNumber;
+                }
+                context.SaveChanges();
+
+                return new ResultJson { Success = true };
+            }
+            catch (Exception ex)
+            {
+
+                return new ResultJson { Success = false, Message = ex.Message };
+            }
+        }
+
 
 
 

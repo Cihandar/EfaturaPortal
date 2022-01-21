@@ -177,6 +177,9 @@
             }
             console.log(formData);
             $.ajax({
+                beforeSend: function () {
+                    Notiflix.Block.Dots('.card', 'Yükleniyor');
+                },
                 url: url,
                 type: "POST",
                 cache: false,
@@ -184,7 +187,7 @@
                 processData: false,
                 data: formData,
                 complete: function () {
-
+                    Notiflix.Block.Remove("*");
                 },
                 success: function (data) {
 
@@ -355,9 +358,32 @@
 
         $(document).on("click", ".EfaturaPortalApp-SendInvoice", function () {
 
+
+            Notiflix.Confirm.Show(
+                'Emin misiniz ?',
+                'Seçili Faturalar Gönderilecek. Emin misiniz ? ',
+                'Evet Emin',
+                'Vazgeç',
+                () => {
+
+                    SendInvoice();
+                }
+
+            );
+
+
+
+        });
+
+
+        function SendInvoice() {
+
             $(".select-checkbox").each(function (index, data) {
                 if ($(data).is(':checked')) {
                     $.ajax({
+                        beforeSend: function () {
+                            Notiflix.Block.Hourglass('.card', 'Faturalar Gönderiliyor.Lütfen Bekleyin..');
+                        },
                         url: "GidenFaturalar/SendInvoice?Id=" + $(data).data("id"),
                         type: "get",
                         cache: false,
@@ -365,13 +391,17 @@
                         processData: false,
                         success: function (data) {
                             console.log(data);
+          
+                        },                
+                        complete: function () {
+                            Notiflix.Block.Remove("*");
+                            getData("GidenFaturalar/GetAll", "false");
                         }
                     });
                 }
             });
 
-
-        });
+        }
 
     </script>
 
