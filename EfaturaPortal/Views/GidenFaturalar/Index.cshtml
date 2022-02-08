@@ -89,6 +89,41 @@
     </div>
 </div>
 
+<button id="openModal" type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" style="display:none">
+    Modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Fatura Gönderim Sonuçları</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px">#</th>
+                            <th>Açıklama</th> 
+                        </tr>
+                    </thead>
+                    <tbody class="InvoiceResultsContent">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Kapat</button>
+                @*<button type="button" class="btn btn-primary">Tamam</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
 @section css
 {
     <link href="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
@@ -377,29 +412,62 @@
 
 
         function SendInvoice() {
+            var i = 0;
 
+            var idArrays = new Array;
             $(".select-checkbox").each(function (index, data) {
                 if ($(data).is(':checked')) {
-                    $.ajax({
-                        beforeSend: function () {
-                            Notiflix.Block.Hourglass('.card', 'Faturalar Gönderiliyor.Lütfen Bekleyin..');
-                        },
-                        url: "GidenFaturalar/SendInvoice?Id=" + $(data).data("id"),
-                        type: "get",
-                        cache: false,
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove
-                        processData: false,
-                        success: function (data) {
-                            console.log(data);
-          
-                        },                
-                        complete: function () {
-                            Notiflix.Block.Remove("*");
-                            getData("GidenFaturalar/GetAll", "false");
-                        }
-                    });
+                    idArrays[i] = $(data).data("id");
+                    i++;
                 }
             });
+
+            idArrays = JSON.stringify({ "id": idArrays });
+
+
+
+            console.log(idArrays);
+            if (idArrays.length > 0) {
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+
+                    beforeSend: function () {
+                        Notiflix.Block.Hourglass('.card', 'Faturalar Gönderiliyor.Lütfen Bekleyin..');
+                    },
+
+                    url: "GidenFaturalar/SendInvoice",
+                    type: "POST",
+                    data: idArrays,
+
+                    processData: false,
+                    success: function (data) {
+             
+
+                        var table = "";
+                        $.each(data, function (i, d) {
+                            debugger;
+                           var row = "<tr>";
+                            if (d.success) {
+                                row = row + "<td class='text-success'><i class='fas fa fa-check-circle'></i></td>";
+                            } else {
+                                row = row + "<td class='text-danger'><i class='fas fa fa-exclamation-triangle'></i></td>";
+                            }                        
+                            row = row + "<td>" + d.message+"</td>";
+                            row = row+"</tr>";
+                            table = table + row;
+                        });
+                        $(".InvoiceResultsContent").html(table);
+                        $("#openModal").click();
+                        console.log(data);
+
+                    },
+                    complete: function () {
+                        Notiflix.Block.Remove("*");
+                        getData("GidenFaturalar/GetAll", "false");
+                    }
+                });
+            }
 
         }
 

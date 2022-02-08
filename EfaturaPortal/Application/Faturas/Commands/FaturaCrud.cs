@@ -135,6 +135,8 @@ namespace EfaturaPortal.Application.Faturas.Commands
 
                 var fatura = context.Faturas.FirstOrDefault(x => x.Id == request.Id);
 
+              
+
                 fatura.Artirim = request.Artirim;
                 fatura.CarilerId = request.CarilerId;
                 fatura.DovizKuru = request.DovizKuru;

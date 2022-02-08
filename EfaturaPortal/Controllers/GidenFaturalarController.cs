@@ -75,31 +75,40 @@ namespace EfaturaPortal.Controllers
             return PartialView("_InvoiceViewFormPartial", null);
         }
 
-        public async Task<IActionResult> SendInvoice(Guid Id)
+        [HttpPost]
+        public async Task<IActionResult> SendInvoice([FromBody] SendInvoiceIds sendInvoiceIds)
         {
+            var result = new List<ResultJson>();
 
-            var faturaResult = await faturaCrud.GetById(Id, FirmaId);
-            if(string.IsNullOrEmpty(faturaResult.FaturaNumarasi))
+            foreach (var invId in sendInvoiceIds.id)
             {
-                var resultNumber = await _SeriNumaralarCrud.GetLastInvoiceNumberAndUpdate(FirmaId, faturaResult.SeriNumaralar.SeriNo, faturaResult.Tarih.Year, faturaResult.FaturaTuru);
-                if(resultNumber.Success)
+                var faturaResult = await faturaCrud.GetById(invId, FirmaId);
+                if (string.IsNullOrEmpty(faturaResult.FaturaNumarasi))
                 {
-                    faturaResult.FaturaNumarasi = resultNumber.Value;
-                    var InNumberResult = faturaCrud.UpdateInvoiceNumber(Id, resultNumber.Value);
-                }else
+                    var resultNumber = await _SeriNumaralarCrud.GetLastInvoiceNumberAndUpdate(FirmaId, faturaResult.SeriNumaralar.SeriNo, faturaResult.Tarih.Year, faturaResult.FaturaTuru);
+                    if (resultNumber.Success)
+                    {
+                        faturaResult.FaturaNumarasi = resultNumber.Value;
+                        var InNumberResult = faturaCrud.UpdateInvoiceNumber(invId, resultNumber.Value);
+                    }
+                    else
+                    {
+                        return Json(faturaResult);
+                    }
+                }
+
+                var kdvResult = await _faturaSatirCrud.GetKdv(invId);
+                var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
+
+                var resultSended = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
+
+                result.Add(resultSended);
+
+                if (resultSended.Success)
                 {
-                    return Json(faturaResult);
-                }             
-            }
+                    var statusResult = await faturaCrud.UpdateInvoiceStatus(faturaResult.Id, EfaturaDurum.Yuklendi);
+                }
 
-            var kdvResult = await _faturaSatirCrud.GetKdv(Id);
-            var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
-
-            var result = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
-
-            if(result.Success)
-            {
-                var statusResult = await faturaCrud.UpdateInvoiceStatus(faturaResult.Id, EfaturaDurum.Yuklendi);
             }
 
             return Json(result);

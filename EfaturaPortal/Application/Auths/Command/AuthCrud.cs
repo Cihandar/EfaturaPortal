@@ -205,7 +205,7 @@ namespace EfaturaPortal.Application.Auths.Command
         public async Task<bool> IsEmailRegistered(string email)
         {
             var usercheck = _userManager.Users.Where(x => x.Email == email).FirstOrDefault();
-
+                  
             if (usercheck != null) return true; else return false;
 
         }
