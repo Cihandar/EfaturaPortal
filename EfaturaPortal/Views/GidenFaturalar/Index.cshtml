@@ -95,7 +95,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Fatura Gönderim Sonuçları</h5>
@@ -108,11 +108,11 @@
                     <thead>
                         <tr>
                             <th style="width: 100px">#</th>
-                            <th>Açıklama</th> 
+                            <th>Fatura No</th>
+                            <th>Açıklama</th>
                         </tr>
                     </thead>
                     <tbody class="InvoiceResultsContent">
-                        
                     </tbody>
                 </table>
             </div>
@@ -210,7 +210,7 @@
 
                 formData = $("#filtrealani").serialize();
             }
-            console.log(formData);
+
             $.ajax({
                 beforeSend: function () {
                     Notiflix.Block.Dots('.card', 'Yükleniyor');
@@ -226,7 +226,7 @@
                 },
                 success: function (data) {
 
-                    console.log(data);
+
                     var dataTable = $('#table').DataTable({
                         destroy: true,
                         responsive: true,
@@ -265,11 +265,11 @@
                                 },
                             },
                             {
-                                text: 'Yeni Fatura',
-                                className: 'btn-warning EfaturaPortalApp-datatables-create',
+                                text: 'Sorgula',
+                                className: 'btn-warning EfaturaPortalApp-datatables-GetStatus',
                                 attr: {
                                     "data-endpoint": "",
-                                    title: "Yeni Fatura Ekle"
+                                    title: "Fatura Sorgula"
                                 },
                             },
 
@@ -392,26 +392,23 @@
         });
 
         $(document).on("click", ".EfaturaPortalApp-SendInvoice", function () {
-
-
             Notiflix.Confirm.Show(
                 'Emin misiniz ?',
                 'Seçili Faturalar Gönderilecek. Emin misiniz ? ',
                 'Evet Emin',
                 'Vazgeç',
                 () => {
-
                     SendInvoice();
                 }
-
             );
+        });
 
-
-
+        $(document).on("click", ".EfaturaPortalApp-datatables-GetStatus", function () {
+            GetStatusInvoice();
         });
 
 
-        function SendInvoice() {
+        function GetInvoiceId() {
             var i = 0;
 
             var idArrays = new Array;
@@ -422,9 +419,14 @@
                 }
             });
 
-            idArrays = JSON.stringify({ "id": idArrays });
+            return JSON.stringify({ "id": idArrays });
+        }
+        //Fatura Gönderimi
+        function SendInvoice() {
 
 
+
+            var idArrays = GetInvoiceId();
 
             console.log(idArrays);
             if (idArrays.length > 0) {
@@ -442,23 +444,73 @@
 
                     processData: false,
                     success: function (data) {
-             
-
                         var table = "";
                         $.each(data, function (i, d) {
                             debugger;
-                           var row = "<tr>";
+                            var row = "<tr>";
                             if (d.success) {
                                 row = row + "<td class='text-success'><i class='fas fa fa-check-circle'></i></td>";
                             } else {
                                 row = row + "<td class='text-danger'><i class='fas fa fa-exclamation-triangle'></i></td>";
-                            }                        
-                            row = row + "<td>" + d.message+"</td>";
-                            row = row+"</tr>";
+                            }
+                            row = row + "<td></td>";
+                            row = row + "<td>" + d.message + "</td>";
+                            row = row + "</tr>";
                             table = table + row;
                         });
                         $(".InvoiceResultsContent").html(table);
                         $("#openModal").click();
+                        console.log(data);
+
+                    },
+                    complete: function () {
+                        Notiflix.Block.Remove("*");
+                        getData("GidenFaturalar/GetAll", "false");
+                    }
+                });
+            }
+
+        }
+
+
+        function GetStatusInvoice() {
+            var idArrays = GetInvoiceId();
+
+            if (idArrays.length > 0) {
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+
+                    beforeSend: function () {
+                        Notiflix.Block.Hourglass('.card', 'Faturalar Sorgulanıyor.Lütfen Bekleyin..');
+                    },
+
+                    url: "GidenFaturalar/GetInvoiceStatus",
+                    type: "POST",
+                    data: idArrays,
+
+                    processData: false,
+                    success: function (data) {
+
+                        var table = "";
+                        $.each(data, function (i, d) {
+                            if (d.success) {
+                                var color = "text-success"
+                                if (d.data.error) color = "text-danger";
+                                var row = "<tr>";
+                                row = row + "<td class='" + color + "'><i class='" + d.data.icon + "'></i></td>";
+                                row = row + "<td>" + d.data.invoiceNumber + "</td>";
+                                row = row + "<td>" + d.data.message + "</td>";
+                                row = row + "</tr>";
+                                table = table + row;
+                            } else {
+
+                            }
+
+                        });
+                        $(".InvoiceResultsContent").html(table);
+                        $("#openModal").click();
+
                         console.log(data);
 
                     },

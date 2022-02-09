@@ -14,7 +14,7 @@ using System.IO;
 using System.Text;
 using EfaturaPortal.Models.ResultModel;
 using EfaturaPortal.Application.Faturas.ViewModels;
-
+using EfaturaPortal.Application.Interfaces.Faturas;
 
 namespace EfaturaPortal.Application.EfaturaApi.Command
 {
@@ -23,12 +23,13 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
         IEdmEInvoiceLogin _login;
         EFaturaEDMPortClient _client;
+        IFaturaCrud _faturaCrud;
 
-
-        public EInvoiceTransactions(IEdmEInvoiceLogin login, EFaturaEDMPortClient client)
+        public EInvoiceTransactions(IEdmEInvoiceLogin login, EFaturaEDMPortClient client,IFaturaCrud faturaCrud)
         {
             _login = login;
             _client = client;
+            _faturaCrud = faturaCrud;
         }
 
 
@@ -117,6 +118,61 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             {
                 return new ResultJson { Success = false, Message = string.Format("Fatura Yüklenirken Hata Oluştu Hata Kodu : {0}. Açıklama:{1}", ex.Detail.ERROR_CODE, ex.Detail.ERROR_LONG_DES) };
             }
+        }
+
+        public async Task<ResultJsonWithData<ResultInvoiceStatus>> GetInvoiceStatus(Guid FirmaId,Guid invoiceId)
+        {
+ 
+            var logininfo = await GetLoginInfo(FirmaId);
+            try
+            {
+                var invoiceStatusResult = await _client.GetInvoiceStatusAsync(new GetInvoiceStatusRequest { INVOICE = new INVOICE { UUID = invoiceId.ToString() }, REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo) });
+                return new ResultJsonWithData<ResultInvoiceStatus> { Success = true, Data = await UpdateInvoiceStatus(invoiceId, invoiceStatusResult.GetInvoiceStatusResponse.INVOICE_STATUS) };
+            }
+            catch (System.ServiceModel.FaultException<REQUEST_ERRORType> ex)
+            {
+                return new ResultJsonWithData<ResultInvoiceStatus> { Success = false, Data = null, Message = ex.Message };
+            }
+        }
+
+        public async Task<ResultInvoiceStatus> UpdateInvoiceStatus(Guid invoiceId,GetInvoiceStatusResponseINVOICE_STATUS status)
+        {
+            var result  = new ResultInvoiceStatus();
+            result.InvoiceNumber = status.ID;
+            result.Uuid = Guid.Parse(status.UUID);
+            switch (status.STATUS)
+            {
+                case "SEND - SUCCEED":
+                    result.Message = "Fatura Gönderildi..(Tamamlandı)";
+                    result.EfaturaDurum = Models.Enum.EfaturaDurum.Gonderildi;
+                    result.Icon = "fas fa fa-check-circle"; 
+                    break;
+                case "SEND - PROCESSING":
+                    result.Message = "Fatura Portala Yüklendi..(Kuyruğa Alındı İşlenmesi Bekleniyor..)";
+                    result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
+                    result.Icon = "fas fa fa-angle";
+                    break;
+                case "LOAD - SUCCEED":
+                    result.Message = "Fatura Portala Yüklendi..(Gib'e Gönderilmesi Bekleniyor)";
+                    result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
+                    result.Icon = "fas fa fa-angle-up";
+                    break;
+                case "SEND - FAILED":
+                    result.Message = "Fatura Gönderimi Hatalı !";
+                    result.EfaturaDurum = Models.Enum.EfaturaDurum.Beklemede;
+                    result.Icon = "fas fa fa-exclamation-circle";
+                    result.Error = true;
+                    break;
+                case "CANCELLED - SUCCEED":
+                    result.Message = "Fatura Portaldan İptal Edilmiş!";
+                    result.EfaturaDurum = Models.Enum.EfaturaDurum.Iptal;
+                    result.Icon = "fas fa fa-window-close";
+                    break;
+            }
+
+            var resultUpdate = await _faturaCrud.UpdateInvoiceStatus(invoiceId, result.EfaturaDurum);
+
+            return result;
         }
 
 

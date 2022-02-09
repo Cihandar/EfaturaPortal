@@ -115,10 +115,20 @@ namespace EfaturaPortal.Controllers
 
 
         }
-        #region Create
 
+        public async Task<IActionResult> GetInvoiceStatus([FromBody] SendInvoiceIds sendInvoiceIds)
+        {
+            var result = new List<ResultJsonWithData<ResultInvoiceStatus>>();
+            foreach (var invId in sendInvoiceIds.id)
+            {
+                var resultStatus = await _eInvoiceCommand.GetInvoiceStatus(FirmaId, invId);
+                result.Add(resultStatus);
+            }
 
-        #endregion
+            return Json(result);
+            
+        }
+   
 
 
 

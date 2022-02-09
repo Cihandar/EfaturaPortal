@@ -13,5 +13,6 @@ namespace EfaturaPortal.Application.Interfaces.EfaturaApis
         Task<CheckUserResult> Ef_GetEInvoiceMailBox(Guid FirmaId, string taxNumber);
         Task<string> GetInvoiceForView(string xmlInvoice, byte[] design);
         Task<ResultJson> SendeInvoice(FaturaGetAllQueryViewModel invoice, byte[] xmlInvioce);
+        Task<ResultJsonWithData<ResultInvoiceStatus>> GetInvoiceStatus(Guid FirmaId, Guid invoiceId);
     }
 }
