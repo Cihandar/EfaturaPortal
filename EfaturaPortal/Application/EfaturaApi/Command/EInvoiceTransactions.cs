@@ -150,23 +150,23 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                 case "SEND - PROCESSING":
                     result.Message = "Fatura Portala Yüklendi..(Kuyruğa Alındı İşlenmesi Bekleniyor..)";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
-                    result.Icon = "fas fa fa-angle";
+                    result.Icon = "fas fa-angle-up text-warning";
                     break;
                 case "LOAD - SUCCEED":
                     result.Message = "Fatura Portala Yüklendi..(Gib'e Gönderilmesi Bekleniyor)";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
-                    result.Icon = "fas fa fa-angle-up";
+                    result.Icon = "fas fa-angle-double-up text-primary";
                     break;
                 case "SEND - FAILED":
                     result.Message = "Fatura Gönderimi Hatalı !";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Beklemede;
-                    result.Icon = "fas fa fa-exclamation-circle";
+                    result.Icon = "fas fa-exclamation-circle text-danger";
                     result.Error = true;
                     break;
                 case "CANCELLED - SUCCEED":
                     result.Message = "Fatura Portaldan İptal Edilmiş!";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Iptal;
-                    result.Icon = "fas fa fa-window-close";
+                    result.Icon = "fas  fa-window-close text-secondery";
                     break;
             }
 

@@ -305,16 +305,10 @@
                             },
                             {
                                 "data": "efaturaDurum",
-                                "render": function (data, type, row) {
-                                    switch (data) {
-
-                                        case 0: return "<div class='btn btn-warning'>Beklemede</div>";
-                                        case 1: return "<div class='btn btn-primary'>Yüklendi</div>";
-                                        case 2: return "<div class='btn btn-success'>Gönderildi</div>";
-                                        case 3: return "<div class='btn btn-danger'>İptal Edildi</div>";
-
-                                    }
+                                "render": function (data, type, full, row) {
+                                return SetInvoiceStatus(data, full.id,false); 
                                 }
+                       
                             },
                             {
                                 "data": "faturaTuru",
@@ -366,6 +360,22 @@
             });
         };
 
+        function SetInvoiceStatus(status, id, out) {
+            debugger;
+            result = "";
+            if (!out) {
+                  result = "<div id='status-+" + id + "'>";
+            }
+            switch (status) {
+                case 0: result = result + "<div class='btn btn-warning'>Beklemede</div>"; break;
+                case 1: result = result + "<div class='btn btn-primary'>Yüklendi</div>"; break;
+                case 2: result = result + "<div class='btn btn-success'>Gönderildi</div>"; break;
+                case 3: result = result + "<div class='btn btn-danger'>İptal Edildi</div>"; break;
+            }
+            if (!out) result = result + "</div>";
+
+            return result;
+        }
 
         $(document).on("click", ".btn-filtre", function () {
 
@@ -494,6 +504,7 @@
 
                         var table = "";
                         $.each(data, function (i, d) {
+                            $("#status-" + d.data.uuid).html(SetInvoiceStatus(d.data.efaturaDurum, "", true));
                             if (d.success) {
                                 var color = "text-success"
                                 if (d.data.error) color = "text-danger";
@@ -516,7 +527,7 @@
                     },
                     complete: function () {
                         Notiflix.Block.Remove("*");
-                        getData("GidenFaturalar/GetAll", "false");
+                        //getData("GidenFaturalar/GetAll", "false");
                     }
                 });
             }
