@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using EfaturaPortal.Application.Firmalars.Commands;
 using EfaturaPortal.Application.Firmalars.ViewModels;
+using EfaturaPortal.Models.Enum;
 
 namespace EfaturaPortal.Controllers
 {
@@ -21,9 +22,9 @@ namespace EfaturaPortal.Controllers
     public class BaseController : Controller
     {
         public static Guid FirmaId { get; set; }
-    
+        public FirmaTuru FirmaTuru { get; set; }
 
- 
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.HttpContext.User.Identity.IsAuthenticated)
@@ -37,7 +38,7 @@ namespace EfaturaPortal.Controllers
 
                     if (user != null)
                     {
-                        FirmaId = user.FirmaId;                    
+                        FirmaId = user.FirmaId;
                         return;
                     }
 
@@ -47,7 +48,8 @@ namespace EfaturaPortal.Controllers
                 else
                 {
                     FirmaId = user.FirmaId;
-                    //ViewBag.PermissionEnum = user.Yetki;
+                    FirmaTuru = user.FirmaTuru;
+                    ViewBag.FirmaTuru = user.FirmaTuru;
                     //ViewBag.Admin = user.admin;
                     //admin = user.admin;
                     //_onlineUser.NameSurname = user.Name;

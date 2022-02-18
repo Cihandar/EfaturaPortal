@@ -7,7 +7,7 @@
     //var areaTypeList = typeof(type).EnumToList().Select(x => new { Value = x.Value, Text = x.Description }).OrderBy(x => x.Text).ToList();
 }
 
-<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Firmalar" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="CreateInvoiceBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectGidenFaturalar)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniFatura/@action">
+<form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="YeniSmm" asp-action="@action" enctype="multipart/form-data" data-ajax-begin="CreateInvoiceBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccess(data, redirectGidenFaturalar)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/YeniSmm/@action">
 
     <div class="row">
         <!--1 Row-->
@@ -40,24 +40,6 @@
                                 </div>
                                 <span asp-validation-for="Cariler.VergiNumarasi" class="text-danger"> </span>
                             </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="FaturaTuru" class="form-control-label">Fatura Türü</label>
-                                <select asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Kayıt Türünü Seçiniz">
-                                    @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>())
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-
-                                    }
-
-                                </select>
-                                <span asp-validation-for="FaturaTuru" class="text-danger"> </span>
-                            </div>
-
-
-                        </div>
-
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
@@ -65,14 +47,10 @@
                                     <span asp-validation-for="Tarih" class="text-danger"> </span>
                                 </div>
                             </div>
-                            @*<div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="Saat" class="form-control-label">Fatura Tarihi</label>
-                                        <input asp-for="Saat" class="form-control seridenapp-forms-select2" />
-                                        <span asp-validation-for="Saat" class="text-danger"> </span>
-                                    </div>
-                                </div>*@
-                        </div> <!-- /.row - Tarih & Saat -->
+
+                        </div>
+
+ 
 
                         <div class="row">
                             <div class="col-md-6" id="dv_SeriNumara">
@@ -113,29 +91,30 @@
 
                     <div class="card-body">
 
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="FaturaTipi" class="form-control-label">Fatura Tipi</label>
-                                    <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz">
-                                        @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>().ToList())
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
+                        @*@if (ViewBag.FirmaTuru == EfaturaPortal.Models.Enum.FirmaTuru.Ticari)
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="FaturaTipi" class="form-control-label">Fatura Tipi</label>
+                                            <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz">
+                                                @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>().ToList())
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="FaturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
+                                            <select asp-for="FaturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
+                                            <span asp-validation-for="FaturaSenaryo" class="text-danger"> </span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="FaturaSenaryo" class="form-control-label">Fatura Senaryosu</label>
-                                    <select asp-for="FaturaSenaryo" class="form-control seridenapp-forms-select2" id="Sb_FaturaSenaryo" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaSenaryo>()"></select>
-                                    <span asp-validation-for="FaturaSenaryo" class="text-danger"> </span>
-                                </div>
-                            </div>
-                        </div> <!-- /.row - Tipi & Senaryo-->
-
+                            }*@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -264,66 +243,67 @@
                 </div><!--Card-->
             </div>
         </div>
+        @*@if (ViewBag.FirmaTuru == EfaturaPortal.Models.Enum.FirmaTuru.Ticari)
+            {
+                <div class="col-lg-5 col-md-12 ml-md-5">
+                    <div class="card card-default container-fluid">
+                        <div class="card-header">
+                            <h3 class="card-title">Ödeme Şekli ve Hesap Bilgileri</h3>
 
-        <div class="col-lg-5 col-md-12 ml-md-5">
-            <div class="card card-default container-fluid">
-                <div class="card-header">
-                    <h3 class="card-title">Ödeme Şekli ve Hesap Bilgileri</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div> <!-- /.card-header -->
-
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="OdemeTarihi" class="form-control-label">Ödeme Tarihi</label>
-                                <input asp-for="OdemeTarihi" type="text" class="form-control seridenapp-forms-select2" id="OdemeTarihi" />
-                                <span asp-validation-for="OdemeTarihi" class="text-danger"> </span>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="OdemeSekliKodu" class="form-control-label">Ödeme Türü Seçin</label>
-                                <select asp-for="OdemeSekliKodu" class="form-control">
-                                    <option value="-1">Lütfen Ödeme Türü Seçin</option>
-                                    @foreach (var data in Model.OdemeTurleriList)
-                                    {
-                                        <option value="@data.Kodu">@data.Adi</option>
-                                    }
-                                </select>
+
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OdemeTarihi" class="form-control-label">Ödeme Tarihi</label>
+                                        <input asp-for="OdemeTarihi" type="text" class="form-control seridenapp-forms-select2" id="OdemeTarihi" />
+                                        <span asp-validation-for="OdemeTarihi" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OdemeSekliKodu" class="form-control-label">Ödeme Türü Seçin</label>
+                                        <select asp-for="OdemeSekliKodu" class="form-control">
+                                            <option value="-1">Lütfen Ödeme Türü Seçin</option>
+                                            @foreach (var data in Model.OdemeTurleriList)
+                                            {
+                                                <option value="@data.Kodu">@data.Adi</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OdemeKanali" class="form-control-label">Ödeme Kanalı</label>
+                                        <input asp-for="OdemeKanali" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OdemeHesapNo" class="form-control-label">Ödeme Hesap No</label>
+                                        <input asp-for="OdemeHesapNo" class="form-control" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="OdemeKanali" class="form-control-label">Ödeme Kanalı</label>
-                                <input asp-for="OdemeKanali" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label asp-for="OdemeHesapNo" class="form-control-label">Ödeme Hesap No</label>
-                                <input asp-for="OdemeHesapNo" class="form-control" />
-                            </div>
-                        </div>
+
+
                     </div>
                 </div>
-
-
-            </div>
-        </div>
-
+            }*@
 
     </div><!--2-Row-->
 
@@ -379,7 +359,7 @@
                 <div class="card-body" style="">
                     <div class="row">
                         <div class="col-md-4">
-                            Net Toplam
+                            Brüt Toplam
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
@@ -388,21 +368,16 @@
                         </div>
                     </div>
                     <input type="hidden" id="firmaturu" value="@ViewBag.FirmaTuru" />
-
                     <div class="row">
                         <div class="col-md-4">
-                            İskonto Toplam
+                            Stopaj Toplam
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="Iskonto" class="form-control" type="number" id="Tx_Stopaj_Iskonto" readonly />
+                                <input asp-for="Stopaj" class="form-control" type="number" id="Tx_Stopaj_Iskonto" readonly />
                             </div>
                         </div>
                     </div>
-
-
-
-
                     <div class="row">
                         <div class="col-md-4">
                             0015-Kdv Toplam
@@ -413,7 +388,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="display:none;">
                         <div class="col-md-4">
                             Diğer Vergi Toplamları
                         </div>
@@ -502,6 +477,7 @@
 
         $(function () {
 
+        
             //Date range picker with time picker
             $('input[id*="Tarih"').daterangepicker({
                 singleDatePicker: true,
@@ -547,7 +523,9 @@
 
 
 
-        //   $(document).ready(function () {
+     $(document).ready(function () { 
+        GetSeriNumara();
+        });
 
         $("#FaturaTarihi").on("apply.daterangepicker", function (ev, picker) {
 
@@ -607,6 +585,7 @@
         }
 
         function GetEInvoiceInfo() {
+ 
 
             $("#Cm_CariPostaKutusu").empty();
             Notiflix.Block.Standard("#loadingCheckTaxNumber");
@@ -621,27 +600,27 @@
                 },
                 success: function (data) {
                     console.log(data);
-                    $("#Sb_FaturaTuru option:selected").removeAttr("selected");
-                    if (!data.success) {
-                        if (data.errorMessage != null) {
-                            Notiflix.Report.Failure('Hata <br> Kodu :' + data.errorCode, data.errorMessage, 'Tamam');
-                        } else {
-                            $("#Sb_FaturaTuru").val("1").change();
-                            $("#Sb_FaturaTuru option[value='1']").attr("selected", "selected");
-                            //GetSeriNumara();
-                            Notiflix.Notify.Warning('E-Arşiv Fatura Kesiyorsunuz !');
+                    //$("#Sb_FaturaTuru option:selected").removeAttr("selected");
+                    //if (!data.success) {
+                    //    if (data.errorMessage != null) {
+                    //        Notiflix.Report.Failure('Hata <br> Kodu :' + data.errorCode, data.errorMessage, 'Tamam');
+                    //    } else {
+                    //        $("#Sb_FaturaTuru").val("1").change();
+                    //        $("#Sb_FaturaTuru option[value='1']").attr("selected", "selected");
+                    //        //GetSeriNumara();
+                    //        Notiflix.Notify.Warning('E-Arşiv Fatura Kesiyorsunuz !');
 
-                        }
-                    } else {
-                        $("#Sb_FaturaTuru").val("0").change();
-                        $("#Sb_FaturaTuru option[value='0']").attr("selected", "selected");
-                        $.each(data.gibUser, function (i, state) {
-                            $("#Cm_CariPostaKutusu").append('<option value="' + state.alias + '">' + state.alias + '</option>');
-                        });
-                        // GetSeriNumara();
-                        Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
+                    //    }
+                    //} else {
+                    //    $("#Sb_FaturaTuru").val("0").change();
+                    //    $("#Sb_FaturaTuru option[value='0']").attr("selected", "selected");
+                    //    $.each(data.gibUser, function (i, state) {
+                    //        $("#Cm_CariPostaKutusu").append('<option value="' + state.alias + '">' + state.alias + '</option>');
+                    //    });
+                    //    // GetSeriNumara();
+                    //    Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
 
-                    }
+                    //}
 
                     if (data.cari != null) {
 
@@ -654,10 +633,6 @@
                         $("#Hd_CarilerId").val(data.cari.id);
                         $("#Hd_Cariler.Id").val(data.cari.id);
 
-                        // $("#Tx_Cari_").val(data.cari.unvani);
-
-                    } else {
-                        $("#Tx_Cari_Unvani").val(data.gibUser.title);
                     }
 
 
@@ -752,10 +727,10 @@
             var iskontoOran = null;
             var iskontoTutar = null;
 
-            var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
+         //   var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
-            var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
-            var iskontoTutar = $("input[name='FaturaSatir[" + index + "].IskontoTutar']");
+            var iskontoOran = $("input[name='FaturaSatir[" + index + "].StopajOran']");
+            var iskontoTutar = $("input[name='FaturaSatir[" + index + "].StopajTutar']");
             var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
             var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
             var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
@@ -764,10 +739,10 @@
 
             var indoran = toDouble(iskontoOran.val());
 
-            var birimtutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+            var birimtutar = toDouble(birimFiyat.val());
             var nettutar = birimtutar;
             var indtutar = 0;
-         
+            var stopajtutar = 0;
 
             if (indoran > 0) {
                 indtutar = birimtutar * (indoran / 100)
@@ -776,7 +751,7 @@
 
 
 
-            var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
+            var kdvtutar = (birimtutar * (toDouble(kdvOran.val()) / 100));
             var gtoplam = kdvtutar + nettutar;
 
 
@@ -798,45 +773,45 @@
             }
 
 
-            $("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
+            //$("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
 
-                var kdvkodu = $(kdvrow).find("select[name^='FaturaSatir']").val();
+            //    var kdvkodu = $(kdvrow).find("select[name^='FaturaSatir']").val();
 
-                if (kdvkodu != "-1") {
-
-
+            //    if (kdvkodu != "-1") {
 
 
-                    if (kdvkodu == "0003" || kdvkodu == "0011") {
 
-                        var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
 
-                        if (oran > 0) {
-                            var ekkdvtutar = (nettutar * (oran / 100));
-                            $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
-                            gtoplam = gtoplam - ekkdvtutar;
-                        }
+            //        if (kdvkodu == "0003" || kdvkodu == "0011") {
 
-                    } else {
+            //            var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
 
-                        var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
+            //            if (oran > 0) {
+            //                var ekkdvtutar = (nettutar * (oran / 100));
+            //                $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
+            //                gtoplam = gtoplam - ekkdvtutar;
+            //            }
 
-                        if (oran > 0) {
+            //        } else {
 
-                            var ekkdvtutar = (nettutar * (oran / 100));
+            //            var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
 
-                            $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
+            //            if (oran > 0) {
 
-                            gtoplam = gtoplam + ekkdvtutar;
-                        }
-                    }
+            //                var ekkdvtutar = (nettutar * (oran / 100));
 
-                }
+            //                $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
 
-            });
+            //                gtoplam = gtoplam + ekkdvtutar;
+            //            }
+            //        }
+
+            //    }
+
+            //});
 
             birimFiyat.val(birimFiyat.val().replace(",", "."));
-            miktar.val(miktar.val().replace(",", "."));
+          //  miktar.val(miktar.val().replace(",", "."));
             iskontoTutar.val(indtutar.toFixed(4));
             tutar.val(nettutar.toFixed(4));
             kdvTutar.val(kdvtutar.toFixed(4));
@@ -856,15 +831,18 @@
             var tevkifattoplam = 0;
 
             $("#Tb_InvoiceLine tr").each(function (index, row) {
-                tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val());
+                tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].BirimFiyat']").val());
                 kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val());
-                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());               
+                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].StopajTutar']").val());
                 gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val());
                 tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val());
 
-                $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {     
-                    var data = toDouble($(kdvrow).find("input[name*='KdvTutar']").val());                
-                    digervergitoplam = digervergitoplam + data;             
+                $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
+                    debugger;
+                    var data = toDouble($(kdvrow).find("input[name*='KdvTutar']").val());
+                    debugger;
+                    digervergitoplam = digervergitoplam + data;
+                    debugger;
                 });
 
             });
@@ -1117,7 +1095,7 @@
             Notiflix.Block.Standard("#dv_SeriNumara");
             $.ajax({
                 type: 'get',
-                url: 'GetSeriNumaralar?faturaTuru=' + $("#Sb_FaturaTuru").val() + "&Yil=" + moment($('#FaturaTarihi').data('daterangepicker').startDate).year(),
+                url: 'GetSeriNumaralar?Yil=' +moment($('#FaturaTarihi').data('daterangepicker').startDate).year(),
                 complete: function () {
                     Notiflix.Block.Remove("*", 0);
                 },

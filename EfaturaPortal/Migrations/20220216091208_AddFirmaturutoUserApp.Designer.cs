@@ -4,14 +4,16 @@ using EfaturaPortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EfaturaPortal.Migrations
 {
     [DbContext(typeof(EfaturaPortalContext))]
-    partial class EfaturaPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20220216091208_AddFirmaturutoUserApp")]
+    partial class AddFirmaturutoUserApp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,9 +259,6 @@ namespace EfaturaPortal.Migrations
                     b.Property<DateTime>("SilmeTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Stopaj")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("Tarih")
                         .HasColumnType("datetime2");
 
@@ -345,12 +344,6 @@ namespace EfaturaPortal.Migrations
 
                     b.Property<int>("Sirano")
                         .HasColumnType("int");
-
-                    b.Property<float>("StopajOran")
-                        .HasColumnType("real");
-
-                    b.Property<float>("StopajTutar")
-                        .HasColumnType("real");
 
                     b.Property<string>("TevkifatAdi")
                         .HasColumnType("nvarchar(max)");

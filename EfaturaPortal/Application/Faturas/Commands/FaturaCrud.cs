@@ -197,11 +197,20 @@ namespace EfaturaPortal.Application.Faturas.Commands
             if (!string.IsNullOrWhiteSpace(filtre.FaturaNumarasi)) whereQuery += " AND F.FaturaNumarasi LIKE '%" + filtre.FaturaNumarasi + "%'  ";
             if (!string.IsNullOrWhiteSpace(filtre.Unvan)) whereQuery += " AND Cari.Unvani LIKE '%" + filtre.Unvan + "%'  ";
             if (!string.IsNullOrWhiteSpace(filtre.Vdno)) whereQuery += " AND Cari.VergiNumarasi LIKE '%" + filtre.Vdno + "%'  ";
-           
+            switch (filtre.FaturaTuru)
+            {
+                case "E-Fatura":
+                    whereQuery += " AND FaturaTuru=0 ";
+                    break;
+                case "E-Arsiv":
+                    whereQuery += " AND FaturaTuru=1 ";
+                    break;
+            }
+
             whereQuery += " AND F.Tarih BETWEEN '" + filtre.IlkTarih.ToString("MM.dd.yyyy") + " 00:00' AND '" + filtre.SonTarih.ToString("MM.dd.yyyy") + " 23:59'  ";
 
 
-            var fatura = context.Faturas.FromSqlRaw(whereQuery).Include(x => x.Cariler).ToList();
+            var fatura = context.Faturas.FromSqlRaw(whereQuery).Include(x => x.Cariler).ToList().OrderByDescending(x=>x.Tarih);
 
             var result = mapper.Map<List<FaturaGetAllQueryViewModel>>(fatura);
 

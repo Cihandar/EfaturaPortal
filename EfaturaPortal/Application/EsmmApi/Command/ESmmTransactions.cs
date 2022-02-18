@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using EfaturaPortal.Application.EfaturaApi.Authorization;
 using EfaturaPortal.Models;
 using EfaturaPortal.Models.EfaturaModel;
-using EdmEfatura;
-using EfaturaPortal.Application.Interfaces.EfaturaApis;
+using EdmEsmm;
+using EfaturaPortal.Application.Interfaces.EsmmApis;
 using EfaturaPortal.Extentions;
 using System.Xml.Xsl;
 using System.Xml;
@@ -18,14 +18,14 @@ using EfaturaPortal.Application.Interfaces.Faturas;
 
 namespace EfaturaPortal.Application.EfaturaApi.Command
 {
-    public class EInvoiceTransactions : IEInvoiceTransactions
+    public class ESmmTransactions : IESmmTransactions
     {
 
-        IEdmEInvoiceLogin _login;
-        EFaturaEDMPortClient _client;
+        IEdmESmmLogin _login;
+        ESmmEDMPortClient _client;
         IFaturaCrud _faturaCrud;
 
-        public EInvoiceTransactions(IEdmEInvoiceLogin login, EFaturaEDMPortClient client,IFaturaCrud faturaCrud)
+        public ESmmTransactions(IEdmESmmLogin login, ESmmEDMPortClient client,IFaturaCrud faturaCrud)
         {
             _login = login;
             _client = client;
@@ -37,45 +37,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         {
             var result = await _login.Ef_LoginEdm(FirmaId);
             return result;
-        }
-
-        public async Task<CheckUserResult> Ef_GetEInvoiceMailBox(Guid FirmaId, string taxNumber)
-        {
-
-            var logininfo = await GetLoginInfo(FirmaId);
-
-            if (!logininfo.Success) return new CheckUserResult { Success = false, ErrorMessage = logininfo.ErrorMessagge };
-
-
-            var ChekUser = new CheckUserRequest
-            {
-                REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo),
-                USER = new GIBUSER { IDENTIFIER = taxNumber, UNIT = "PK" }
-            };
-
-            try
-            {
-                var result = await _client.CheckUserAsync(ChekUser);
-
-                if (result.CheckUserResponse.Length > 0)
-                {
-                    return new CheckUserResult
-                    {
-                        Success = true,
-                        GibUser = result.CheckUserResponse.ToList<GIBUSER>()
-                    };
-                }
-                else
-                {
-                    return new CheckUserResult { Success = false, ErrorCode = "E-Archive" };
-                }
-
-            }
-            catch (System.ServiceModel.FaultException<REQUEST_ERRORType> ex)
-            {
-                return new CheckUserResult { Success = false, ErrorCode = ex.Detail.ERROR_CODE.ToString(), ErrorMessage = ex.Detail.ERROR_LONG_DES };
-            }
-        }
+        } 
 
         public async Task<string> GetInvoiceForView(string xmlInvoice, byte[] design)
         {
@@ -99,16 +61,16 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             var logininfo = await GetLoginInfo(invoice.FirmaId);
             try
             {
-                var result = await _client.SendInvoiceAsync(new SendInvoiceRequest
+                var result = await _client.SendSMMAsync(new SendSMMRequest
                 {
                     REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo),
-                    SENDER = new SendInvoiceRequestSENDER { alias = invoice.Firmalar.WsGbKodu, vkn = invoice.Firmalar.VergiNumarasi },
-                    RECEIVER = new SendInvoiceRequestRECEIVER { vkn = invoice.Cariler.VergiNumarasi, alias = invoice.Cariler.EfaturaPostaKutusu },
-                    INVOICE = new[] { new INVOICE { 
+                    SENDER = new SendSMMRequestSENDER { alias = invoice.Firmalar.WsGbKodu, vkn = invoice.Firmalar.VergiNumarasi },
+                    RECEIVER = new SendSMMRequestRECEIVER { vkn = invoice.Cariler.VergiNumarasi, alias = invoice.Cariler.EfaturaPostaKutusu },
+                    SMM = new[] { new SMM { 
                         ID=invoice.FaturaNumarasi, 
                         UUID = invoice.Id.ToString(),
-                        HEADER = new INVOICEHEADER { SENDER = invoice.Firmalar.VergiNumarasi,RECEIVER = invoice.Cariler.VergiNumarasi, FROM = invoice.Firmalar.WsGbKodu, EARCHIVE=false,INTERNETSALES=false },
-                        CONTENT = new EdmEfatura.base64Binary { contentType="XML",Value=xmlInvioce }
+                        HEADER = new SMMHEADER { SENDER = invoice.Firmalar.VergiNumarasi,RECEIVER = invoice.Cariler.VergiNumarasi, FROM = invoice.Firmalar.WsGbKodu },
+                        CONTENT = new EdmEsmm.base64Binary { contentType="XML",Value=xmlInvioce }
                     } }
                 });
 
@@ -126,8 +88,8 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             var logininfo = await GetLoginInfo(FirmaId);
             try
             {
-                var invoiceStatusResult = await _client.GetInvoiceStatusAsync(new GetInvoiceStatusRequest { INVOICE = new INVOICE { UUID = invoiceId.ToString() }, REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo) });
-                return new ResultJsonWithData<ResultInvoiceStatus> { Success = true, Data = await UpdateInvoiceStatus(invoiceId, invoiceStatusResult.GetInvoiceStatusResponse.INVOICE_STATUS) };
+                var invoiceStatusResult = await _client.GetSMMStatusAsync(new GetSMMStatusRequest { SMM = new SMM { UUID = invoiceId.ToString() }, REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo) });
+                return new ResultJsonWithData<ResultInvoiceStatus> { Success = true, Data = await UpdateInvoiceStatus(invoiceId, invoiceStatusResult.GetSMMStatusResponse.SMM_STATUS) };
             }
             catch (System.ServiceModel.FaultException<REQUEST_ERRORType> ex)
             {
@@ -135,7 +97,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             }
         }
 
-        public async Task<ResultInvoiceStatus> UpdateInvoiceStatus(Guid invoiceId,GetInvoiceStatusResponseINVOICE_STATUS status)
+        public async Task<ResultInvoiceStatus> UpdateInvoiceStatus(Guid invoiceId,GetSMMStatusResponseSMM_STATUS status)
         {
             var result  = new ResultInvoiceStatus();
             result.InvoiceNumber = status.ID;
@@ -143,28 +105,28 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             switch (status.STATUS)
             {
                 case "SEND - SUCCEED":
-                    result.Message = "Fatura Gönderildi..(Tamamlandı)";
+                    result.Message = "E-Smm Gönderildi..(Tamamlandı)";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Gonderildi;
                     result.Icon = "fas fa fa-check-circle"; 
                     break;
                 case "SEND - PROCESSING":
-                    result.Message = "Fatura Portala Yüklendi..(Kuyruğa Alındı İşlenmesi Bekleniyor..)";
+                    result.Message = "E-Smm Portala Yüklendi..(Kuyruğa Alındı İşlenmesi Bekleniyor..)";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
                     result.Icon = "fas fa-angle-up text-warning";
                     break;
                 case "LOAD - SUCCEED":
-                    result.Message = "Fatura Portala Yüklendi..(Gib'e Gönderilmesi Bekleniyor)";
+                    result.Message = "E-Smm Portala Yüklendi..(Gib'e Gönderilmesi Bekleniyor)";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Yuklendi;
                     result.Icon = "fas fa-angle-double-up text-primary";
                     break;
                 case "SEND - FAILED":
-                    result.Message = "Fatura Gönderimi Hatalı !";
+                    result.Message = "E-Smm Gönderimi Hatalı !";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Beklemede;
                     result.Icon = "fas fa-exclamation-circle text-danger";
                     result.Error = true;
                     break;
                 case "CANCELLED - SUCCEED":
-                    result.Message = "Fatura Portaldan İptal Edilmiş!";
+                    result.Message = "E-Smm Portaldan İptal Edilmiş!";
                     result.EfaturaDurum = Models.Enum.EfaturaDurum.Iptal;
                     result.Icon = "fas  fa-window-close text-secondery";
                     break;
@@ -181,8 +143,8 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             var logininfo = await GetLoginInfo(FirmaId);
             try
             {
-                var invoiceCancelResult = await _client.CancelInvoiceAsync(new CancelInvoiceRequest { INVOICE = new[] { new INVOICE { UUID = invoiceId.ToString() } }, REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo) });
-                return new ResultJsonWithData<ResultInvoiceStatus> { Success = true,  Message = invoiceCancelResult.CancelInvoiceResponse.REQUEST_RETURN.RETURN_CODE.ToString(), Data = null };
+                var invoiceCancelResult = await _client.CancelSMMAsync(new CancelSMMRequest { SMM = new[] { new SMM { UUID = invoiceId.ToString() } }, REQUEST_HEADER = await _login.Ef_CreateHeaderType(logininfo) });
+                return new ResultJsonWithData<ResultInvoiceStatus> { Success = true,  Message = invoiceCancelResult.CancelSMMResponse.REQUEST_RETURN.RETURN_CODE.ToString(), Data = null };
             }
             catch (System.ServiceModel.FaultException<REQUEST_ERRORType> ex)
             {

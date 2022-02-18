@@ -18,6 +18,8 @@
     <link href="~/plugins/adminLte/dist/css/adminlte.min.css" rel="stylesheet" />
     <link href="~/css/login.css" rel="stylesheet" />
     <link href="~/plugins/notiflix/css/notiflix.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alze E Portal | E-Fatura Göndermenin En Kolay Yolu..</title>
 </head>
  
 <body class="hold-transition register-page">
@@ -35,7 +37,6 @@
                     <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Firma Ünvanı" asp-for="Firma.Unvani">
-
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-building"></span>
@@ -43,6 +44,17 @@
                         </div>
                     </div>
 
+                    <label asp-for="Firma.FirmaTuru" class="form-control-label">Portal Türü</label>
+                    <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
+                    <div class="input-group mb-3">
+                        <select asp-for="Firma.FirmaTuru" class="form-control seridenapp-forms-select2"  data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FirmaTuru>()"></select>
+ 
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-building"></span>
+                            </div>
+                        </div>
+                    </div>
 
                     <label asp-for="Firma.VergiNumarasi">Vergi Numarası</label>
                     <span asp-validation-for="Firma.VergiNumarasi" class="text-danger"> </span>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EfaturaPortal.Models.Enum;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace EfaturaPortal.Models
         public string Avatar { get; set; }
         public byte status { get; set; }
         public Guid FirmaId { get; set; }
-
+        public FirmaTuru FirmaTuru { get; set; }
         public string AdSoyad { get; set; }
-
     }
 }

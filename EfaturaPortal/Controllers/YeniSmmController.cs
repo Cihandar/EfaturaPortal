@@ -15,10 +15,11 @@ using EfaturaPortal.Application.Interfaces.Extentions;
 using EfaturaPortal.Application.Interfaces.Cariler;
 using EfaturaPortal.Application.Interfaces.FaturaSatirs;
 using EfaturaPortal.Application.Interfaces.VergiKodlaris;
+using EfaturaPortal.Models.EfaturaModel;
 
 namespace EfaturaPortal.Controllers
 {
-    public class YeniFaturaController : BaseController
+    public class YeniSmmController : BaseController
     {
 
         IFaturaCrud faturaCrud;
@@ -35,7 +36,7 @@ namespace EfaturaPortal.Controllers
             return View();
         }
 
-        public YeniFaturaController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud,IVergiKodlariCrud vergiKodlariCrud)
+        public YeniSmmController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud _SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari,ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud,IVergiKodlariCrud vergiKodlariCrud)
         {
             faturaCrud = _faturaCrud;
             SNumaralarCrud = _SNumaralarCrud;
@@ -50,9 +51,9 @@ namespace EfaturaPortal.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetSeriNumaralar(FaturaTuru faturaTuru,int Yil)
+        public async Task<IActionResult> GetSeriNumaralar(int Yil)
         {
-            var result = await SNumaralarCrud.GetSeriNumaraByFaturaTuru(faturaTuru, FirmaId,Yil);
+            var result = await SNumaralarCrud.GetSeriNumaraByFaturaTuru(FaturaTuru.ESmm, FirmaId,Yil);
 
             return Json(result);
         }
@@ -60,7 +61,7 @@ namespace EfaturaPortal.Controllers
         public async Task<IActionResult> CheckTaxNumber(string TaxNumber)
         {
 
-            var result = await _eInvoiceCommand.Ef_GetEInvoiceMailBox(FirmaId, TaxNumber); // Efatura Kullanıcı Kontrol 
+            var result = new CheckUserResult(); // Efatura Kullanıcı Kontrol 
 
             var cari = await _carilerCrud.GetCaribyTaxNumber(TaxNumber);  // Sistemde Cari olarak Kayıtlımı ? Bir Bak Gel. 
 
@@ -121,6 +122,9 @@ namespace EfaturaPortal.Controllers
         public async Task<IActionResult> Create(FaturaGetAllQueryViewModel model)
         {
             model.FirmaId = FirmaId;
+            model.FaturaTipi = FaturaTipi.Satis;
+            model.FaturaTuru = FaturaTuru.ESmm;
+ 
             var result = await faturaCrud.Add(model);
             return Json(result);
         }

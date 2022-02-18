@@ -20,6 +20,10 @@ namespace EfaturaPortal.Models
         public float IskontoOran { get; set; }
         public float IskontoTutar { get; set; }
 
+        public float StopajOran { get; set; }
+        public float StopajTutar { get; set; }
+
+
         public float KdvOran { get; set; }
         public float KdvTutar { get; set; }
 

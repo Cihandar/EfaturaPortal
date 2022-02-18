@@ -6,11 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EfaturaPortal.Application.Interfaces.EfaturaApis
+namespace EfaturaPortal.Application.Interfaces.EsmmApis
 {
-    public interface IEInvoiceTransactions
+    public interface IESmmTransactions
     {
-        Task<CheckUserResult> Ef_GetEInvoiceMailBox(Guid FirmaId, string taxNumber);
         Task<string> GetInvoiceForView(string xmlInvoice, byte[] design);
         Task<ResultJson> SendeInvoice(FaturaGetAllQueryViewModel invoice, byte[] xmlInvioce);
         Task<ResultJsonWithData<ResultInvoiceStatus>> GetInvoiceStatus(Guid FirmaId, Guid invoiceId);

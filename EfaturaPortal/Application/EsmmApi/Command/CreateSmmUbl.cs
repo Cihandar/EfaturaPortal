@@ -18,16 +18,17 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using EfaturaPortal.Models.Enum;
+using EfaturaPortal.Application.Interfaces.EsmmApis;
 
-namespace EfaturaPortal.Application.EfaturaApi.Command
+namespace EfaturaPortal.Application.EsmmApi.Command
 {
-    public class CreateUbl : ICreateUbl
+    public class CreateSmmUbl : ICreateSmmUbl
     {
         IFirmalarCrud _firmaCrud;
         ISeriNumaralarCrud _seriNumaralarCrud;
         IToolsCodes _toolsCodes;
         private readonly IWebHostEnvironment _environment;
-        public CreateUbl(IFirmalarCrud firmalarCrud, ISeriNumaralarCrud seriNumaralarCrud, IToolsCodes toolsCodes,IWebHostEnvironment environment)
+        public CreateSmmUbl(IFirmalarCrud firmalarCrud, ISeriNumaralarCrud seriNumaralarCrud, IToolsCodes toolsCodes, IWebHostEnvironment environment)
         {
             _firmaCrud = firmalarCrud;
             _seriNumaralarCrud = seriNumaralarCrud;
@@ -40,9 +41,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             invoice.UBLVersionID = new UBLVersionIDType { Value = "2.1" };
             invoice.CustomizationID = new CustomizationIDType { Value = "TR1.2" };
-
-            if (faturaVM.FaturaTuru == Models.Enum.FaturaTuru.EFatura) invoice.ProfileID = await GetProfileIDType(faturaVM); else invoice.ProfileID = new ProfileIDType { Value = "EARSIVFATURA" };
-
+            invoice.ProfileID = new ProfileIDType { Value = "ESMM" };
             invoice.ID = new IDType { Value = faturaVM.FaturaNumarasi };
             invoice.CopyIndicator = new CopyIndicatorType { Value = false };
             invoice.UUID = new UUIDType { Value = faturaVM.Id.ToString() };
@@ -56,19 +55,19 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             invoice.DocumentCurrencyCode = new DocumentCurrencyCodeType { Value = faturaVM.Doviz };
             invoice.LineCountNumeric = new LineCountNumericType { Value = 1 };
 
-            invoice.AdditionalDocumentReference = await GetDocumentReference(faturaVM); //Fatura Dizaynı Basılıyor...
+           // invoice.AdditionalDocumentReference = await GetDocumentReference(faturaVM); //Fatura Dizaynı Basılıyor...
 
-            invoice.Signature = await GetSignatureTypes(faturaVM);  //E-imza / Mali Mühür için Gönderen Firma Bilgileri basılıyor...
+          //  invoice.Signature = await GetSignatureTypes(faturaVM);  //E-imza / Mali Mühür için Gönderen Firma Bilgileri basılıyor...
 
             invoice.AccountingSupplierParty = new SupplierPartyType { Party = await GetSenderPartyType(faturaVM) };  //Gönderici Fatura Bilgileri...
 
             invoice.AccountingCustomerParty = new CustomerPartyType { Party = await GetCustomerPartyType(faturaVM) }; // Alıcı Fatura Bilgileri...
 
-            invoice.TaxTotal = await GetTaxTotalTypes(faturaVM, kdvler);
+            invoice.TaxTotal = await GetTaxTotalTypes(faturaVM, kdvler, faturaVM.FaturaSatir);
 
             invoice.LegalMonetaryTotal = await GetMonetaryTotal(faturaVM);
 
-            if(faturaVM.TevkifatToplam>0) invoice.WithholdingTaxTotal = await GetWithHoldingTaxTotal(faturaVM);
+            if (faturaVM.TevkifatToplam > 0) invoice.WithholdingTaxTotal = await GetWithHoldingTaxTotal(faturaVM);
 
             invoice.InvoiceLine = await GetInvoiceLineTypes(faturaVM);
 
@@ -289,7 +288,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         }
 
 
-        private async Task<TaxTotalType[]> GetTaxTotalTypes(FaturaGetAllQueryViewModel faturaVM, List<KdvlerViewModel> kdvler)
+        private async Task<TaxTotalType[]> GetTaxTotalTypes(FaturaGetAllQueryViewModel faturaVM, List<KdvlerViewModel> kdvler, List<FaturaSatirGetAllQueryViewModel> fsatir)
         {
             var taxs = new List<TaxTotalType>();
 
@@ -302,7 +301,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                 List<TaxSubtotalType> stl = new List<TaxSubtotalType>();
                 TaxSubtotalType tx = new TaxSubtotalType();
 
-                tx.TaxableAmount = new TaxableAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(kdv.Tutar.ToString()) };
+                tx.TaxableAmount = new TaxableAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(kdv.KdvTutar.ToString()) };
                 tx.TaxAmount = new TaxAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(kdv.KdvTutar.ToString()) };
                 tx.CalculationSequenceNumeric = new CalculationSequenceNumericType { Value = 1 };
                 tx.Percent = new PercentType1 { Value = await _toolsCodes.toDecimal(kdv.KdvOran.ToString()) };
@@ -327,6 +326,30 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             }
 
+            foreach (var stpj in fsatir)
+            {
+                if(stpj.StopajOran>0)
+                {
+                    var line = new TaxTotalType();
+
+                    line.TaxAmount = new TaxAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(stpj.StopajTutar.ToString()) };
+
+                    List<TaxSubtotalType> stl = new List<TaxSubtotalType>();
+                    TaxSubtotalType tx = new TaxSubtotalType();
+
+                    tx.TaxableAmount = new TaxableAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(stpj.StopajTutar.ToString()) };
+                    tx.TaxAmount = new TaxAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(stpj.StopajTutar.ToString()) };
+                    tx.CalculationSequenceNumeric = new CalculationSequenceNumericType { Value = 1 };
+                    tx.Percent = new PercentType1 { Value = await _toolsCodes.toDecimal(stpj.StopajOran.ToString()) };
+                    tx.TaxCategory = new TaxCategoryType { TaxScheme = new TaxSchemeType { Name = new NameType1 { Value = "STPJ" }, TaxTypeCode = new TaxTypeCodeType { Value = "0003" } } };
+
+                    stl.Add(tx);
+                    line.TaxSubtotal = stl.ToArray();
+                    taxs.Add(line);
+                }
+
+            }
+
             return taxs.ToArray();
         }
 
@@ -334,9 +357,9 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         {
             var mtt = new MonetaryTotalType();
 
-            mtt.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Toplam + faturaVM.Iskonto).ToString()) };
-            mtt.TaxExclusiveAmount = new TaxExclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(faturaVM.Toplam.ToString()) };
-            mtt.TaxInclusiveAmount = new TaxInclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.OdenecekTutar).ToString()) };
+            mtt.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Toplam).ToString()) };
+            mtt.TaxExclusiveAmount = new TaxExclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Toplam-faturaVM.Stopaj).ToString()) };
+            mtt.TaxInclusiveAmount = new TaxInclusiveAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Kdv).ToString()) };
             if (faturaVM.Iskonto > 0) mtt.AllowanceTotalAmount = new AllowanceTotalAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal((faturaVM.Iskonto.ToString())) };
             //    if (fatura.ArtirimToplam > 0) mtt.ChargeTotalAmount = new ChargeTotalAmountType { currencyID = faturaVM.Doviz, Value = mat.decimalecevir(fatura.ArtirimToplam.ToString()) };
             mtt.PayableAmount = new PayableAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(faturaVM.OdenecekTutar.ToString()) };
@@ -359,7 +382,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             decimal oran = 0;
             foreach (var x in faturaVM.FaturaSatir)
             {
-                if (!string.IsNullOrEmpty(x.TevkifatKodu) && x.TevkifatKodu!="-1")
+                if (!string.IsNullOrEmpty(x.TevkifatKodu) && x.TevkifatKodu != "-1")
                 {
                     tevkifatkodu = x.TevkifatKodu;
                     tevkifatoran = x.TevkifatOran;
@@ -399,8 +422,8 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             foreach (var x in faturaVM.FaturaSatir)
             {
                 ln.ID = new IDType { Value = x.Sirano.ToString() };
-                ln.InvoicedQuantity = new InvoicedQuantityType { Value = await _toolsCodes.toDecimal(x.Miktar.ToString()), unitCode = x.OlcuBirimleri.Kodu };
-                ln.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(x.Tutar.ToString()) };
+                ln.InvoicedQuantity = new InvoicedQuantityType { Value = await _toolsCodes.toDecimal(x.Tutar.ToString()), unitCode = x.OlcuBirimleri.Kodu };
+                ln.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(x.BirimFiyat.ToString()) };
                 ln.Item = new ItemType { Description = new DescriptionType { Value = x.Aciklama }, Name = new NameType1 { Value = x.Aciklama } };
                 ln.Price = new PriceType { PriceAmount = new PriceAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(x.BirimFiyat.ToString()) } };
 
@@ -418,9 +441,13 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                     txsub.Add(await GetTaxSubtotalTypes(faturaVM.Doviz, kdvler.Kodu, kdvler.Adi, null, kdvler.KdvTutar, x.Tutar, kdvler.KdvOran));
                 }
 
-                tax.TaxSubtotal = txsub.ToArray();
+                
 
-                ln.TaxTotal = tax;
+                if(x.StopajOran>0) txsub.Add(await GetTaxSubtotalTypes(faturaVM.Doviz,"0003", "STPJ", null, x.StopajTutar, x.Tutar, x.StopajOran));
+
+                tax.TaxSubtotal = txsub.ToArray();
+                ln.TaxTotal = tax; 
+
 
                 //Tevkifatlar Ekleniyor...
                 if (x.TevkifatTutar > 0)
@@ -454,20 +481,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                 }
                 //Tevkifat Sonu
 
-                if (x.IskontoTutar > 0)
-                {
-                    decimal indoran = 0;
-                    if (x.IskontoOran > 0) indoran = await _toolsCodes.toDecimal(x.IskontoOran.ToString()) / 100;
-                    List<AllowanceChargeType> ac = new List<AllowanceChargeType>();
-                    ac.Add(new AllowanceChargeType
-                    {
-                        ChargeIndicator = new ChargeIndicatorType { Value = false },
-                        Amount = new AmountType2 { Value = await _toolsCodes.toDecimal(x.IskontoTutar.ToString()), currencyID = faturaVM.Doviz },
-                        MultiplierFactorNumeric = new MultiplierFactorNumericType { Value = indoran }
-                    });
-
-                    ln.AllowanceCharge = ac.ToArray();
-                }
+       
 
                 iline.Add(ln);
 
@@ -502,7 +516,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             sub.CalculationSequenceNumeric = new CalculationSequenceNumericType { Value = 1 };
             sub.TaxAmount = new TaxAmountType { currencyID = Doviz, Value = await _toolsCodes.toDecimal(KdvTutar.ToString()) };
-            sub.TaxableAmount = new TaxableAmountType { currencyID = Doviz, Value = await _toolsCodes.toDecimal(Tutar.ToString()) };
+            if (Adi != "STPJ") sub.TaxableAmount = new TaxableAmountType { currencyID = Doviz, Value = await _toolsCodes.toDecimal(Tutar.ToString()) };
 
             return sub;
 
@@ -527,6 +541,5 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
             return ms;
 
         }
-
     }
 }

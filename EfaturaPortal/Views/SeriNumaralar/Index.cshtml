@@ -18,6 +18,7 @@
                         <tr>
                             <th>#</th>
                             <th>Fatura Türü</th>
+                            <th>Yıl</th>
                             <th>Seri No</th>
                             <th>Son Fatura Numarası</th>
                             <th>Son Fatura Tarihi</th>
@@ -56,26 +57,20 @@
                         if (data == '0') return "E-Fatura";
                         if (data == '1') return "E-Arşiv";
                         if (data == '2') return "E-Smm";
-
-
-
                     }
                 },
                 { "data": "yil" },
-                { "data": "seriNo" },
+                { "data": "seriNo" },    
                 { "data": "sonFaturaNo" },
                 {
-
                     data: "sonFaturaTarihi",
                     render: function (data, type, row) {
                         if (data = '01.01.0001 00:00:00') return "";
-
                         if (type === "sort" || type === "type") {
                             return data;
                         }
                         return moment(data).format("DD.MM.YYYY HH:mm:ss");
                     }
-
                 },
                 {
                     data: null,

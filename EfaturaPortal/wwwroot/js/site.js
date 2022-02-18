@@ -8,6 +8,8 @@ function ModalCallWithUrl(url, id, formId) {
         $("#" + formId).modal("show");
         //$.validator.unobtrusive.parse('form');
     });
+
+ 
 }
 
 
@@ -18,6 +20,7 @@ $(document).on("click", ".EfaturaPortalApp-datatables-create", function () {
 });
 
 $(document).on("click", ".EfaturaPortalApp-datatables-update", function () {
+    Notiflix.Block.Hourglass($(this).data("loading"), $(this).data("loadmsg"));
     var element = $(this);
     ModalCallWithUrl(element.data("endpoint"), $(this).data("id"), "crud-modal");
 

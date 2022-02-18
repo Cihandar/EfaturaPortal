@@ -117,9 +117,9 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
 
         }
 
-        public async Task<List<SeriNumaralarGetAllQueryViewModel>> GetSeriNumaraByFaturaTuru(FaturaTuru faturaTuru,Guid FirmaId)
+        public async Task<List<SeriNumaralarGetAllQueryViewModel>> GetSeriNumaraByFaturaTuru(FaturaTuru faturaTuru,Guid FirmaId,int Yil)
         {
-            var data = context.SeriNumaralars.Where(x => x.FirmaId == FirmaId && x.FaturaTuru==faturaTuru).ToList().OrderBy(x=>x.Oncelik);
+            var data = context.SeriNumaralars.Where(x => x.FirmaId == FirmaId && x.FaturaTuru==faturaTuru && x.Yil == Yil).ToList().OrderBy(x=>x.Oncelik);
 
             var result = mapper.Map<List<SeriNumaralarGetAllQueryViewModel>>(data);
 
@@ -127,7 +127,7 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
 
         }
 
-        public async Task<ResultJson> GetLastInvoiceNumberAndUpdate(Guid FirmaId, string SeriNo,int Yil,FaturaTuru faturaTuru)
+        public async Task<ResultJson> GetLastInvoiceNumberAndUpdate(Guid FirmaId, string SeriNo,int Yil,FaturaTuru faturaTuru,DateTime Tarih)
         {
             var result = new ResultJson();
             var InvNum = context.SeriNumaralars.Where(x => x.FirmaId == FirmaId && x.SeriNo == SeriNo && x.Yil == Yil && x.FaturaTuru == faturaTuru).FirstOrDefault();
@@ -137,6 +137,7 @@ namespace EfaturaPortal.Application.SeriNumaralars.Commands
                 result.Value = await CreateInvoiceNumber(InvNum.SonFaturaNo + 1, Yil, SeriNo);
 
                 InvNum.SonFaturaNo = InvNum.SonFaturaNo + 1;
+                InvNum.SonFaturaTarihi = Tarih;
                 context.SaveChanges();
 
             }else

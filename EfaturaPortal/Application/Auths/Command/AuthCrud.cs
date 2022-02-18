@@ -72,7 +72,8 @@ namespace EfaturaPortal.Application.Auths.Command
                     Email = model.Email,
                     UserName = model.Email,
                     PhoneNumber = model.Firma.Telefon,
-                    FirmaId = resultfirma.Data.Id
+                    FirmaId = resultfirma.Data.Id,
+                    FirmaTuru = resultfirma.Data.FirmaTuru
                 };
 
                 var sifre = await CreateNewPassword();

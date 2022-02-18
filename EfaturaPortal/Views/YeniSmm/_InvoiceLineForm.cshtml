@@ -7,21 +7,21 @@
 
     <td colspan="12" class="col-md-12 faturakalemborder" id="row-@index">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="Aciklama" class="form-control-label">Açıklama</label>
                     <input name="FaturaSatir[@index].Aciklama" asp-for="Aciklama" class="form-control" data-placeholder="" />
                     <span asp-validation-for="Aciklama" class="text-danger"> </span>
                 </div>
             </div>
-            <div class="col-md-1">
+            @*<div class="col-md-1">
                 <div class="form-group">
                     <label asp-for="Miktar" class="form-control-label">Miktar</label>
                     <input name="FaturaSatir[@index].Miktar" asp-for="Miktar" class="form-control" data-placeholder="" />
                     <span asp-validation-for="Miktar" class="text-danger"> </span>
                 </div>
-            </div>
-            <div class="col-md-1">
+            </div>*@
+            @*<div class="col-md-1">
                 <div class="form-group">
                     <label asp-for="LstOlcuBirimleri" class="form-control-label">Birim</label>
                     <select class="form-control" name="FaturaSatir[@index].OlcuBirimleriId" id="select2-@index" data-index="@index">
@@ -32,33 +32,16 @@
                     </select>
                     <span asp-validation-for="LstOlcuBirimleri" class="text-danger"> </span>
                 </div>
-            </div>
+            </div>*@
+            <input type="hidden" name="FaturaSatir[@index].OlcuBirimleriId" value="@Model.LstOlcuBirimleri[0].Id" />
             <div class="col-md-1">
                 <div class="form-group">
-                    <label asp-for="BirimFiyat" class="form-control-label">Birim Fiyat</label>
+                    <label asp-for="BirimFiyat" class="form-control-label">Brüt Tutar</label>
                     <input name="FaturaSatir[@index].BirimFiyat" asp-for="BirimFiyat" class="form-control" data-placeholder="" />
                     <span asp-validation-for="BirimFiyat" class="text-danger"> </span>
                 </div>
             </div>
-            @if (firmaturu == EfaturaPortal.Models.Enum.FirmaTuru.Ticari)
-            {
-                <div class="col-md-1 LineIskonto">
-                    <div class="form-group">
-                        <label asp-for="IskontoOran" class="form-control-label">İnd.Oran</label>
-                        <input name="FaturaSatir[@index].IskontoOran" asp-for="IskontoOran" class="form-control" data-placeholder="" />
-                        <span asp-validation-for="IskontoOran" class="text-danger"> </span>
-                    </div>
-                </div>
-                <div class="col-md-1 LineIskonto">
-                    <div class="form-group">
-                        <label asp-for="IskontoTutar" class="form-control-label">İnd.Tutar</label>
-                        <input name="FaturaSatir[@index].IskontoTutar" asp-for="IskontoTutar" class="form-control" type="text" data-placeholder="" />
-                        <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
-                    </div>
-                </div>
-            }
-            else
-            {
+ 
                 <div class="col-md-1 LineIskonto">
                     <div class="form-group">
                         <label asp-for="IskontoOran" class="form-control-label">Stopaj</label>
@@ -73,7 +56,7 @@
                         <span asp-validation-for="IskontoTutar" class="text-danger"> </span>
                     </div>
                 </div>
-            }
+     
             <div class="col-md-1">
                 <div class="form-group">
                     <label asp-for="Tutar" class="form-control-label">Net Tutar</label>
@@ -152,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-2" style="display:none;">
             <div class="col-md-12" id="KdvContent-@index">
 
             </div>

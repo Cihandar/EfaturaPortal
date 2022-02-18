@@ -17,7 +17,7 @@ namespace EfaturaPortal.Application.Interfaces.SeriNumaralars
         Task<SeriNumaralarGetAllQueryViewModel> GetById(Guid Id);
         Task<ResultJson> Update(SeriNumaralarGetAllQueryViewModel modelvw);
         Task<ResultJson> Add(SeriNumaralarGetAllQueryViewModel modelvw);
-        Task<List<SeriNumaralarGetAllQueryViewModel>> GetSeriNumaraByFaturaTuru(FaturaTuru faturaTuru, Guid FirmaId);
-        Task<ResultJson> GetLastInvoiceNumberAndUpdate(Guid FirmaId, string SeriNo, int Yil, FaturaTuru faturaTuru);
+        Task<List<SeriNumaralarGetAllQueryViewModel>> GetSeriNumaraByFaturaTuru(FaturaTuru faturaTuru, Guid FirmaId,int Yil);
+        Task<ResultJson> GetLastInvoiceNumberAndUpdate(Guid FirmaId, string SeriNo, int Yil, FaturaTuru faturaTuru,DateTime Tarih);
     }
 }

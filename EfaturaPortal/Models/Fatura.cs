@@ -33,6 +33,7 @@ namespace EfaturaPortal.Models
         public float Toplam { get; set; }
         public float Artirim { get; set; }
         public float Iskonto { get; set; }
+        public float Stopaj { get; set; }
         public float Kdv { get; set; }
         public float OdenecekTutar { get; set; }
         public float TevkifatToplam { get; set; }

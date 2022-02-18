@@ -34,6 +34,7 @@ using EfaturaPortal.Application.Interfaces.EfaturaApis;
 using EfaturaPortal.Application.EfaturaApi.Command;
 using EfaturaPortal.Application.EfaturaApi.Authorization;
 using EdmEfatura;
+using EdmEsmm;
 using EfaturaPortal.Application.Interfaces.DovizKodlaris;
 using EfaturaPortal.Application.DovizKodlaris.Commands;
 using EfaturaPortal.Application.Interfaces.Extentions;
@@ -60,6 +61,9 @@ using System.Globalization;
 using Microsoft.Extensions.Options;
 using EfaturaPortal.Application.Interfaces.Tools;
 using EfaturaPortal.Application.Tools;
+using EfaturaPortal.Application.Interfaces.EsmmApis;
+using EfaturaPortal.Application.EsmmApi.Command;
+using EfaturaPortal.Application.EsmmApi.Authorization;
 
 namespace EfaturaPortal
 {
@@ -111,6 +115,11 @@ namespace EfaturaPortal
             services.AddScoped<IEdmEInvoiceLogin, EdmEInvoiceLogin>();
             services.AddScoped<EFaturaEDMPortClient, EFaturaEDMPortClient>();
             services.AddScoped<ICreateUbl, CreateUbl>();
+
+            services.AddScoped<IESmmTransactions, ESmmTransactions>();
+            services.AddScoped<IEdmESmmLogin, EdmESmmLogin>();
+            services.AddScoped<ESmmEDMPortClient, ESmmEDMPortClient>();
+            services.AddScoped<ICreateSmmUbl, CreateSmmUbl>();
 
             services.AddScoped<IToolsCodes, ToolsCodes>();
             #endregion
@@ -168,7 +177,7 @@ namespace EfaturaPortal
 
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-       //    services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

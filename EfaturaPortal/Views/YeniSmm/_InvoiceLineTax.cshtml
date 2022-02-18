@@ -1,0 +1,33 @@
+﻿@model List<EfaturaPortal.Application.VergiKodlaris.ViewModels.VergiKodlariGetAllQueryViewModel>;
+@{ var index = ViewBag.Index; var KdvIndex = ViewBag.KdvIndex; }
+
+<div class="row" id="kdvRow-@index-@KdvIndex">
+    <div class="col-md-3">
+        <div class="form-group">
+  
+            <select class="form-control" name="FaturaSatir[@index].Kdvler[@KdvIndex].Kodu" id="select2-@KdvIndex" data-index="@KdvIndex">
+                <option value="-1">Vergi Kodu Seçin</option>
+                @foreach (var x in Model)
+                {
+                    <option value="@x.Kodu">@x.Kodu - @x.Adi</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group"> 
+            <input name="FaturaSatir[@index].Kdvler[@KdvIndex].KdvOran" class="form-control" placeholder="Kdv Oran" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group"> 
+            <input name="FaturaSatir[@index].Kdvler[@KdvIndex].KdvTutar" class="form-control" placeholder="Kdv Oran" />
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group"> 
+            <div class="btn btn-danger" id="btnkdvSil-@index-@KdvIndex" data-index="@index-@KdvIndex"><i class="far fa fa-trash-alt"></i></div>
+        </div>
+
+    </div>
+</div>

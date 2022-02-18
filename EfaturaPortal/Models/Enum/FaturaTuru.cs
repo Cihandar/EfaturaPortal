@@ -12,6 +12,7 @@ namespace EfaturaPortal.Models.Enum
         EFatura =0,
         [Display(Name = "E-Arşiv")]
         EArsiv =1,
-     //   ESmm=2
+        [Display(Name = "E-SMM")]
+        ESmm =2
     }
 }

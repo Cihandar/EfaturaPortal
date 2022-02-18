@@ -72,7 +72,6 @@
                             <th>Seç</th>
                             <th>İşlemler</th>
                             <th>Durum</th>
-                            <th>Fatura Türü</th>
                             <th>Tarih</th>
                             <th>Fatura No</th>
                             <th>Müşteri Ünvanı</th>
@@ -80,6 +79,7 @@
                             <th>Email</th>
                             <th>Toplam</th>
                             <th>Kdv Tutar</th>
+                            <th>Stopaj Tutar</th>
                             <th>Genel Toplam</th>
                         </tr>
                     </thead>
@@ -300,7 +300,7 @@
                                 width: "100px",
                                 render: function (data, type, full, meta) {
 
-                                    var btns = '<div class="btn-group btn-group-sm"><button class="col-5 btn btn-warning font-weight-bold btn-pill  min-w-90px EfaturaPortalApp-datatables-update gridIslemBtn"  title="Görüntüle" data-endpoint="GidenFaturalar/GetInvoiceView" data-loadmsg="Fatura Açılıyor.Lütfen Bekleyin.." data-loading=".card" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
+                                    var btns = '<div class="btn-group btn-group-sm"><button class="col-5 btn btn-warning font-weight-bold btn-pill  min-w-90px EfaturaPortalApp-datatables-update gridIslemBtn"  title="Görüntüle" data-endpoint="GidenSmm/GetInvoiceView" data-loadmsg="Fatura Açılıyor.Lütfen Bekleyin.." data-loading=".card" data-id="' + full.id + '"><i class="fas fa-eye"></i></button>' +
                                         '<button class="col-5 btn btn-info font-weight-bold btn-pill   min-w-90px EfaturaPortalApp-datatables-print gridIslemBtn" title="Görüntüle" data-endpoint="SeriNumaralar/Update" data-id="' + full.id + '"><i class="fas fa-print"></i></button>';
 
                                     if (full.faturaTuru == "1" && full.efaturaDurum!=3) {
@@ -317,20 +317,7 @@
                                     return SetInvoiceStatus(data, full.id, false);
                                 }
 
-                            },
-                            {
-                                "data": "faturaTuru",
-                                "render": function (data, type, row) {
-                                    switch (data) {
-
-                                        case 0: return "<div class='btn btn-primary'>E-Fatura</div>";
-                                        case 1: return "<div class='btn btn-secondary'>E-Arşiv</div>";
-
-
-                                    }
-                                }
-
-                            },
+                            },               
                             {
 
                                 "data": "tarih",
@@ -345,6 +332,7 @@
                             { "data": "cariler.email" },
                             { "data": "toplam" },
                             { "data": "kdv" },
+                            { "data": "stopaj" },
                             { "data": "odenecekTutar" },
 
 

@@ -22,7 +22,7 @@ using System.Text;
 
 namespace EfaturaPortal.Controllers
 {
-    public class GidenFaturalarController : BaseController
+    public class GidenSmmController : BaseController
     {
         IFaturaCrud faturaCrud;
         ISeriNumaralarCrud _SeriNumaralarCrud;
@@ -42,7 +42,7 @@ namespace EfaturaPortal.Controllers
             return View();
         }
 
-        public GidenFaturalarController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari, ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud, IVergiKodlariCrud vergiKodlariCrud, ICreateUbl createUbl, IToolsCodes toolsCodes, IESmmTransactions eSmmTransactions, ICreateSmmUbl createSmmUbl)
+        public GidenSmmController(IFaturaCrud _faturaCrud, ISeriNumaralarCrud SNumaralarCrud, IEdmEInvoiceLogin edmLogin, IEInvoiceTransactions eInvoiceCommand, ITcmbDovizKurlari TcmbDovizKurlari, ICarilerCrud carilerCrud, IFaturaSatirCrud faturaSatirCrud, IVergiKodlariCrud vergiKodlariCrud, ICreateUbl createUbl, IToolsCodes toolsCodes, IESmmTransactions eSmmTransactions, ICreateSmmUbl createSmmUbl)
         {
             faturaCrud = _faturaCrud;
             _SeriNumaralarCrud = SNumaralarCrud;
@@ -73,8 +73,8 @@ namespace EfaturaPortal.Controllers
         {
             var faturaResult = await faturaCrud.GetById(Id, FirmaId);
             var kdvResult = await _faturaSatirCrud.GetKdv(Id);
-            var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
-            var design = await _toolsCodes.GetXSLTFiletoBinary(faturaResult.SeriNumaralar.SablonDosyaAdi);
+            var xmlInvoice = await _createSmmUbl.Create(faturaResult, kdvResult);
+            var design =  Convert.FromBase64String(await _toolsCodes.esmmsablongetir());
             var result = await _eInvoiceCommand.GetInvoiceForView(xmlInvoice, design);
             //   result = result.Replace(@"""", "&quot;");
             ViewBag.InvoiceView = result;
@@ -106,18 +106,9 @@ namespace EfaturaPortal.Controllers
                 var kdvResult = await _faturaSatirCrud.GetKdv(invId);
                 string xmlInvoice = "";
                 var resultSended = new ResultJson();
-                if (FirmaTuru == FirmaTuru.Ticari)
-                {
-                    xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
-                    resultSended = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
-                }
-                else
-                {
+          
                     xmlInvoice = await _createSmmUbl.Create(faturaResult, kdvResult);
                     resultSended = await _eSmmTransactions.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
-                }
-
-
 
                 result.Add(resultSended);
 
@@ -133,17 +124,10 @@ namespace EfaturaPortal.Controllers
         {
             var result = new List<ResultJsonWithData<ResultInvoiceStatus>>();
             foreach (var invId in sendInvoiceIds.id)
-            {
-                if (FirmaTuru == FirmaTuru.Ticari)
-                {
-                    var resultStatus = await _eInvoiceCommand.GetInvoiceStatus(FirmaId, invId);
-                    result.Add(resultStatus);
-                }
-                else
-                {
+            { 
                     var resultStatus = await _eSmmTransactions.GetInvoiceStatus(FirmaId, invId);
                     result.Add(resultStatus);
-                }
+           
             }
 
             return Json(result);
@@ -152,16 +136,10 @@ namespace EfaturaPortal.Controllers
 
         public async Task<IActionResult> CancelInvoice(Guid Id)
         {
-            if (FirmaTuru == FirmaTuru.Ticari)
-            {
-                var result = await _eInvoiceCommand.CancelInvoice(FirmaId, Id);
-                return Json(result);
-            }
-            else
-            {
+            
                 var result = await _eSmmTransactions.CancelInvoice(FirmaId, Id);
                 return Json(result);
-            }
+          
         }
 
 
