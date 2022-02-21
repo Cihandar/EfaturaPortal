@@ -192,7 +192,7 @@
 
         $(document).ready(function () {
             $("#Tx_Src_tarih").data('daterangepicker').setStartDate(moment().subtract(6, 'days'), moment());
-            getData("GidenFaturalar/GetAllbyFiltre", "true");
+            getData("GidenSmm/GetAllbyFiltre", "true");
         });
 
         var getData = function (url, filtre) {
@@ -274,7 +274,7 @@
                                 },
                             },
 
-                            { extend: 'print', text: 'Listeyi Yazdır' },
+                            { extend: 'print', text: 'Listeyi Yazdır', exportOption : { columns: [3,4,5,6,7,8,9,10,11,12,13] } },
                             //{ extend: 'copyHtml5', text: 'Kopyala' },
                             { extend: 'excelHtml5', text: 'Excel' },
                             //{ extend: 'csvHtml5', text: 'CSV' },
@@ -373,7 +373,7 @@
         }
 
         $(document).on("click", ".btn-filtre", function () {
-            getData("GidenFaturalar/GetAllbyFiltre", "true");
+            getData("GidenSmm/GetAllbyFiltre", "true");
         });
 
         $(document).on("click", ".EfaturaPortalApp-InvoiceView", function () {
@@ -382,7 +382,7 @@
                 beforeSend: function () {
                     Notiflix.Block.Hourglass('.card', 'Fatura Açılıyor.Lütfen Bekleyin..');
                 },
-                url: "GidenFaturalar/GetInvoiceView?FaturaId=" + faturaId,
+                url: "GidenSmm/GetInvoiceView?FaturaId=" + faturaId,
                 type: "get",
                 cache: false,
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove
@@ -407,7 +407,7 @@
                         beforeSend: function () {
                             Notiflix.Block.Hourglass('.card', 'Fatura İptal Ediliyor..Lütfen Bekleyin..');
                         },
-                        url: "GidenFaturalar/CancelInvoice?Id" + $(this).data("id"),
+                        url: "GidenSmm/CancelInvoice?Id" + $(this).data("id"),
                         type: "get",
                         processData: false,
                         success: function (data) {
@@ -468,7 +468,7 @@
                     beforeSend: function () {
                         Notiflix.Block.Hourglass('.card', 'Faturalar Gönderiliyor.Lütfen Bekleyin..');
                     },
-                    url: "GidenFaturalar/SendInvoice",
+                    url: "GidenSmm/SendInvoice",
                     type: "POST",
                     data: idArrays,
                     processData: false,
@@ -493,7 +493,7 @@
                     },
                     complete: function () {
                         Notiflix.Block.Remove("*");
-                        getData("GidenFaturalar/GetAllbyFiltre", "true");
+                        getData("GidenSmm/GetAllbyFiltre", "true");
                     }
                 });
             }
@@ -508,7 +508,7 @@
                     beforeSend: function () {
                         Notiflix.Block.Hourglass('.card', 'Faturalar Sorgulanıyor.Lütfen Bekleyin..');
                     },
-                    url: "GidenFaturalar/GetInvoiceStatus",
+                    url: "GidenSmm/GetInvoiceStatus",
                     type: "POST",
                     data: idArrays,
                     processData: false,

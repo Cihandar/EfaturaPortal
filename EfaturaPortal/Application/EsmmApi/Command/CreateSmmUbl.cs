@@ -268,7 +268,7 @@ namespace EfaturaPortal.Application.EsmmApi.Command
             {
                 CityName = new CityNameType { Value = faturaVM.Cariler.Sehir },
                 CitySubdivisionName = new CitySubdivisionNameType { Value = faturaVM.Cariler.Ilce },
-                StreetName = new StreetNameType { Value = faturaVM.Cariler.Adres },
+                BuildingName = new BuildingNameType { Value = faturaVM.Cariler.Adres },
                 Country = new CountryType { Name = new NameType1 { Value = "Türkiye" } }
             };
             party.PartyTaxScheme = new PartyTaxSchemeType { TaxScheme = new TaxSchemeType { Name = new NameType1 { Value = faturaVM.Cariler.VergiDairesi } } };

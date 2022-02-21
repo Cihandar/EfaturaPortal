@@ -50,7 +50,7 @@
 
                         </div>
 
- 
+
 
                         <div class="row">
                             <div class="col-md-6" id="dv_SeriNumara">
@@ -311,12 +311,20 @@
         <div class="col-12">
             <div class="card card-default container-fluid">
                 <div class="card-header">
-                    <h3 class="card-title">Fatura Kalemleri</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="card-title">Makbuz Kalemleri</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group clearfix">
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="radioPrimary1" name="r1" checked="">
+                                <label for="radioPrimary1">
+                                   Kdv Dahil Hesapla
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div> <!-- /.card-header -->
                 <div class="card-body" style="padding:0px;">
@@ -477,7 +485,7 @@
 
         $(function () {
 
-        
+
             //Date range picker with time picker
             $('input[id*="Tarih"').daterangepicker({
                 singleDatePicker: true,
@@ -523,8 +531,8 @@
 
 
 
-     $(document).ready(function () { 
-        GetSeriNumara();
+        $(document).ready(function () {
+            GetSeriNumara();
         });
 
         $("#FaturaTarihi").on("apply.daterangepicker", function (ev, picker) {
@@ -585,7 +593,7 @@
         }
 
         function GetEInvoiceInfo() {
- 
+
 
             $("#Cm_CariPostaKutusu").empty();
             Notiflix.Block.Standard("#loadingCheckTaxNumber");
@@ -727,7 +735,7 @@
             var iskontoOran = null;
             var iskontoTutar = null;
 
-         //   var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
+            //   var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
             var iskontoOran = $("input[name='FaturaSatir[" + index + "].StopajOran']");
             var iskontoTutar = $("input[name='FaturaSatir[" + index + "].StopajTutar']");
@@ -811,7 +819,7 @@
             //});
 
             birimFiyat.val(birimFiyat.val().replace(",", "."));
-          //  miktar.val(miktar.val().replace(",", "."));
+            //  miktar.val(miktar.val().replace(",", "."));
             iskontoTutar.val(indtutar.toFixed(4));
             tutar.val(nettutar.toFixed(4));
             kdvTutar.val(kdvtutar.toFixed(4));
@@ -1095,7 +1103,7 @@
             Notiflix.Block.Standard("#dv_SeriNumara");
             $.ajax({
                 type: 'get',
-                url: 'GetSeriNumaralar?Yil=' +moment($('#FaturaTarihi').data('daterangepicker').startDate).year(),
+                url: 'GetSeriNumaralar?Yil=' + moment($('#FaturaTarihi').data('daterangepicker').startDate).year(),
                 complete: function () {
                     Notiflix.Block.Remove("*", 0);
                 },
@@ -1155,7 +1163,7 @@
         }
 
 
-                                                                                                                             //   });
+                                                                                                                                     //   });
     </script>
 
 }
