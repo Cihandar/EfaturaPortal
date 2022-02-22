@@ -316,16 +316,16 @@
                             <h3 class="card-title">Makbuz Kalemleri</h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group clearfix">
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="radioPrimary1" name="r1" checked="">
-                                <label for="radioPrimary1">
-                                   Kdv Dahil Hesapla
-                                </label>
+                    @*<div class="row">
+                            <div class="form-group clearfix">
+                                <div class="icheck-primary d-inline">
+                                    <input type="checkbox" id="KdvDahil" name="r1" checked="">
+                                    <label for="KdvDahil">
+                                        Kdv Dahil Hesapla
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>*@
                 </div> <!-- /.card-header -->
                 <div class="card-body" style="padding:0px;">
                     <table class="table table-hover">
@@ -725,15 +725,21 @@
 
 
             var index = $(this).closest("tr").data("index");
+            console.log($(this).attr("Name"));
 
-            SatirHesapla(index);
+            if ($(this).attr("Name") == "FaturaSatir[" + index + "].KdvliTutar") {
+                SatirHesapla(index, true);
+            } else {
+                SatirHesapla(index, false);
+            }
+
+
 
         });
         // }
 
-        function SatirHesapla(index) {
-            var iskontoOran = null;
-            var iskontoTutar = null;
+        function SatirHesapla(index, kdvDahil) {
+
 
             //   var miktar = $("input[name='FaturaSatir[" + index + "].Miktar']");
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
@@ -746,29 +752,35 @@
             var kdvlitutar = $("input[name='FaturaSatir[" + index + "].KdvliTutar']");
 
             var indoran = toDouble(iskontoOran.val());
+            var kdvOran = toDouble(kdvOran.val());
+            var birimtutar = 0;
 
-            var birimtutar = toDouble(birimFiyat.val());
-            var nettutar = birimtutar;
             var indtutar = 0;
-            var stopajtutar = 0;
+            debugger;
+            if (kdvDahil) {
+                if (indoran > 0) {
+                    birimtutar = kdvlitutar.val() * (100 / (100 - (indoran - kdvOran)));
+                } else {
+                    birimtutar = kdvlitutar.val() / (1 + (kdvOran / 100));
+                }
+     
+                birimFiyat.val(birimtutar.toFixed(4));
+            } else {
+                birimtutar = toDouble(birimFiyat.val());
+            }
+            var nettutar = birimtutar;
 
             if (indoran > 0) {
+                if (kdvDahil) {
+                   
+                }
                 indtutar = birimtutar * (indoran / 100)
                 nettutar = birimtutar - indtutar;
             }
-
-
-
-            var kdvtutar = (birimtutar * (toDouble(kdvOran.val()) / 100));
+            var kdvtutar = (birimtutar * ( kdvOran / 100));
             var gtoplam = kdvtutar + nettutar;
-
-
-
-
-
             var tevkifatoran = $("select[name='FaturaSatir[" + index + "].TevkifatOran']").val();
 
-            debugger;
             if (tevkifatoran != "-1") {
                 debugger;
                 var tevkifat = tevkifatoran.split("/");
@@ -781,45 +793,7 @@
             }
 
 
-            //$("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (i, kdvrow) {
-
-            //    var kdvkodu = $(kdvrow).find("select[name^='FaturaSatir']").val();
-
-            //    if (kdvkodu != "-1") {
-
-
-
-
-            //        if (kdvkodu == "0003" || kdvkodu == "0011") {
-
-            //            var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
-
-            //            if (oran > 0) {
-            //                var ekkdvtutar = (nettutar * (oran / 100));
-            //                $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
-            //                gtoplam = gtoplam - ekkdvtutar;
-            //            }
-
-            //        } else {
-
-            //            var oran = toDouble($(kdvrow).find("input[name*='KdvOran']").val());
-
-            //            if (oran > 0) {
-
-            //                var ekkdvtutar = (nettutar * (oran / 100));
-
-            //                $(kdvrow).find("input[name*='KdvTutar']").val(ekkdvtutar.toFixed(4));
-
-            //                gtoplam = gtoplam + ekkdvtutar;
-            //            }
-            //        }
-
-            //    }
-
-            //});
-
             birimFiyat.val(birimFiyat.val().replace(",", "."));
-            //  miktar.val(miktar.val().replace(",", "."));
             iskontoTutar.val(indtutar.toFixed(4));
             tutar.val(nettutar.toFixed(4));
             kdvTutar.val(kdvtutar.toFixed(4));
@@ -1163,7 +1137,7 @@
         }
 
 
-                                                                                                                                     //   });
+                                                                                                                                                     //   });
     </script>
 
 }
