@@ -74,7 +74,7 @@ namespace EfaturaPortal.Controllers
             var faturaResult = await faturaCrud.GetById(Id, FirmaId);
             var kdvResult = await _faturaSatirCrud.GetKdv(Id);
             var xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
-            var design = await _toolsCodes.GetXSLTFiletoBinary(faturaResult.SeriNumaralar.SablonDosyaAdi);
+            var design = await _toolsCodes.GetXSLTFiletoBinary(faturaResult.SeriNumaralar.SablonDosyaAdi,faturaResult.FaturaTuru);
             var result = await _eInvoiceCommand.GetInvoiceForView(xmlInvoice, design);
             //   result = result.Replace(@"""", "&quot;");
             ViewBag.InvoiceView = result;
@@ -106,16 +106,10 @@ namespace EfaturaPortal.Controllers
                 var kdvResult = await _faturaSatirCrud.GetKdv(invId);
                 string xmlInvoice = "";
                 var resultSended = new ResultJson();
-                if (FirmaTuru == FirmaTuru.Ticari)
-                {
+             
                     xmlInvoice = await _createUbl.Create(faturaResult, kdvResult);
                     resultSended = await _eInvoiceCommand.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
-                }
-                else
-                {
-                    xmlInvoice = await _createSmmUbl.Create(faturaResult, kdvResult);
-                    resultSended = await _eSmmTransactions.SendeInvoice(faturaResult, Encoding.UTF8.GetBytes(xmlInvoice));
-                }
+             
 
 
 
@@ -162,6 +156,13 @@ namespace EfaturaPortal.Controllers
                 var result = await _eSmmTransactions.CancelInvoice(FirmaId, Id);
                 return Json(result);
             }
+        }
+
+        public async Task<IActionResult> DeleteInvoice(Guid Id)
+        {
+            var result =await faturaCrud.DeleteInvoice(Id);
+
+            return Json(result);
         }
 
 

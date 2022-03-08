@@ -27,13 +27,11 @@ namespace EfaturaPortal.Application.OdemeTurleris.Commands
         public async Task<List<OdemeTurleriGetAllQueryViewModel>> GetAll()
         {
 
-
             var data = context.OdemeTurleris.ToList().OrderBy(o => o.Kodu);
 
             var result = mapper.Map<List<OdemeTurleriGetAllQueryViewModel>>(data);
 
             return result;
-
 
         }
 

@@ -14,12 +14,14 @@ namespace EfaturaPortal.Application.Interfaces.Faturas
 
     public interface IFaturaCrud
     {
-        Task<ResultJsonWithData<Fatura>> Add(FaturaGetAllQueryViewModel faturavw);
+        Task<ResultJsonWithData<Fatura>> Add(FaturaCreateViewModel faturavw);
         Task<ResultJson> Update(FaturaGetAllQueryViewModel faturavw);
         Task<List<FaturaGetAllQueryViewModel>> GetAll(Guid firmaId);
         Task<FaturaGetAllQueryViewModel> GetById(Guid faturaId, Guid FirmaId);
         Task<List<FaturaGetAllQueryViewModel>> GetAllbyfiltre(Guid firmaId, InvoiceSearch filtre);
         Task<ResultJson> UpdateInvoiceStatus(Guid FaturaId, EfaturaDurum status);
         Task<ResultJson> UpdateInvoiceNumber(Guid FaturaId, string InNumber);
+        Task<ResultJson> DeleteInvoice(Guid FaturaId);
+        Task<FaturaCreateViewModel> GetByIdforCreate(Guid faturaId, Guid FirmaId);
     }
 }

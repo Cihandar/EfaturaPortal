@@ -19,5 +19,7 @@ namespace EfaturaPortal.Models
         public string Telefon { get; set; }
         public string Ulke { get; set; }
 
+        public string UserType { get; set; } //Kamu yada Özel
+
     }
 }

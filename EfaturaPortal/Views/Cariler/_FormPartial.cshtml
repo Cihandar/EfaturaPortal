@@ -86,14 +86,21 @@
 
                     <!--İletişim Bilgileri-->
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label asp-for="Ulke" class="form-control-label">Ülke</label>
+                                <input asp-for="Ulke" class="form-control" placeholder="" />
+                                <span asp-validation-for="Ulke" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label asp-for="Email" class="form-control-label">Email</label>
                                 <input asp-for="Email" class="form-control" placeholder="" />
                                 <span asp-validation-for="Email" class="text-danger"> </span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label asp-for="Telefon" class="form-control-label">Telefon</label>
                                 <input asp-for="Telefon" class="form-control" placeholder="" />

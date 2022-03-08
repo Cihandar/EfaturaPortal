@@ -123,6 +123,35 @@ namespace EfaturaPortal.Application.FaturaSatirs.Commands
 
         }
 
+        public async Task<List<FaturaSatirCreateViewModel>> GetAllForCreate(Guid FaturaId)
+        {
+
+
+            var FaturaSatir = context.FaturaSatirs.Where(x => x.FaturaId == FaturaId).Include(x => x.OlcuBirimleri).Include(x => x.IstisnaKodlari).ToList();
+
+
+            //foreach (var data in FaturaSatir)
+            //{
+            //    if (data.IstisnaKodlariId != null && data.IstisnaKodlariId != 0) data.IstisnaKodlari = context.IstisnaKodlaris.Where(x => x.Id == data.IstisnaKodlariId ).FirstOrDefault();
+            //}
+
+
+
+            var data = mapper.Map<List<FaturaSatirCreateViewModel>>(FaturaSatir);
+
+            var result = new List<FaturaSatirCreateViewModel>();
+
+            foreach (var x in data)
+            {
+                x.FaturaSatirKdvler = context.FaturaSatirKdvlers.Where(y => y.FaturaSatirId == x.Id).ToList();
+
+                result.Add(x);
+            }
+
+            return result;
+
+
+        }
 
         public async Task<FaturaSatirGetAllQueryViewModel> GetById(Guid FaturaSatirId)
         {

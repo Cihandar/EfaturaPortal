@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EfaturaPortal.Application.Firmalars.ViewModels;
+using EfaturaPortal.Models.Enum;
+
 namespace EfaturaPortal.Application.Auths.ViewModels
 {
     public class AuthRegisterViewModel
@@ -12,6 +14,8 @@ namespace EfaturaPortal.Application.Auths.ViewModels
         public bool HizmetSozlesmesi { get; set; }
         public bool IletiGonderimi { get; set; }
         public bool Kvkk { get; set; }
+
+        public FirmaTuru FirmaTuru { get; set; }
 
     }
 }

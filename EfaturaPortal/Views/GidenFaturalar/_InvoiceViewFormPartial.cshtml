@@ -3,7 +3,7 @@
 
     <div class="modal-dialog modal-lg" role="document" style="z-index:9999;">
 
-        <div class="modal-content" style="width:1000px">
+        <div class="modal-content" style="">
             <div class="modal-header bg-success">
                 <h5 class="modal-title">Fatura Önizleme</h5>
                 <button type="button" class="close OtelApp-forms-modal-close" data-dismiss="modal" aria-label="Vazgeç"></button>
@@ -12,8 +12,8 @@
                 <div class="row py-3">
                     <div class="col-6 btn-group">
                         <div class="btn btn-primary btnYazdir">Yazdır</div>
-                        <div class="btn btn-danger btnPdf">Pdf Olarak Kaydet</div>
-                        <div class="btn btn-success btnEmail">Email Gönder</div>
+                        @*<div class="btn btn-danger btnPdf">Pdf Olarak Kaydet</div>
+                        <div class="btn btn-success btnEmail">Email Gönder</div>*@
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -32,6 +32,43 @@
     #table_filter {
         text-align: left !important;
     }
+    #iframeInvoice{
+        overflow-y : auto;
+        overflow-x : auto;
+    }
+
+    @@media only screen
+and (min-width : 1224px) {
+    .modal-content {
+        width: 1150px
+    }
+}
+
+    @@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : portrait) {
+    .modal-content {
+        width: 900px
+    }
+}
+    @@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : landscape) {
+    .modal-content {
+        width: 900px
+    }
+}
+    @@media only screen
+and (min-device-width : 0px)
+and (max-device-width : 767px) {
+    .modal-content {
+        width: auto;
+    }
+}
+
+
 </style>
 
 <script>

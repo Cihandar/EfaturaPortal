@@ -13,7 +13,7 @@ using EfaturaPortal.Application.OdemeTurleris.ViewModels;
 using EfaturaPortal.Application.FaturaSatirs.ViewModels;
 namespace EfaturaPortal.Application.Faturas.ViewModels
 {
-    public class FaturaGetAllQueryViewModel : IHaveCustomMapping
+    public class FaturaCreateViewModel : IHaveCustomMapping
     {
 
         public Guid Id { get; set; }
@@ -25,7 +25,7 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
         public Guid SeriNumaralarId { get; set; }
  
         public string ParaBirimi { get; set; }
-        public float DovizKuru { get; set; }
+        public string DovizKuru { get; set; }
 
         public string Doviz { get; set; }
 
@@ -43,14 +43,14 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
 
         public string YaziylaTutar { get; set; }
 
-        public float Toplam { get; set; }
-        public float Artirim { get; set; }
-        public float Iskonto { get; set; }
-        public float Stopaj { get; set; }
-        public float Kdv { get; set; }
-        public float OdenecekTutar { get; set; }
-        public float TevkifatToplam { get; set; }
-        public float DigerVergilerToplam { get; set; }
+        public string Toplam { get; set; }
+        public string Artirim { get; set; }
+        public string Iskonto { get; set; }
+        public string Stopaj { get; set; }
+        public string Kdv { get; set; }
+        public string OdenecekTutar { get; set; }
+        public string TevkifatToplam { get; set; }
+        public string DigerVergilerToplam { get; set; }
         public FaturaTipi FaturaTipi { get; set; }
 
         public FaturaSenaryo FaturaSenaryo { get; set; }
@@ -72,12 +72,12 @@ namespace EfaturaPortal.Application.Faturas.ViewModels
 
         public List<OdemeTurleriGetAllQueryViewModel> OdemeTurleriList { get; set; }
 
-        public List<FaturaSatirGetAllQueryViewModel>  FaturaSatir { get; set; }
+        public List<FaturaSatirCreateViewModel>  FaturaSatir { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {
-            configuration.CreateMap<FaturaGetAllQueryViewModel, Fatura>();
-            configuration.CreateMap<Fatura, FaturaGetAllQueryViewModel>();
+            configuration.CreateMap<FaturaCreateViewModel, Fatura>().ForMember(x => x.Toplam, opt => opt.MapFrom(y => float.Parse(y.Toplam.Replace(".", "."))));
+            configuration.CreateMap<Fatura, FaturaCreateViewModel>();
         }
 
 

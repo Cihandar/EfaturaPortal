@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using EfaturaPortal.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -64,6 +65,7 @@ using EfaturaPortal.Application.Tools;
 using EfaturaPortal.Application.Interfaces.EsmmApis;
 using EfaturaPortal.Application.EsmmApi.Command;
 using EfaturaPortal.Application.EsmmApi.Authorization;
+
 
 namespace EfaturaPortal
 {
@@ -152,34 +154,36 @@ namespace EfaturaPortal
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.HttpOnly = true;
+                //options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(24);
                 options.LoginPath = "/Auth/Login";
                 options.LogoutPath = "/Auth/Logout";
                 options.AccessDeniedPath = "/Auth/AccessDenied";
-                options.Cookie = new CookieBuilder
-                {
-                    IsEssential = true, // required for auth to work without explicit user consent; adjust to suit your privacy policy,
-                    Name = ".EfaturaPortal.Session",
-                    HttpOnly = false,
-                    SecurePolicy = CookieSecurePolicy.Always
-                };
+                //options.Cookie = new CookieBuilder
+                //{
+                //    IsEssential = true, // required for auth to work without explicit user consent; adjust to suit your privacy policy,
+                //    Name = ".EfaturaPortal.Session",
+                //    HttpOnly = false,
+                //    SecurePolicy = CookieSecurePolicy.Always
+                //};
 
             });
 
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.HttpOnly = false;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.Cookie.Name = ".EfaturaPortal.Session";
-            });
+            //services.AddSession(options =>
+            //{
+            //    options.IdleTimeout = TimeSpan.FromMinutes(20);
+            //    options.Cookie.HttpOnly = false;
+            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            //    options.Cookie.Name = ".EfaturaPortal.Session";
+            //});
 
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Culture = CultureInfo.CurrentUICulture);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0).AddNewtonsoftJson(options => options.SerializerSettings.Culture = CultureInfo.CurrentUICulture); 
 
         }
 
@@ -201,6 +205,7 @@ namespace EfaturaPortal
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("en-US")
+            
             }); 
 
             //var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();

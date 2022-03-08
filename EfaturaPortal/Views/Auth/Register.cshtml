@@ -33,6 +33,24 @@
 
                 <form class="EfaturaPortalApp-forms" id="EfaturaPortalApp-forms" asp-controller="Auth" asp-action="Login" enctype="multipart/form-data" data-ajax-begin="EfaturaPortalAppOnBegin" data-ajax-complete="EfaturaPortalAppOnComplete('crud-modal')" data-ajax-failure="EfaturaPortalAppOnFailure" data-ajax-success="EfaturaPortalAppOnSuccessWithReport(data, redirectRegisterUrl)" data-ajax="true" data-ajax-method="POST" data-ajax-url="/Auth/Register">
 
+
+                    @*<label asp-for="FirmaTuru" class="form-control-label">Gönderim Türü</label>
+                    <span asp-validation-for="FirmaTuru" class="text-danger"> </span>
+                    <div class="input-group mb-3">
+                        <select asp-for="FirmaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Gönderim Türünü Seçiniz">
+                            @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FirmaTuru>())
+                            {
+                                <option value="@item.Value">@item.Text</option>
+
+                            }
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-building"></span>
+                            </div>
+                        </div>
+                    </div>*@
+
                     <label asp-for="Firma.Unvani" class="form-control-label">Firma Ünvanı</label>
                     <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
                     <div class="input-group mb-3">
@@ -47,8 +65,8 @@
                     <label asp-for="Firma.FirmaTuru" class="form-control-label">Portal Türü</label>
                     <span asp-validation-for="Firma.Unvani" class="text-danger"> </span>
                     <div class="input-group mb-3">
-                        <select asp-for="Firma.FirmaTuru" class="form-control seridenapp-forms-select2"  data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FirmaTuru>()"></select>
- 
+                        <select asp-for="Firma.FirmaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Kayıt Türünü Seçiniz" asp-items="Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FirmaTuru>()"></select>
+
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-building"></span>

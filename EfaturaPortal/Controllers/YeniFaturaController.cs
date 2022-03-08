@@ -113,12 +113,12 @@ namespace EfaturaPortal.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var result = await faturaCrud.GetById(Guid.NewGuid(), FirmaId);
+            var result = await faturaCrud.GetByIdforCreate(Guid.NewGuid(), FirmaId);
             return View("Index",result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FaturaGetAllQueryViewModel model)
+        public async Task<IActionResult> Create(FaturaCreateViewModel model)
         {
             model.FirmaId = FirmaId;
             var result = await faturaCrud.Add(model);

@@ -63,6 +63,18 @@ namespace EfaturaPortal.Application.EsmmApi.Command
 
             invoice.AccountingCustomerParty = new CustomerPartyType { Party = await GetCustomerPartyType(faturaVM) }; // Alıcı Fatura Bilgileri...
 
+            if (faturaVM.Doviz != "TRY")
+            {
+                invoice.PricingCurrencyCode = new PricingCurrencyCodeType { Value = faturaVM.Doviz };
+                invoice.PricingExchangeRate = new ExchangeRateType
+                {
+                    SourceCurrencyCode = new SourceCurrencyCodeType { Value = faturaVM.Doviz },
+                    TargetCurrencyCode = new TargetCurrencyCodeType { Value = "TRY" },
+                    CalculationRate = new CalculationRateType { Value = await _toolsCodes.toDecimal(faturaVM.DovizKuru.ToString()) },
+                    Date = new DateType1 { Value = faturaVM.Tarih }
+                };
+            }
+
             invoice.TaxTotal = await GetTaxTotalTypes(faturaVM, kdvler, faturaVM.FaturaSatir);
 
             invoice.LegalMonetaryTotal = await GetMonetaryTotal(faturaVM);
@@ -124,7 +136,7 @@ namespace EfaturaPortal.Application.EsmmApi.Command
 
             _noteTypes.Add(new NoteType { Value = faturaVM.Notlar });
 
-            _noteTypes.Add(new NoteType { Value = await _toolsCodes.YaziyaCevir(faturaVM.OdenecekTutar.ToString()) });
+            _noteTypes.Add(new NoteType { Value = "Yazı ile : " + await _toolsCodes.YaziyaCevir(faturaVM.OdenecekTutar.ToString(),faturaVM.Doviz) });
 
             return _noteTypes.ToArray();
 

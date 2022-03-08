@@ -62,7 +62,8 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                     return new CheckUserResult
                     {
                         Success = true,
-                        GibUser = result.CheckUserResponse.ToList<GIBUSER>()
+                        GibUser = result.CheckUserResponse.ToList<GIBUSER>(),
+ 
                     };
                 }
                 else

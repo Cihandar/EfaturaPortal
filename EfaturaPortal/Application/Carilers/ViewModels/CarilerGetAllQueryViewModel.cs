@@ -25,6 +25,7 @@ namespace EfaturaPortal.Application.Carilers.ViewModels
         public string Telefon { get; set; }
         public Guid FirmaId { get; set; }
         public string Ulke { get; set; }
+        public string UserType { get; set; }
 
         public  void CreateMappings(Profile configuration)
         {

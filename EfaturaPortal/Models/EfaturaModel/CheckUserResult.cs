@@ -14,6 +14,7 @@ namespace EfaturaPortal.Models.EfaturaModel
         public string ErrorMessage { get; set; }
         public List<GIBUSER> GibUser { get; set; }        
         public CarilerGetAllQueryViewModel Cari { get; set; }
+        public string UserType { get; set; }
 
     }
 }

@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="Tarih" class="form-control-label">Fatura Tarihi ve Saati</label>
+                                    <label asp-for="Tarih" class="form-control-label">Makbuz Tarihi ve Saati</label>
                                     <input asp-for="Tarih" type="text" class="form-control seridenapp-forms-select2" id="FaturaTarihi" />
                                     <span asp-validation-for="Tarih" class="text-danger"> </span>
                                 </div>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="FaturaNumarasi" class="form-control-label">Fatura Numarası</label>
+                                    <label asp-for="FaturaNumarasi" class="form-control-label">Makbuz Numarası</label>
                                     <input asp-for="FaturaNumarasi" class="form-control seridenapp-forms-select2" />
                                     <span asp-validation-for="FaturaNumarasi" class="text-danger"> </span>
                                 </div>
@@ -457,11 +457,11 @@
         </div>
     </div>
 
-    <button type="submit" id="kaydet" style="display:none" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
+    <button type="submit" id="kaydet" style="display:none" class="btn btn-success btn-kaydet col-md-3  mb-3 ml-2"><i class="fas fa fa-save"></i> Makbuzu Kaydet</button>
 
 </form>
 <div class="row">
-    <button type="submit" id="kaydet" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
+    <button type="submit" id="kaydet"  class="btn btn-success btn-kaydet col-md-3  mb-3 ml-2"><i class="fas fa fa-save"></i> Faturayı Kaydet</button>
 </div>
 @section css
 {
@@ -480,6 +480,14 @@
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
     @*   <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
     <script>
+
+        $('#EfaturaPortalApp-forms').on('keyup keypress', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
 
         var updateTax = false;
 
@@ -745,14 +753,14 @@
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
             var iskontoOran = $("input[name='FaturaSatir[" + index + "].StopajOran']");
             var iskontoTutar = $("input[name='FaturaSatir[" + index + "].StopajTutar']");
-            var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
+            var kdvOran2 = $("input[name='FaturaSatir[" + index + "].KdvOran']");
             var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
             var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
             var tevtutar = $("input[name='FaturaSatir[" + index + "].TevkifatTutar']");
             var kdvlitutar = $("input[name='FaturaSatir[" + index + "].KdvliTutar']");
 
             var indoran = toDouble(iskontoOran.val());
-            var kdvOran = toDouble(kdvOran.val());
+            var kdvOran = toDouble(kdvOran2.val());
             var birimtutar = 0;
 
             var indtutar = 0;

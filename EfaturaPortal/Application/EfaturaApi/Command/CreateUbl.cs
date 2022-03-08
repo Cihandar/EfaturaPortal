@@ -64,6 +64,48 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             invoice.AccountingCustomerParty = new CustomerPartyType { Party = await GetCustomerPartyType(faturaVM) }; // Alıcı Fatura Bilgileri...
 
+            if(faturaVM.Doviz!="TRY")
+            {
+                invoice.PricingCurrencyCode = new PricingCurrencyCodeType { Value = faturaVM.Doviz };
+                invoice.PricingExchangeRate = new ExchangeRateType
+                {
+                    SourceCurrencyCode = new SourceCurrencyCodeType { Value = faturaVM.Doviz },
+                    TargetCurrencyCode = new TargetCurrencyCodeType { Value = "TRY" },
+                    CalculationRate = new CalculationRateType { Value = await _toolsCodes.toDecimal(faturaVM.DovizKuru.ToString()) },
+                    Date = new DateType1 { Value = faturaVM.Tarih }
+                };
+            }
+
+
+
+            if (faturaVM.Cariler.UserType=="KAMU")
+            {
+                invoice.BuyerCustomerParty = new CustomerPartyType
+                {
+                    Party = new PartyType
+                    {
+                        PartyIdentification = new[] { new PartyIdentificationType { ID = new IDType { schemeID = faturaVM.Cariler.VergiNumarasi } } },
+                        PartyName = new PartyNameType { Name = new NameType1 { Value = "" } },
+                        PostalAddress = new AddressType
+                        {
+
+                            CityName = new CityNameType { Value = faturaVM.Cariler.Sehir },
+                            CitySubdivisionName = new CitySubdivisionNameType { Value = faturaVM.Cariler.Ilce },
+                            StreetName = new StreetNameType { Value = faturaVM.Cariler.Adres },
+                            Country = new CountryType { Name = new NameType1 { Value = "Türkiye" } }
+
+                        }
+                    }
+                };
+                invoice.PaymentMeans = new[] {
+                    new PaymentMeansType {
+                        PaymentMeansCode = new PaymentMeansCodeType { Value="42" },
+                        PaymentChannelCode = new PaymentChannelCodeType { Value=faturaVM.OdemeKanali },
+                        PayeeFinancialAccount = new FinancialAccountType { ID= new IDType { Value = faturaVM.OdemeHesapNo }, CurrencyCode= new CurrencyCodeType { Value= "TRY" } }
+                    } };
+                invoice.PaymentTerms = new PaymentTermsType { PaymentDueDate = new PaymentDueDateType { Value =  faturaVM.OdemeTarihi } };
+            }
+
             invoice.TaxTotal = await GetTaxTotalTypes(faturaVM, kdvler);
 
             invoice.LegalMonetaryTotal = await GetMonetaryTotal(faturaVM);
@@ -125,7 +167,9 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
             _noteTypes.Add(new NoteType { Value = faturaVM.Notlar });
 
-            _noteTypes.Add(new NoteType { Value = await _toolsCodes.YaziyaCevir(faturaVM.OdenecekTutar.ToString()) });
+         
+            
+            _noteTypes.Add(new NoteType { Value = "Yazı ile : " + await _toolsCodes.YaziyaCevir(faturaVM.OdenecekTutar.ToString(),faturaVM.Doviz) });
 
             return _noteTypes.ToArray();
 
@@ -135,10 +179,10 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
         {
             var docref = new List<DocumentReferenceType>();
 
-            var designfile = Path.Combine(_environment.WebRootPath, "uploads\\Xslt\\" + faturaVM.SeriNumaralar.SablonDosyaAdi);
+            var desingfile = await _toolsCodes.GetXSLTFiletoBinary(faturaVM.SeriNumaralar.SablonDosyaAdi, faturaVM.FaturaTuru);
+           // var designfile = Path.Combine(_environment.WebRootPath, "uploads\\Xslt\\" + faturaVM.SeriNumaralar.SablonDosyaAdi);
 
-            if (!string.IsNullOrWhiteSpace(faturaVM.SeriNumaralar.SablonDosyaAdi) && File.Exists(designfile))
-            {
+         
                 docref.Add(
                     new DocumentReferenceType
                     {
@@ -153,11 +197,11 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
                                 encodingCode = "Base64",
                                 filename = "default.xslt",
                                 mimeCode = "application/xml",
-                                Value = await GetXSLTFiletoBinary(designfile)
+                                Value = desingfile
                             }
                         }
                     });
-            }
+           
             docref.Add(
                 new DocumentReferenceType
                 {
@@ -288,6 +332,7 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
         }
 
+      
 
         private async Task<TaxTotalType[]> GetTaxTotalTypes(FaturaGetAllQueryViewModel faturaVM, List<KdvlerViewModel> kdvler)
         {
@@ -393,12 +438,13 @@ namespace EfaturaPortal.Application.EfaturaApi.Command
 
         private async Task<InvoiceLineType[]> GetInvoiceLineTypes(FaturaGetAllQueryViewModel faturaVM)
         {
-            var iline = new List<InvoiceLineType>();
-            var ln = new InvoiceLineType();
-
+            var iline = new List<InvoiceLineType>();     
+            var sira = 0;
             foreach (var x in faturaVM.FaturaSatir)
             {
-                ln.ID = new IDType { Value = x.Sirano.ToString() };
+                var ln = new InvoiceLineType();
+                sira++;
+                ln.ID = new IDType { Value = sira.ToString() };
                 ln.InvoicedQuantity = new InvoicedQuantityType { Value = await _toolsCodes.toDecimal(x.Miktar.ToString()), unitCode = x.OlcuBirimleri.Kodu };
                 ln.LineExtensionAmount = new LineExtensionAmountType { currencyID = faturaVM.Doviz, Value = await _toolsCodes.toDecimal(x.Tutar.ToString()) };
                 ln.Item = new ItemType { Description = new DescriptionType { Value = x.Aciklama }, Name = new NameType1 { Value = x.Aciklama } };

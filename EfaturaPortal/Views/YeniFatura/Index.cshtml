@@ -1,5 +1,5 @@
 ﻿
-@model EfaturaPortal.Application.Faturas.ViewModels.FaturaGetAllQueryViewModel;
+@model EfaturaPortal.Application.Faturas.ViewModels.FaturaCreateViewModel;
 
 @{
 
@@ -43,10 +43,14 @@
 
                             <div class="col-md-6">
                                 <label asp-for="FaturaTuru" class="form-control-label">Fatura Türü</label>
-                                <select asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Kayıt Türünü Seçiniz">
+                                <select asp-for="FaturaTuru" class="form-control seridenapp-forms-select2" data-placeholder="Kayıt Türünü Seçiniz" id="Sb_FaturaTuru" onchange="GetSeriNumara()">
                                     @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTuru>())
                                     {
-                                        <option value="@item.Value">@item.Text</option>
+
+                                    @if(item.Value!="2")
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    }
 
                                     }
 
@@ -121,7 +125,7 @@
                                     <select asp-for="FaturaTipi" class="form-control seridenapp-forms-select2" id="Sb_FaturaTipi" data-placeholder="Kayıt Türünü Seçiniz">
                                         @foreach (var item in Html.GetEnumSelectList<EfaturaPortal.Models.Enum.FaturaTipi>().ToList())
                                         {
-                                            <option value="@item.Value">@item.Text</option>
+                                        <option value="@item.Value">@item.Text</option>
                                         }
                                     </select>
                                     <span asp-validation-for="FaturaTipi" class="text-danger"> </span>
@@ -164,13 +168,17 @@
             <div class="row">
                 <div class="card card-default container-fluid">
                     <div class="card-header">
-                        <h3 class="card-title">Müşteri Cari Bilgileri</h3>
+                        <div class="row">
+                            <h3 class="card-title">Müşteri Cari Bilgileri</h3>
 
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
+                        <div class="row"> <span class="text-danger text fa-1x" id="spanKamu"></span></div>
+                       
                     </div> <!-- /.card-header -->
 
                     <div class="card-body" id="Dv_Cariler">
@@ -190,6 +198,7 @@
                                     <input type="hidden" asp-for="CarilerId" id="Hd_CarilerId" />
                                     <input type="hidden" asp-for="Cariler.Id" id="Hd_Cariler.Id" />
                                 </div>
+                         
                             </div>
 
                         </div>
@@ -255,6 +264,7 @@
                                     <span asp-validation-for="Cariler.Telefon" class="text-danger"> </span>
                                 </div>
                             </div>
+                            <input type="hidden" id="cari_UserType" asp-for="Cariler.UserType" />
                         </div>
 
 
@@ -296,7 +306,7 @@
                                     <option value="-1">Lütfen Ödeme Türü Seçin</option>
                                     @foreach (var data in Model.OdemeTurleriList)
                                     {
-                                        <option value="@data.Kodu">@data.Adi</option>
+                                    <option value="@data.Kodu">@data.Kodu</option>
                                     }
                                 </select>
                             </div>
@@ -383,7 +393,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <input asp-for="Toplam" class="form-control" type="number" readonly />
+                                <input asp-for="Toplam" class="form-control" type="number" readonly asp />
                             </div>
                         </div>
                     </div>
@@ -474,11 +484,11 @@
         </div>
     </div>
 
-    <button type="submit" id="kaydet" style="display:none" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
+    <button type="submit" id="kaydet" style="display:none" class="btn btn-success btn-kaydet col-md-3  mb-3 ml-2"><i class="fas fa fa-save"></i> Faturayı Kaydet</button>
 
 </form>
 <div class="row">
-    <button type="submit" id="kaydet" class="btn btn-success btn-kaydet">Faturayı Kaydet</button>
+    <button type="submit" id="kaydet"  class="btn btn-success btn-kaydet col-md-3  mb-3 ml-2"><i class="fas fa fa-save"></i> Faturayı Kaydet</button>
 </div>
 @section css
 {
@@ -497,6 +507,14 @@
     <script src="~/plugins/adminLte/plugins/daterangepicker/daterangepicker.js"></script>
     @*   <script src="~/js/Datatable/DataTable_GetData.js" asp-append-version="true"></script>*@
     <script>
+
+        $('#EfaturaPortalApp-forms').on('keyup keypress', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
 
         var updateTax = false;
 
@@ -620,7 +638,7 @@
                     Notiflix.Block.Remove("*", 0);
                 },
                 success: function (data) {
-                    console.log(data);
+             
                     $("#Sb_FaturaTuru option:selected").removeAttr("selected");
                     if (!data.success) {
                         if (data.errorMessage != null) {
@@ -633,16 +651,24 @@
 
                         }
                     } else {
+            
                         $("#Sb_FaturaTuru").val("0").change();
                         $("#Sb_FaturaTuru option[value='0']").attr("selected", "selected");
                         $.each(data.gibUser, function (i, state) {
                             $("#Cm_CariPostaKutusu").append('<option value="' + state.alias + '">' + state.alias + '</option>');
                         });
+                        $("#cari_UserType").val(data.gibUser[0].type);
+
+                        if (data.gibUser[0].type == "KAMU") {
+                            $("#spanKamu").html("Kamu Faturası Kesiyorsunuz ! Ödeme Kanalı (Banka Adı) ve Ödeme Hesap No (Iban) Girmek Zorunludur.(Size ait Iban bilgileri)");
+                        } else {
+                            $("#spanKamu").html("");
+                        }
                         // GetSeriNumara();
                         Notiflix.Notify.Warning('E-Fatura Kesiyorsunuz !');
 
                     }
-
+ 
                     if (data.cari != null) {
 
                         $("#Tx_Cari_Unvani").val(data.cari.unvani);
@@ -657,7 +683,16 @@
                         // $("#Tx_Cari_").val(data.cari.unvani);
 
                     } else {
-                        $("#Tx_Cari_Unvani").val(data.gibUser.title);
+                        $("#Tx_Cari_Unvani").val("");
+                        $("#Tx_Cari_VergiDairesi").val("");
+                        $("#Tx_Cari_Ulke").val("Türkiye");
+                        $("#Tx_Cari_Adres").val("");
+                        $("#Tx_Cari_Email").val("");
+                        $("#Tx_Cari_Telefon").val("");
+                        $("#Hd_CarilerId").val("");
+                        $("#Hd_Cariler.Id").val("");
+
+                        if (data.success) $("#Tx_Cari_Unvani").val(data.gibUser[0].title);
                     }
 
 
@@ -726,7 +761,7 @@
                         // $("#Tx_Cari_").val(data.cari.unvani);
 
                     } else {
-                        $("#Tx_Cari_Unvani").val(data.gibUser.title);
+                        $("#Tx_Cari_Unvani").val(data.gibUser[0].title);
                     }
 
 
@@ -743,12 +778,16 @@
 
             var index = $(this).closest("tr").data("index");
 
-            SatirHesapla(index);
+            if ($(this).attr("Name") == "FaturaSatir[" + index + "].KdvliTutar") {
+                SatirHesapla(index, true);
+            } else {
+                SatirHesapla(index, false);
+            }
 
         });
         // }
 
-        function SatirHesapla(index) {
+        function SatirHesapla(index, kdvDahil) {
             var iskontoOran = null;
             var iskontoTutar = null;
 
@@ -756,18 +795,35 @@
             var birimFiyat = $("input[name='FaturaSatir[" + index + "].BirimFiyat']");
             var iskontoOran = $("input[name='FaturaSatir[" + index + "].IskontoOran']");
             var iskontoTutar = $("input[name='FaturaSatir[" + index + "].IskontoTutar']");
-            var kdvOran = $("input[name='FaturaSatir[" + index + "].KdvOran']");
+            var kdvOran2 = $("input[name='FaturaSatir[" + index + "].KdvOran']");
             var kdvTutar = $("input[name='FaturaSatir[" + index + "].KdvTutar']");
             var tutar = $("input[name='FaturaSatir[" + index + "].Tutar']");
             var tevtutar = $("input[name='FaturaSatir[" + index + "].TevkifatTutar']");
             var kdvlitutar = $("input[name='FaturaSatir[" + index + "].KdvliTutar']");
 
             var indoran = toDouble(iskontoOran.val());
+            var kdvOran = toDouble(kdvOran2.val());
 
+            var indoran = toDouble(iskontoOran.val());
+            var birimtutar = 0;
             var birimtutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+
+            if (kdvDahil) {
+                if (indoran > 0) {
+                    birimtutar = kdvlitutar.val() * (100 / (100 - (indoran - kdvOran)));
+                } else {
+                    birimtutar = kdvlitutar.val() / (1 + (kdvOran / 100));
+                }
+
+                birimFiyat.val(birimtutar.toFixed(4));
+            } else {
+                birimtutar = toDouble(miktar.val()) * toDouble(birimFiyat.val());
+            }
+
+
             var nettutar = birimtutar;
             var indtutar = 0;
-         
+
 
             if (indoran > 0) {
                 indtutar = birimtutar * (indoran / 100)
@@ -776,7 +832,7 @@
 
 
 
-            var kdvtutar = (nettutar * (toDouble(kdvOran.val()) / 100));
+            var kdvtutar = (nettutar * (kdvOran / 100));
             var gtoplam = kdvtutar + nettutar;
 
 
@@ -858,13 +914,13 @@
             $("#Tb_InvoiceLine tr").each(function (index, row) {
                 tutar = tutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].Tutar']").val());
                 kdvtutar = kdvtutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvTutar']").val());
-                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());               
+                iskontotutar = iskontotutar + toDouble($(row).find("input[name='FaturaSatir[" + index + "].IskontoTutar']").val());
                 gtoplam = gtoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].KdvliTutar']").val());
                 tevkifattoplam = tevkifattoplam + toDouble($(row).find("input[name='FaturaSatir[" + index + "].TevkifatTutar']").val());
 
-                $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {     
-                    var data = toDouble($(kdvrow).find("input[name*='KdvTutar']").val());                
-                    digervergitoplam = digervergitoplam + data;             
+                $(row).find("#KdvContent-" + index).find("div[id^='kdvRow']").each(function (kdvindex, kdvrow) {
+                    var data = toDouble($(kdvrow).find("input[name*='KdvTutar']").val());
+                    digervergitoplam = digervergitoplam + data;
                 });
 
             });
@@ -1177,7 +1233,7 @@
         }
 
 
-                                                                                                                             //   });
+                                                                                                                                     //   });
     </script>
 
 }
